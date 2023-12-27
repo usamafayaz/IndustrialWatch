@@ -1,0 +1,85 @@
+import React from 'react';
+import {Text, TouchableOpacity} from 'react-native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import Login from './src/screens/Login';
+import AdminDashboard from './src/screens/AdminDashboard';
+import Sections from './src/screens/Sections';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AddSection from './src/screens/AddSection';
+import SectionDetails from './src/screens/SectionDetails';
+import EditSection from './src/screens/EditSection';
+import Supervisors from './src/screens/Supervisors';
+import AddSupervisor from './src/screens/AddSupervisor';
+import Production from './src/screens/Production';
+import AddBatch from './src/screens/AddBatch';
+import BatchDetails from './src/screens/BatchDetails';
+import BatchSummary from './src/screens/BatchSummary';
+import Defects from './src/screens/Defects';
+import EmployeeProductivity from './src/screens/EmployeeProductivity';
+import ProductivityRules from './src/screens/ProductivityRules';
+import AddEmployee from './src/screens/AddEmployee';
+import EmployeeRecord from './src/screens/EmployeeRecord';
+// adb tcpip 5555
+// adb connect 192.168.1.2
+// adb disconnect
+// gradlew bundleRelease // for AAB
+// gradlew.bat assembleRelease // for APK
+// android/app/build/outputs/apk/release/app-release.apk
+
+const Stack = createNativeStackNavigator();
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerTintColor: 'white',
+          headerTransparent: false,
+          headerStyle: {
+            backgroundColor: '#2E81FE',
+          },
+          headerTitleStyle: {fontSize: 19},
+        }}>
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Admin Dashboard"
+          component={AdminDashboard}
+          options={({navigation}) => ({
+            // Pass navigation as a parameter
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Login' as never)}>
+                <FontAwesome5 name="sign-out-alt" size={22} color={'white'} />
+              </TouchableOpacity>
+            ),
+            headerLeft: () => <Text></Text>,
+          })}
+        />
+        <Stack.Screen name="Sections" component={Sections} />
+        <Stack.Screen name="Add Section" component={AddSection} />
+        <Stack.Screen name="Section Detail" component={SectionDetails} />
+        <Stack.Screen name="Edit Section" component={EditSection} />
+        <Stack.Screen name="Supervisors" component={Supervisors} />
+        <Stack.Screen name="Add Supervisor" component={AddSupervisor} />
+        <Stack.Screen name="Production" component={Production} />
+        <Stack.Screen name="Create Batch" component={AddBatch} />
+        <Stack.Screen name="Batch Detail" component={BatchDetails} />
+        <Stack.Screen name="Batch Summary" component={BatchSummary} />
+        <Stack.Screen name="Defects" component={Defects} />
+        <Stack.Screen name="Productivity Rules" component={ProductivityRules} />
+        <Stack.Screen name="Add Employee" component={AddEmployee} />
+        <Stack.Screen name="Employee Record" component={EmployeeRecord} />
+        <Stack.Screen
+          name="Employee Productivity"
+          component={EmployeeProductivity}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
