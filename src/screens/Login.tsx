@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
+  ToastAndroid,
 } from 'react-native';
 import TextField from '../components/TextField';
 import ButtonComponent from '../components/ButtonComponent';
@@ -30,7 +31,10 @@ const Login = () => {
       setUsernameEmail('');
       setPassword('');
     } else {
-      console.error('Incorrect credentials. Please try again.');
+      ToastAndroid.show(
+        'Incorrect credentials. Please try again.',
+        ToastAndroid.LONG,
+      );
     }
   };
   return (

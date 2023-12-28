@@ -48,16 +48,7 @@ const App = () => {
         <Stack.Screen
           name="Admin Dashboard"
           component={AdminDashboard}
-          options={({navigation}) => ({
-            // Pass navigation as a parameter
-            headerRight: () => (
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Login' as never)}>
-                <FontAwesome5 name="sign-out-alt" size={22} color={'white'} />
-              </TouchableOpacity>
-            ),
-            headerLeft: () => <Text></Text>,
-          })}
+          options={{headerShown: false}}
         />
         <Stack.Screen name="Sections" component={Sections} />
         <Stack.Screen name="Add Section" component={AddSection} />

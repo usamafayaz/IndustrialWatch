@@ -8,7 +8,7 @@ import Modal from 'react-native-modal';
 import TextField from '../components/TextField';
 
 const ProductivityRules = () => {
-  const [modalView, setModalView] = useState(false);
+  const [modalVisibility, setModalVisibility] = useState(false);
   const [inputText, setInputText] = useState('');
   const [rulesList, setRulesList] = useState([
     {title: 'Smoking'},
@@ -27,7 +27,7 @@ const ProductivityRules = () => {
   const navigation = useNavigation();
   function addRule() {
     rulesList.push({title: inputText});
-    setModalView(false);
+    setModalVisibility(false);
     setInputText(''); // Clear the input field
   }
   return (
@@ -47,7 +47,7 @@ const ProductivityRules = () => {
           }}
         />
       </View>
-      <Modal isVisible={modalView}>
+      <Modal isVisible={modalVisibility}>
         <View style={styles.modalWrapper}>
           <Text style={styles.modalHeaderStyle}>Add Rule</Text>
           <TextField
@@ -56,7 +56,7 @@ const ProductivityRules = () => {
             onChangeText={handleInputChange}
           />
           <View style={styles.modalButtonWrapper}>
-            <TouchableOpacity onPress={() => setModalView(false)}>
+            <TouchableOpacity onPress={() => setModalVisibility(false)}>
               <Text style={styles.cancelStyle}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={addRule}>
@@ -67,7 +67,10 @@ const ProductivityRules = () => {
       </Modal>
 
       <View style={styles.buttonWrapper}>
-        <ButtonComponent title="Add Rule" onPress={() => setModalView(true)} />
+        <ButtonComponent
+          title="Add Rule"
+          onPress={() => setModalVisibility(true)}
+        />
       </View>
     </View>
   );
