@@ -1,6 +1,9 @@
 import React from 'react';
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 
+//          Replaced By Custom Grid in AdminDashboard.
+//          <CardComponent key={index} title={item.name} onPress={item.onPress} />
+
 const CardComponent = (props: {title: string; onPress: any}) => {
   return (
     <TouchableOpacity style={styles.cardContainer} onPress={props.onPress}>

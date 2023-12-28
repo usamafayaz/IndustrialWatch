@@ -6,13 +6,11 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ImageBackground,
-  Pressable,
 } from 'react-native';
-// #F3F3F3
-import CardComponent from '../components/CardComponent';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
+import CustomGrid from '../components/CustomGrid';
 
 const AdminDashboard = () => {
   const navigation = useNavigation();
@@ -21,30 +19,33 @@ const AdminDashboard = () => {
   const CardList = [
     {
       name: 'Sections',
+      image: require('../../assets/icons/sections.png'),
       onPress: () => {
         navigation.navigate('Sections' as never);
       },
     },
     {
-      name: 'Supervisor',
+      name: 'Supervisors',
+      image: require('../../assets/icons/supervisors.png'),
       onPress: () => {
         navigation.navigate('Supervisors' as never);
       },
     },
     {
-      name: 'Production',
-      onPress: () => {
-        navigation.navigate('Production' as never);
-      },
-    },
-    {
-      name: 'Employee Productivity',
+      name: 'Productivity',
+      image: require('../../assets/icons/employee_productivity.png'),
       onPress: () => {
         navigation.navigate('Employee Productivity' as never);
       },
     },
+    {
+      name: 'Production',
+      image: require('../../assets/icons/production.png'),
+      onPress: () => {
+        navigation.navigate('Production' as never);
+      },
+    },
   ];
-
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -65,9 +66,7 @@ const AdminDashboard = () => {
         </ImageBackground>
       </View>
       <View style={styles.cardsWrapper}>
-        {CardList.map((item, index) => (
-          <CardComponent key={index} title={item.name} onPress={item.onPress} />
-        ))}
+        <CustomGrid renderGrid={CardList} />
       </View>
 
       <Modal isVisible={modalVisibility}>
@@ -96,7 +95,7 @@ const AdminDashboard = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#F3F3F3',
   },
   imageContainer: {
     height: '37%',
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
   },
   cardsWrapper: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#F3F3F3',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     alignItems: 'center',

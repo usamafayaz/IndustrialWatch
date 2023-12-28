@@ -1,35 +1,52 @@
 import React from 'react';
-import {TouchableOpacity, Text, StyleSheet, View} from 'react-native';
+import {
+  FlatList,
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 
-const CustomGrid = (props: {title: string; onPress: any}) => {
+const CustomGrid = (props: {renderGrid: any}) => {
   return (
     <View style={{flex: 1}}>
-      <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity style={styles.cardContainer} onPress={props.onPress}>
-          <Text style={styles.cardText}>{props.title}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.cardContainer} onPress={props.onPress}>
-          <Text style={styles.cardText}>{props.title}</Text>
-        </TouchableOpacity>
-      </View>
+      <FlatList
+        data={props.renderGrid}
+        keyExtractor={item => item.name}
+        numColumns={2}
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity style={styles.gridItem} onPress={item.onPress}>
+              <Image source={item.image} style={styles.imageStyle} />
+              <Text style={styles.nameStyle}>{item.name}</Text>
+            </TouchableOpacity>
+          );
+        }}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  cardContainer: {
-    width: '40%',
-    height: 110,
-    backgroundColor: 'lightgrey',
-    borderRadius: 20,
+  gridItem: {
+    height: 153,
+    width: 153,
+    margin: 12,
+    paddingTop: 6,
+    backgroundColor: 'white',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '4%',
+    borderRadius: 20,
   },
-  cardText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
+  imageStyle: {
+    width: 100,
+    height: 100,
+  },
+  nameStyle: {
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: 'black',
   },
 });
 
