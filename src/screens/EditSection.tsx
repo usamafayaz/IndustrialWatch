@@ -13,32 +13,33 @@ const EditSection = () => {
   const RulesList = [
     {title: 'Smoking', fine: 500, checkBox: true},
     {title: 'On Phone', fine: 0, checkBox: false},
-    {title: 'Gossiping', fine: 300, checkBox: true},
   ];
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <View style={{height: 20}}></View>
       <TextField
         placeHolder="Packing"
         value={inputText}
         onChangeText={handleInputChange}
       />
       <Text style={styles.textStyle}>Rules</Text>
-      <FlatList
-        data={RulesList}
-        renderItem={({item}) => {
-          return (
-            <View>
-              <RuleComponent
-                title={item.title}
-                checkBox={item.checkBox}
-                fine={item.fine}
-              />
-              <View style={styles.horizontalLineStyle}></View>
-            </View>
-          );
-        }}></FlatList>
+      <View style={styles.flatListContainer}>
+        <FlatList
+          data={RulesList}
+          renderItem={({item}) => {
+            return (
+              <View>
+                <RuleComponent
+                  title={item.title}
+                  checkBox={item.checkBox}
+                  fine={item.fine}
+                />
+                <View style={styles.horizontalLineStyle}></View>
+              </View>
+            );
+          }}
+        />
+      </View>
 
       <View style={styles.buttonWrapper}>
         <ButtonComponent
@@ -52,13 +53,15 @@ const EditSection = () => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 20,
     flex: 1,
     alignItems: 'center',
     backgroundColor: 'white',
   },
-  buttonWrapper: {
+  flatListContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+  },
+  buttonWrapper: {
     alignItems: 'center',
     width: '70%',
   },

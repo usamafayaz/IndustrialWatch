@@ -48,12 +48,10 @@ const EmployeeCard = (props: {employees: any}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginLeft: '4.5%',
+    marginLeft: '3%',
     marginTop: 15,
   },
   grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
   employeeContainer: {

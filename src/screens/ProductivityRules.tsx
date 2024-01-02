@@ -28,7 +28,7 @@ const ProductivityRules = () => {
   function addRule() {
     rulesList.push({title: inputText});
     setModalVisibility(false);
-    setInputText(''); // Clear the input field
+    setInputText('');
   }
   return (
     <View style={styles.container}>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   flatListContainer: {
-    flex: 1, // This container will take up the available vertical space
+    flex: 1,
     marginLeft: '9%',
     width: '100%',
   },

@@ -47,18 +47,20 @@ const Supervisors = () => {
   ];
   return (
     <View style={styles.container}>
-      <FlatList
-        style={styles.flatListStyle}
-        data={SupervisorList}
-        renderItem={({item}) => {
-          return (
-            <SupervisorCard
-              name={item.name}
-              password={item.password}
-              onEditPress={showEditModal}
-            />
-          );
-        }}></FlatList>
+      <View style={styles.flatListContainer}>
+        <FlatList
+          data={SupervisorList}
+          renderItem={({item}) => {
+            return (
+              <SupervisorCard
+                name={item.name}
+                password={item.password}
+                onEditPress={showEditModal}
+              />
+            );
+          }}
+        />
+      </View>
       <Modal isVisible={modalView}>
         <View style={styles.modalWrapper}>
           <Text style={styles.textStyle}>New Credentials for</Text>
@@ -140,9 +142,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
   },
-  flatListStyle: {flex: 1, width: '100%', marginLeft: '9%'},
+  flatListContainer: {flex: 1, width: '100%'},
   buttonWrapper: {
-    flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
     width: '70%',

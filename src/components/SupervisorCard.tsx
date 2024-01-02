@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: '4%',
+    alignSelf: 'center',
   },
   textContainer: {
     flex: 1,

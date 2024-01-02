@@ -21,7 +21,7 @@ const AddSection = () => {
   const RulesList = [
     {title: 'Smoking', fine: 0, checkBox: false},
     {title: 'On Phone', fine: 0, checkBox: false},
-    {title: 'Gossiping', fine: 0, checkBox: false},
+    // {title: 'Gossiping', fine: 0, checkBox: false},
   ];
   const navigation = useNavigation();
   return (
@@ -34,20 +34,23 @@ const AddSection = () => {
           onChangeText={handleInputChange}
         />
         <Text style={styles.textStyle}>Rules</Text>
-        <FlatList
-          data={RulesList}
-          renderItem={({item}) => {
-            return (
-              <View>
-                <RuleComponent
-                  title={item.title}
-                  checkBox={item.checkBox}
-                  fine={item.fine}
-                />
-                <View style={styles.horizontalLineStyle}></View>
-              </View>
-            );
-          }}></FlatList>
+        <View style={styles.flatListContainer}>
+          <FlatList
+            data={RulesList}
+            renderItem={({item}) => {
+              return (
+                <View>
+                  <RuleComponent
+                    title={item.title}
+                    checkBox={item.checkBox}
+                    fine={item.fine}
+                  />
+                  <View style={styles.horizontalLineStyle}></View>
+                </View>
+              );
+            }}
+          />
+        </View>
         <View style={styles.buttonWrapper}>
           <ButtonComponent
             title="Confirm Section"
@@ -65,9 +68,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
   },
+  flatListContainer: {flex: 1},
   buttonWrapper: {
-    flex: 1,
-    justifyContent: 'flex-end',
     alignItems: 'center',
     width: '70%',
   },
