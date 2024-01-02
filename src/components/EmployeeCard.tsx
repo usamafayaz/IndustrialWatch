@@ -7,6 +7,7 @@ import {
   Text,
   FlatList,
 } from 'react-native';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 const EmployeeCard = (props: {employees: any}) => {
   return (
@@ -29,6 +30,10 @@ const EmployeeCard = (props: {employees: any}) => {
                   <Text style={styles.positionStyle}>{item.position}</Text>
                 </View>
                 <View style={styles.productivityContainer}>
+                  <FontAwesome5Icon
+                    name="clock"
+                    color={'#FFB800'}
+                    size={15}></FontAwesome5Icon>
                   <Text style={styles.productivityStyle}>
                     {item.productivity}
                   </Text>
@@ -56,23 +61,28 @@ const styles = StyleSheet.create({
   },
   employeeContainer: {
     width: '46%',
-    backgroundColor: '#f2f0e9',
-    padding: 10,
+    backgroundColor: 'white',
+    padding: 5,
     margin: 5,
+    borderWidth: 2,
+    borderColor: '#CAC4D0',
     borderRadius: 10,
     shadowColor: 'black',
     shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.2, // Adjust the opacity as needed
-    shadowRadius: 2, // Adjust the radius as needed
-    elevation: 3, // Android shadow elevation
+    shadowRadius: 5, // Adjust the radius as needed
+    elevation: 2, // Android shadow elevation
   },
   imageContainer: {
-    backgroundColor: 'lightgray', // Background color for the image
+    backgroundColor: '#F2F2F2', // Background color for the image
+    width: 155,
+    height: 105,
     borderRadius: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
     alignItems: 'center',
     overflow: 'hidden', // Clip the image within the rounded corners
   },
-  image: {width: 120, height: 120},
+  image: {width: 140, height: 90, borderRadius: 10},
   textContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -84,15 +94,17 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   positionStyle: {
-    color: 'black',
+    color: '#616161',
     fontSize: 14,
-  },
-  productivityContainer: {
-    alignSelf: 'flex-end',
   },
   productivityStyle: {
     color: 'black',
     fontSize: 15,
+    marginLeft: 5,
+  },
+  productivityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
