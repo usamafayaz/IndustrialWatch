@@ -20,6 +20,12 @@ import EmployeeProductivity from './src/screens/EmployeeProductivity';
 import ProductivityRules from './src/screens/ProductivityRules';
 import AddEmployee from './src/screens/AddEmployee';
 import EmployeeRecord from './src/screens/EmployeeRecord';
+import EmployeeDetail from './src/screens/EmployeeDetail';
+import EmployeeAttendance from './src/screens/EmployeeAttendance';
+import EmployeeViolation from './src/screens/EmployeeViolation';
+import ViolationDetails from './src/screens/ViolationDetails';
+import EmployeeRanking from './src/screens/EmployeeRanking';
+import EmployeeSummary from './src/screens/EmployeeSummary';
 // adb tcpip 5555
 // adb connect 192.168.1.2
 // adb disconnect
@@ -64,10 +70,19 @@ const App = () => {
         <Stack.Screen name="Productivity Rules" component={ProductivityRules} />
         <Stack.Screen name="Add Employee" component={AddEmployee} />
         <Stack.Screen name="Employee Record" component={EmployeeRecord} />
+        <Stack.Screen name="Employee Detail" component={EmployeeDetail} />
+        <Stack.Screen name="Employee Violation" component={EmployeeViolation} />
+        <Stack.Screen name="Violation Details" component={ViolationDetails} />
+        <Stack.Screen name="Employee Summary" component={EmployeeSummary} />
+        <Stack.Screen
+          name="Employee Attendance"
+          component={EmployeeAttendance}
+        />
         <Stack.Screen
           name="Employee Productivity"
           component={EmployeeProductivity}
         />
+        <Stack.Screen name="Employees Ranking" component={EmployeeRanking} />
       </Stack.Navigator>
     </NavigationContainer>
   );

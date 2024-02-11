@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {
   StyleSheet,
@@ -6,17 +7,23 @@ import {
   SafeAreaView,
   Text,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 const EmployeeCard = (props: {employees: any}) => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={props.employees}
         renderItem={({item}) => {
           return (
-            <View style={styles.employeeContainer}>
+            <TouchableOpacity
+              style={styles.employeeContainer}
+              onPress={() => {
+                navigation.navigate('Employee Detail' as never);
+              }}>
               <View style={styles.imageContainer}>
                 <Image
                   resizeMode="center"
@@ -39,7 +46,7 @@ const EmployeeCard = (props: {employees: any}) => {
                   </Text>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           );
         }}
         keyExtractor={item => item.id.toString()}

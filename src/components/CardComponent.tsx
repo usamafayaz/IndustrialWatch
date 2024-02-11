@@ -21,6 +21,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: '4%',
+    alignSelf: 'center',
+    textShadowRadius: 5,
+    shadowColor: 'black',
+    elevation: 5,
   },
   cardText: {
     color: 'white',

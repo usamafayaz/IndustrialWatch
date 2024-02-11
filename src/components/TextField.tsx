@@ -21,7 +21,7 @@ const TextField = (props: {
       />
       {props.eyeIcon && (
         <TouchableOpacity
-          style={{position: 'absolute', right: 1, top: 14}}
+          style={{position: 'absolute', right: 5, top: 14}}
           onPress={() => setShowPassword(!showPassword)}>
           <FontAwesome5
             name={showPassword ? 'eye-slash' : 'eye'}

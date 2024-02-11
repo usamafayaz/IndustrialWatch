@@ -7,14 +7,44 @@ import {useNavigation} from '@react-navigation/native';
 
 const EditSection = () => {
   const [inputText, setInputText] = useState('');
+  const ApiUrl = 'http://192.168.1.8:5000/api/Section';
+
   const handleInputChange = (text: any) => {
     setInputText(text);
   };
+
   const RulesList = [
-    {title: 'Smoking', fine: 500, checkBox: true},
-    {title: 'On Phone', fine: 0, checkBox: false},
+    {id: 1, title: 'Smoking', fine: 500, checkBox: true},
+    {id: 2, title: 'On Phone', fine: 0, checkBox: false},
   ];
+
   const navigation = useNavigation();
+
+  const handleUpdateSection = async () => {
+    try {
+      const response = await fetch(`${ApiUrl}/UpdateSection`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: inputText,
+          rules: RulesList.map(rule => ({id: rule.id, fine: rule.fine})),
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data); // Handle the response data
+        navigation.navigate('Sections' as never);
+      } else {
+        console.error('Error:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TextField
@@ -42,10 +72,7 @@ const EditSection = () => {
       </View>
 
       <View style={styles.buttonWrapper}>
-        <ButtonComponent
-          title="Update Section"
-          onPress={() => navigation.navigate('Sections' as never)}
-        />
+        <ButtonComponent title="Update Section" onPress={handleUpdateSection} />
       </View>
     </View>
   );

@@ -1,41 +1,89 @@
-import React, {useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import SectionandRuleCard from '../components/SectionandRuleCard';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native';
 
+interface Section {
+  id: number;
+  name: string;
+}
+
 const Sections = () => {
   const navigation = useNavigation();
-  const [sectionsList, setSectionList] = useState([
-    {id: 1, name: 'Packing'},
-    {id: 2, name: 'Manufacturing'},
-    {id: 3, name: 'Management'},
-  ]);
+  const [sectionsList, setSectionList] = useState<Section[]>([]);
+  const [loading, setLoading] = useState(true);
+  const ApiUrl = 'http://192.168.1.8:5000/api/Section';
 
-  const handleDeleteSection = (indexToDelete: number) => {
-    const updatedSectionList = [...sectionsList];
-    updatedSectionList.splice(indexToDelete, 1);
-    setSectionList(updatedSectionList);
+  useEffect(() => {
+    const fetchSections = async () => {
+      try {
+        const response = await fetch(`${ApiUrl}/GetAllSections`);
+        const data = await response.json();
+        setSectionList(data);
+      } catch (error) {
+        console.error('Error fetching sections:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSections();
+  }, []);
+
+  const handleDeleteSection = async (idToDelete: number) => {
+    try {
+      const response = await fetch(
+        `${ApiUrl}/DeleteSection/?id=${idToDelete}`,
+        {
+          method: 'DELETE',
+        },
+      );
+
+      if (response.ok) {
+        // Remove the deleted section from the state
+        setSectionList(prevSections =>
+          prevSections.filter(section => section.id !== idToDelete),
+        );
+      } else {
+        console.error('Error deleting section:', response.status);
+      }
+    } catch (error) {
+      console.error('Error deleting section:', error);
+    }
   };
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <View style={styles.flatListContainer}>
         <FlatList
           style={styles.flatList}
           data={sectionsList}
-          renderItem={({item, index}) => {
-            return (
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Section Detail' as never)}>
-                <SectionandRuleCard
-                  title={item.name}
-                  editRequired={true}
-                  onDelete={() => handleDeleteSection(index)}
-                />
-              </TouchableOpacity>
-            );
-          }}
+          renderItem={({item}: {item: Section}) => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Section Detail' as never)}>
+              <SectionandRuleCard
+                title={item.name}
+                editRequired={true}
+                onDelete={() => handleDeleteSection(item.id)}
+              />
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item.id.toString()}
         />
       </View>
 
@@ -66,6 +114,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     width: '70%',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

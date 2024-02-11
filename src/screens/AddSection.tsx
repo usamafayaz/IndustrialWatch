@@ -15,15 +15,44 @@ import {useNavigation} from '@react-navigation/native';
 
 const AddSection = () => {
   const [inputText, setInputText] = useState('');
-  const handleInputChange = (text: any) => {
-    setInputText(text);
-  };
+  const ApiUrl = 'http://192.168.1.8:5000/api/Section';
+
   const RulesList = [
-    {title: 'Smoking', fine: 0, checkBox: false},
-    {title: 'On Phone', fine: 0, checkBox: false},
-    // {title: 'Gossiping', fine: 0, checkBox: false},
+    {id: 1, title: 'Smoking', fine: 0, checkBox: false},
+    {id: 2, title: 'On Phone', fine: 0, checkBox: false},
+    // { id: 3, title: 'Gossiping', fine: 0, checkBox: false },
   ];
+
   const navigation = useNavigation();
+
+  const handleConfirmSection = async () => {
+    try {
+      const requestData = {
+        name: inputText,
+        // rules: RulesList.map(rule => ({id: rule.id, fine: rule.fine})),
+      };
+
+      const response = await fetch(
+        `${ApiUrl}/InsertSection?name=${inputText}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(inputText),
+        },
+      );
+
+      if (response.ok) {
+        navigation.navigate('Sections' as never);
+      } else {
+        console.error('Error adding section:', response.status);
+      }
+    } catch (error) {
+      console.error('Error adding section:', error);
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
@@ -31,7 +60,9 @@ const AddSection = () => {
         <TextField
           placeHolder="Section Name"
           value={inputText}
-          onChangeText={handleInputChange}
+          onChangeText={(text: any) => {
+            setInputText(text);
+          }}
         />
         <Text style={styles.textStyle}>Rules</Text>
         <View style={styles.flatListContainer}>
@@ -54,7 +85,7 @@ const AddSection = () => {
         <View style={styles.buttonWrapper}>
           <ButtonComponent
             title="Confirm Section"
-            onPress={() => navigation.navigate('Sections' as never)}
+            onPress={handleConfirmSection}
           />
         </View>
       </View>
@@ -85,4 +116,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 });
+
 export default AddSection;

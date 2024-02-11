@@ -1,6 +1,5 @@
 import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import CardComponent from '../components/CardComponent';
 import {useNavigation} from '@react-navigation/native';
 import CustomGrid from '../components/CustomGrid';
 
@@ -32,7 +31,7 @@ const EmployeeProductivity = () => {
       name: 'Employees Ranking',
       image: require('../../assets/icons/employees_ranking.png'),
       onPress: () => {
-        navigation.navigate('Employee Record' as never);
+        navigation.navigate('Employees Ranking' as never);
       },
     },
   ];

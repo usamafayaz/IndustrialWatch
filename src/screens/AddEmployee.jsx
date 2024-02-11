@@ -54,7 +54,6 @@ const AddEmployee = () => {
     launchImageLibrary(options, response => {
       if (!response) {
         console.log('Invalid response from image picker');
-        console.log('Hello Jee');
         return;
       }
 
