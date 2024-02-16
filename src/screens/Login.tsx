@@ -26,8 +26,25 @@ const Login = () => {
 
   const navigation = useNavigation();
   const handleLoginPress = () => {
-    if (usernameEmail === '' && password === '') {
+    if (
+      usernameEmail.toLocaleLowerCase().trim() === 'supervisor' &&
+      password === ''
+    ) {
+      navigation.navigate('Supervisor Dashboard' as never);
+      setUsernameEmail('');
+      setPassword('');
+    } else if (
+      usernameEmail.toLocaleLowerCase().trim() === 'admin' &&
+      password === ''
+    ) {
       navigation.navigate('Admin Dashboard' as never);
+      setUsernameEmail('');
+      setPassword('');
+    } else if (
+      usernameEmail.toLocaleLowerCase().trim() === 'employee' &&
+      password === ''
+    ) {
+      navigation.navigate('Employee Login' as never);
       setUsernameEmail('');
       setPassword('');
     } else {

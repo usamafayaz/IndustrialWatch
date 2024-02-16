@@ -14,7 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import TextField from '../components/TextField';
 import {SelectList} from 'react-native-dropdown-select-list';
 import {RadioButton} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const AddEmployee = () => {
@@ -100,7 +100,7 @@ const AddEmployee = () => {
     } else {
       return (
         <Icon
-          name="user-plus"
+          name="add-a-photo"
           size={35}
           color="black"
           onPress={() => {

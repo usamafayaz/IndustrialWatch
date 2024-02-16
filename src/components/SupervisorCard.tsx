@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 
 const SupervisorCard = (props: {
@@ -20,23 +20,13 @@ const SupervisorCard = (props: {
           onPress={() => {
             props.onEditPress();
           }}>
-          <FontAwesome5
-            name="pen"
-            size={19}
-            color="black"
-            style={styles.icon}
-          />
+          <Icon name="edit" size={25} color="black" style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             console.warn('Delete Pressed!');
           }}>
-          <FontAwesome5
-            name="trash"
-            size={19}
-            color="#050505"
-            style={styles.icon}
-          />
+          <Icon name="delete" size={25} color="#050505" style={styles.icon} />
         </TouchableOpacity>
       </View>
     </View>

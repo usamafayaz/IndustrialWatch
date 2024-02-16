@@ -16,10 +16,24 @@ const CustomGrid = (props: {renderGrid: any}) => {
         keyExtractor={item => item.name}
         numColumns={2}
         renderItem={({item}) => {
+          let firstLine = '';
+          let secondLine = '';
+          const words = item.name.split(' ');
+          if (words.length > 1) {
+            firstLine = words[0];
+            secondLine = words[1];
+          } else {
+            firstLine = item.name;
+          }
           return (
             <TouchableOpacity style={styles.gridItem} onPress={item.onPress}>
               <Image source={item.image} style={styles.imageStyle} />
-              <Text style={styles.nameStyle}>{item.name}</Text>
+              <Text style={styles.nameStyle}>{firstLine}</Text>
+              {secondLine !== '' && (
+                <Text style={[styles.nameStyle, {marginVertical: 0}]}>
+                  {secondLine}
+                </Text>
+              )}
             </TouchableOpacity>
           );
         }}
@@ -30,8 +44,8 @@ const CustomGrid = (props: {renderGrid: any}) => {
 
 const styles = StyleSheet.create({
   gridItem: {
-    height: 153,
-    width: 153,
+    height: 155,
+    width: 155,
     margin: 12,
     paddingTop: 6,
     backgroundColor: 'white',

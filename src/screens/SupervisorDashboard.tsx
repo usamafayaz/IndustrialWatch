@@ -12,37 +12,30 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 import CustomGrid from '../components/CustomGrid';
 
-const AdminDashboard = () => {
+const SupervisorDashboard = () => {
   const navigation = useNavigation();
   const [modalVisibility, setModalVisibility] = useState(false);
 
   const CardList = [
     {
-      name: 'Sections',
-      image: require('../../assets/icons/sections.png'),
+      name: 'Employee Monitoring',
+      image: require('../../assets/icons/employee_monitoring.png'),
       onPress: () => {
-        navigation.navigate('Sections' as never);
+        navigation.navigate('Employee Monitoring' as never);
       },
     },
     {
-      name: 'Supervisors',
-      image: require('../../assets/icons/supervisors.png'),
+      name: 'Defect Monitoring',
+      image: require('../../assets/icons/defect_monitoring.png'),
       onPress: () => {
-        navigation.navigate('Supervisors' as never);
+        navigation.navigate('Defect Monitoring' as never);
       },
     },
     {
-      name: 'Productivity',
-      image: require('../../assets/icons/employee_productivity.png'),
+      name: 'My Attendance',
+      image: require('../../assets/icons/attendance.png'),
       onPress: () => {
-        navigation.navigate('Employee Productivity' as never);
-      },
-    },
-    {
-      name: 'Production',
-      image: require('../../assets/icons/production.png'),
-      onPress: () => {
-        navigation.navigate('Production' as never);
+        navigation.navigate('Attendance' as never);
       },
     },
   ];
@@ -54,9 +47,9 @@ const AdminDashboard = () => {
           style={styles.imageBackground}
           resizeMode="cover">
           <SafeAreaView style={styles.safeAreaView}>
-            <Text style={styles.headerStyle}>Admin Dashboard</Text>
+            <Text style={styles.headerStyle}>Supervisor Dashboard</Text>
             <Text style={styles.welcomeStyle}>Welcome</Text>
-            <Text style={styles.nameStyle}>Usama Fayyaz</Text>
+            <Text style={styles.nameStyle}>Anwar Ali </Text>
             <TouchableOpacity
               style={styles.logoutButton}
               onPress={() => setModalVisibility(true)}>
@@ -171,4 +164,4 @@ const styles = StyleSheet.create({
     paddingVertical: '5%',
   },
 });
-export default AdminDashboard;
+export default SupervisorDashboard;

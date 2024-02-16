@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {TextInput, View, StyleSheet, TouchableOpacity} from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const TextField = (props: {
   placeHolder: string;
@@ -23,8 +23,8 @@ const TextField = (props: {
         <TouchableOpacity
           style={{position: 'absolute', right: 5, top: 14}}
           onPress={() => setShowPassword(!showPassword)}>
-          <FontAwesome5
-            name={showPassword ? 'eye-slash' : 'eye'}
+          <Icon
+            name={showPassword ? 'visibility-off' : 'visibility'}
             size={20}
             color="black"
             style={{marginRight: 10}}

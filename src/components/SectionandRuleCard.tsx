@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 
 const SectionandRuleCard = (props: {
@@ -18,24 +18,14 @@ const SectionandRuleCard = (props: {
             onPress={() => {
               navigation.navigate('Edit Section' as never);
             }}>
-            <FontAwesome5
-              name="pen"
-              size={19}
-              color="black"
-              style={styles.icon}
-            />
+            <Icon name="edit" size={23} color="black" style={styles.icon} />
           </TouchableOpacity>
         )}
         <TouchableOpacity
           onPress={() => {
             props.onDelete();
           }}>
-          <FontAwesome5
-            name="trash"
-            size={19}
-            color="#050505"
-            style={styles.icon}
-          />
+          <Icon name="delete" size={23} color="#050505" style={styles.icon} />
         </TouchableOpacity>
       </View>
     </View>

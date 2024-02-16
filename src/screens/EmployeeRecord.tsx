@@ -1,13 +1,10 @@
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity, FlatList, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import SearchBarComponent from '../components/SearchBarComponent';
 import EmployeeCard from '../components/EmployeeCard';
 
 const EmployeeRecord = () => {
-  const navigation = useNavigation();
-
   const handleSearch = (text: string) => {
     // Searched text is returned. use it however you want!
     console.warn(text);

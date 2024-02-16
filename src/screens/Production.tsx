@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, TouchableOpacity, FlatList, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import ButtonComponent from '../components/ButtonComponent';
 import SearchBarComponent from '../components/SearchBarComponent';
 
@@ -37,7 +37,7 @@ const Production = () => {
                 <View style={styles.BatchesContainer}>
                   <Text style={styles.BatchesStyle}>{item.batchNumber}</Text>
 
-                  <Icon name="arrow-right" size={20} color="black" />
+                  <Icon name="arrow-forward-ios" size={21} color="black" />
                 </View>
               </TouchableOpacity>
               <View style={styles.horizontalLineStyle}></View>
@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginVertical: 17,
-    marginHorizontal: 22,
+    marginHorizontal: 28,
+    paddingRight: 13,
   },
   horizontalLineStyle: {
     width: '88%',

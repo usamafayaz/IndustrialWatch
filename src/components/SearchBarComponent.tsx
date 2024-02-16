@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const SearchBarComponent = (props: {onSearch: any; placeHolder: string}) => {
   const [query, setQuery] = useState('');
@@ -16,7 +16,7 @@ const SearchBarComponent = (props: {onSearch: any; placeHolder: string}) => {
           onPress={() => {
             handleSearch();
           }}>
-          <Icon name="search" size={20} color="black" />
+          <Icon name="search" size={23} color="black" />
         </TouchableOpacity>
         <TextInput
           style={styles.searchInput}
@@ -30,7 +30,7 @@ const SearchBarComponent = (props: {onSearch: any; placeHolder: string}) => {
           onPress={() => {
             setQuery('');
           }}>
-          <Icon name="close" size={20} color="black" />
+          <Icon name="close" size={23} color="black" />
         </TouchableOpacity>
       </View>
     </View>

@@ -78,9 +78,9 @@ const EmployeeRanking = () => {
         data={employees}
         renderItem={({item, index}) => (
           <View style={styles.rowContainer}>
-            {index < 3 && ( // Show badge only for first 3 employees
-              <Text style={styles.badgeStyle}>🥇</Text>
-            )}
+            {index === 0 && <Text style={styles.badgeStyle}>🥇</Text>}
+            {index === 1 && <Text style={styles.badgeStyle}>🥈</Text>}
+            {index === 2 && <Text style={styles.badgeStyle}>🥉</Text>}
             <Image
               resizeMode="center"
               source={item.image}
@@ -114,13 +114,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: '5%',
-    paddingHorizontal: '5%', // Add padding to control spacing
-    justifyContent: 'space-evenly', // Adjust justification to start
+    paddingHorizontal: '10%',
+    justifyContent: 'space-evenly',
   },
   image: {
     width: 50,
     height: 50,
-    marginRight: '10%', // Adjust margin for proper spacing
+    marginRight: '10%',
   },
   productivityStyle: {
     fontSize: 15,
@@ -132,12 +132,13 @@ const styles = StyleSheet.create({
     fontSize: 19,
     color: 'black',
     fontWeight: 'bold',
-    marginRight: '30%', // Adjust margin for proper spacing
+    marginRight: '30%',
   },
   badgeStyle: {
-    fontSize: 30,
+    fontSize: 25,
     position: 'absolute',
-    left: 20,
+    backgroundColor: 'transparent',
+    left: 10,
   },
 });
 

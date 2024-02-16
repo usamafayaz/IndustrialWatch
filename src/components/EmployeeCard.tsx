@@ -9,7 +9,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const EmployeeCard = (props: {employees: any}) => {
   const navigation = useNavigation();
@@ -37,10 +37,7 @@ const EmployeeCard = (props: {employees: any}) => {
                   <Text style={styles.positionStyle}>{item.position}</Text>
                 </View>
                 <View style={styles.productivityContainer}>
-                  <FontAwesome5Icon
-                    name="clock"
-                    color={'#FFB800'}
-                    size={15}></FontAwesome5Icon>
+                  <Icon name="clock" color={'#FFB800'} size={15}></Icon>
                   <Text style={styles.productivityStyle}>
                     {item.productivity}
                   </Text>

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Text} from 'react-native-paper';
 import MonthPicker from 'react-native-month-year-picker';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Import your preferred icon library
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Progress from 'react-native-progress';
 
 const EmployeeSummary = () => {
@@ -35,7 +35,12 @@ const EmployeeSummary = () => {
       <Text style={styles.headerText}>Summary</Text>
       <Text style={styles.label}>From:</Text>
       <TouchableOpacity onPress={toggleFromPicker} style={styles.row}>
-        <Icon name="calendar" size={20} color="black" style={styles.icon} />
+        <Icon
+          name="calendar-month"
+          size={20}
+          color="black"
+          style={styles.icon}
+        />
         <Text style={styles.dateStyle}>
           {selectedFromMonth.toLocaleDateString('default', {
             month: 'long',
@@ -57,7 +62,12 @@ const EmployeeSummary = () => {
 
       <Text style={styles.label}>To:</Text>
       <TouchableOpacity onPress={toggleToPicker} style={styles.row}>
-        <Icon name="calendar" size={20} color="black" style={styles.icon} />
+        <Icon
+          name="calendar-month"
+          size={20}
+          color="black"
+          style={styles.icon}
+        />
         <Text style={styles.dateStyle}>
           {selectedToMonth.toLocaleDateString('default', {
             month: 'long',
@@ -141,8 +151,8 @@ const styles = StyleSheet.create({
   progessContainer: {alignItems: 'center', marginVertical: '10%'},
   bottomContainer: {
     marginBottom: '6%',
-    width: '90%',
-    height: '12%',
+    width: '100%',
+    height: '11%',
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
