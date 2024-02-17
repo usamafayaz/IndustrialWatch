@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import ButtonComponent from '../components/ButtonComponent';
-import LottieView from 'lottie-react-native';
 import {useNavigation} from '@react-navigation/native';
 
 const DefectMonitoring = () => {

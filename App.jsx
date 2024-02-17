@@ -32,6 +32,7 @@ import EmployeeLogin from './src/screens/EmployeeLogin';
 import EmployeeLoginHome from './src/screens/EmployeeLoginHome';
 import EmployeeProfile from './src/screens/EmployeeProfile';
 import EditProfile from './src/screens/EditProfile';
+import SplashScreen from './src/screens/SplashScreen';
 // adb tcpip 5555
 // adb connect 192.168.1.2
 // adb disconnect
@@ -47,12 +48,16 @@ const App = () => {
         screenOptions={{
           headerTintColor: 'white',
           headerTransparent: false,
-
           headerStyle: {
             backgroundColor: '#2E81FE',
           },
           headerTitleStyle: {fontSize: 19},
         }}>
+        <Stack.Screen
+          name="Splash Screen"
+          component={SplashScreen}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="Login"
           component={Login}
@@ -117,7 +122,11 @@ const App = () => {
           component={EmployeeProfile}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="Edit Profile" component={EditProfile} />
+        <Stack.Screen
+          name="Edit Profile"
+          component={EditProfile}
+          options={{headerShown: false}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

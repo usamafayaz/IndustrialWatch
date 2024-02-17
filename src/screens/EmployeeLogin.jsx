@@ -17,7 +17,10 @@ const EmployeeLogin = () => {
     <View style={{flex: 1}}>
       <Tab.Navigator
         screenOptions={({route}) => ({
+          tabBarInactiveTintColor: 'grey',
+          tabBarActiveTintColor: '#2367CE',
           headerTintColor: 'white',
+          tabBarShowLabel: false,
           headerTransparent: false,
           headerStyle: {
             backgroundColor: '#2E81FE',
@@ -44,12 +47,7 @@ const EmployeeLogin = () => {
 
             return <Icon name={iconName} size={22} color={color} />;
           },
-        })}
-        tabBarOptions={{
-          showLabel: false,
-          activeTintColor: '#2367CE',
-          inactiveTintColor: 'grey',
-        }}>
+        })}>
         <Tab.Screen name="Home" component={EmployeeLoginHome} />
         <Tab.Screen name="Attendance" component={EmployeeAttendance} />
         <Tab.Screen name="Violations" component={EmployeeViolation} />
