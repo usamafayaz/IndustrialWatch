@@ -31,8 +31,8 @@ const EmployeeLogin = () => {
           headerRight: () => {
             return (
               <Image
-                style={{marginRight: 12}}
-                source={require('../../assets/images/employeeImage.png')}
+                style={styles.imageStyle}
+                source={require('../../assets/images/employeevector.jpg')}
               />
             );
           },
@@ -50,6 +50,7 @@ const EmployeeLogin = () => {
         })}>
         <Tab.Screen name="Home" component={EmployeeLoginHome} />
         <Tab.Screen name="Attendance" component={EmployeeAttendance} />
+        <Tab.Screen name=" " component={EmployeeLoginHome} />
         <Tab.Screen name="Violations" component={EmployeeViolation} />
         <Tab.Screen
           name="Profile"
@@ -84,9 +85,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#2367CE',
     justifyContent: 'center',
     alignItems: 'center',
-    bottom: 38,
+    bottom: 27,
     right: '43%',
   },
+  imageStyle: {marginRight: 12, height: 40, width: 40},
 });
 
 export default EmployeeLogin;

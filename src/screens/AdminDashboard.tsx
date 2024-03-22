@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     height: '20%',
     width: '90%',
     alignSelf: 'center',
-    borderRadius: 30,
+    borderRadius: 20,
   },
   modalButtonWrapper: {
     flexDirection: 'row',

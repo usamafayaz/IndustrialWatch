@@ -15,7 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 
 const AddSection = () => {
   const [inputText, setInputText] = useState('');
-  const ApiUrl = 'http://192.168.1.8:5000/api/Section';
+  const ApiUrl = 'http://192.168.1.208:5000/api/Section';
 
   const RulesList = [
     {id: 1, title: 'Smoking', fine: 0, checkBox: false},
