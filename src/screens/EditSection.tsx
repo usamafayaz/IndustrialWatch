@@ -80,7 +80,6 @@ const EditSection = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 20,
     flex: 1,
     alignItems: 'center',
     backgroundColor: 'white',

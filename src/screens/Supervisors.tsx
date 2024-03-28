@@ -126,13 +126,13 @@ const styles = StyleSheet.create({
     marginTop: '7%',
   },
   cancelStyle: {
-    color: '#2E81FE',
+    color: '#2196F3',
     marginRight: 10,
     paddingVertical: '5%',
   },
   updateStyle: {
     color: 'white',
-    backgroundColor: '#2E81FE',
+    backgroundColor: '#2196F3',
     borderRadius: 20,
     paddingHorizontal: '10%',
     paddingVertical: '5%',

@@ -21,22 +21,10 @@ const EmployeeLogin = () => {
           tabBarActiveTintColor: '#2367CE',
           headerTintColor: 'white',
           tabBarShowLabel: false,
-          headerTransparent: false,
           headerStyle: {
-            backgroundColor: '#2E81FE',
-            height: 70,
-            borderBottomLeftRadius: 30,
-            borderBottomRightRadius: 30,
+            height: 0,
           },
-          headerRight: () => {
-            return (
-              <Image
-                style={styles.imageStyle}
-                source={require('../../assets/images/employeevector.jpg')}
-              />
-            );
-          },
-          headerTitleStyle: {fontSize: 19},
+
           tabBarStyle: {height: 55},
           tabBarIcon: ({color}) => {
             let iconName;
@@ -49,9 +37,17 @@ const EmployeeLogin = () => {
           },
         })}>
         <Tab.Screen name="Home" component={EmployeeLoginHome} />
-        <Tab.Screen name="Attendance" component={EmployeeAttendance} />
+        <Tab.Screen
+          name="Attendance"
+          component={EmployeeAttendance}
+          options={{headerShown: false}}
+        />
         <Tab.Screen name=" " component={EmployeeLoginHome} />
-        <Tab.Screen name="Violations" component={EmployeeViolation} />
+        <Tab.Screen
+          name="Violations"
+          component={EmployeeViolation}
+          options={{headerShown: false}}
+        />
         <Tab.Screen
           name="Profile"
           component={EmployeeProfile}

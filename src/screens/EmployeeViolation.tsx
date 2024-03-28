@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import ViolationCard from '../components/ViolationCard';
 import {useNavigation} from '@react-navigation/native';
+import PrimaryAppBar from '../components/PrimaryAppBar';
 
 const EmployeeViolation = () => {
   const navigation = useNavigation();
@@ -11,6 +12,8 @@ const EmployeeViolation = () => {
   ];
   return (
     <View style={styles.container}>
+      <PrimaryAppBar text={'Muhammad Anees'} />
+
       <Text style={styles.headingStyle}>Violations</Text>
       <FlatList
         data={Violations}
@@ -37,7 +40,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: '10%',
     backgroundColor: '#FFFFFF',
   },
   headingStyle: {
@@ -45,6 +47,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'black',
     marginRight: '60%',
+    marginTop: '6%',
   },
 });
 

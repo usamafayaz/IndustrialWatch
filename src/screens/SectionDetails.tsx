@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';
+import PrimaryAppBar from '../components/PrimaryAppBar';
 
 const SectionDetails = () => {
   const RulesList = [
@@ -12,6 +13,7 @@ const SectionDetails = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
+      <PrimaryAppBar text="Packing" />
       <Text style={styles.textStyle}>Rules Included</Text>
       <FlatList
         data={RulesList}
@@ -60,16 +62,16 @@ const Card = (props: {
   );
 };
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
   cardWrapper: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     marginVertical: 10,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
   },
   buttonWrapper: {
     flex: 1,

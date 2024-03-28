@@ -152,13 +152,13 @@ const styles = StyleSheet.create({
     marginTop: '12%',
   },
   cancelStyle: {
-    color: '#2E81FE',
+    color: '#2196F3',
     marginRight: 10,
     paddingVertical: '5%',
   },
   OKStyle: {
     color: 'white',
-    backgroundColor: '#2E81FE',
+    backgroundColor: '#2196F3',
     borderRadius: 20,
     paddingHorizontal: '10%',
     paddingVertical: '5%',

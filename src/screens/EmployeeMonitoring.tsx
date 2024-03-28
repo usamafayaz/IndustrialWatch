@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchCamera, CameraOptions} from 'react-native-image-picker';
+import SecondaryAppBar from '../components/SecondaryAppBar';
 
 const EmployeeMonitoring = () => {
   const handleCameraPress = () => {
@@ -36,7 +37,7 @@ const EmployeeMonitoring = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
   },

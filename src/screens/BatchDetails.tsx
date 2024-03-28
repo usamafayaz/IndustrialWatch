@@ -3,6 +3,7 @@ import {StyleSheet, View, TouchableOpacity, FlatList, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SearchBarComponent from '../components/SearchBarComponent';
+import SecondaryAppBar from '../components/SecondaryAppBar';
 
 const BatchDetails = () => {
   const navigation = useNavigation();
@@ -22,8 +23,7 @@ const BatchDetails = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.batchHeaderStyle}>Batch#11320051123</Text>
-      <View style={styles.horizontalLineHeader}></View>
+      <SecondaryAppBar text="Batch#11320051123" />
       <SearchBarComponent
         onSearch={handleSearch}
         placeHolder="Search Product"
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: 'white',
-    paddingTop: '4%',
   },
   BatchesContainer: {
     flexDirection: 'row',

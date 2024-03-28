@@ -1,9 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
+import PrimaryAppBar from '../components/PrimaryAppBar';
 
 const ViolationDetails = () => {
   return (
     <View style={styles.container}>
+      <PrimaryAppBar text={'Muhammad Anees'} />
       <Image
         source={require('../../assets/images/Violation.png')}
         style={styles.imageStyle}
@@ -20,15 +22,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
-    paddingTop: '10%',
   },
-  imageStyle: {width: 250, height: 150, borderRadius: 20},
+  imageStyle: {width: '60%', height: '20%', borderRadius: 20, marginTop: '8%'},
   titleStlye: {
-    fontWeight: '600',
+    fontWeight: 'bold',
     fontSize: 20,
     color: 'black',
-    marginTop: '20%',
+    marginTop: '8%',
   },
-  timeStyle: {fontSize: 17, fontWeight: '400', color: 'black'},
+  timeStyle: {fontSize: 17, fontWeight: '600', color: 'black'},
 });
 export default ViolationDetails;

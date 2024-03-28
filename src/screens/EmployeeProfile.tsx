@@ -29,15 +29,15 @@ const EmployeeProfile = () => {
       <Text style={styles.nameStyle}>Usama Fayyaz</Text>
       <Text style={styles.roleStyle}>Mechanic</Text>
       <View style={styles.rowField}>
-        <Icon name="mail" size={20} color={'#2E81FE'} />
+        <Icon name="mail" size={20} color={'#2196F3'} />
         <Text style={styles.textStyle}>Usama Fayyaz</Text>
       </View>
       <View style={styles.rowField}>
-        <Icon name="factory" size={20} color={'#2E81FE'} />
+        <Icon name="factory" size={20} color={'#2196F3'} />
         <Text style={styles.textStyle}>Manufacturing</Text>
       </View>
       <View style={styles.rowField}>
-        <Icon name="schedule" size={20} color={'#2E81FE'} />
+        <Icon name="schedule" size={20} color={'#2196F3'} />
         <Text style={styles.textStyle}>Full Time</Text>
       </View>
       <TouchableOpacity
@@ -45,7 +45,7 @@ const EmployeeProfile = () => {
         onPress={() => {
           setModalVisibility(true);
         }}>
-        <Icon name="logout" size={22} color="#2E81FE" />
+        <Icon name="logout" size={22} color="#2196F3" />
         <Text style={styles.textStyle}>Logout</Text>
       </TouchableOpacity>
       <Modal isVisible={modalVisibility}>
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   design: {
-    backgroundColor: '#2E81FE',
+    backgroundColor: '#2196F3',
     height: 140,
     width: '100%',
     borderBottomRightRadius: 140,
@@ -148,13 +148,13 @@ const styles = StyleSheet.create({
     marginTop: '12%',
   },
   cancelStyle: {
-    color: '#2E81FE',
+    color: '#2196F3',
     marginRight: 10,
     paddingVertical: '5%',
   },
   OKStyle: {
     color: 'white',
-    backgroundColor: '#2E81FE',
+    backgroundColor: '#2196F3',
     borderRadius: 20,
     paddingHorizontal: '10%',
     paddingVertical: '5%',

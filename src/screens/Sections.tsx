@@ -20,7 +20,7 @@ const Sections = () => {
   const navigation = useNavigation();
   const [sectionsList, setSectionList] = useState<Section[]>([]);
   const [loading, setLoading] = useState(true);
-  const ApiUrl = 'http://192.168.1.208:5000/api/Section';
+  const ApiUrl = 'http://192.168.1.13:5000/api/Section';
 
   useEffect(() => {
     const fetchSections = async () => {
@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
   },
   flatListContainer: {
     flex: 1,

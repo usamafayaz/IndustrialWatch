@@ -13,8 +13,7 @@ const ButtonComponent = (props: {title: string; onPress: () => void}) => {
 const styles = StyleSheet.create({
   buttonContainer: {
     width: '86%',
-    backgroundColor: '#2E81FE',
-
+    backgroundColor: '#2196F3',
     borderRadius: 20,
     padding: 10,
     alignItems: 'center',

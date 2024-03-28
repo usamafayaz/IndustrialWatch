@@ -75,7 +75,7 @@ const RuleComponent = (props: {
           value={toggleCheckBox}
           onValueChange={handleCheckBoxChange}
           style={styles.boxStyle}
-          tintColors={{true: '#2E81FE', false: 'black'}}
+          tintColors={{true: '#2196F3', false: 'black'}}
         />
       </View>
 

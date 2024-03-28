@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     width: '90%',
     height: 70,
-    backgroundColor: '#2E81FE',
+    backgroundColor: '#2196F3',
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',

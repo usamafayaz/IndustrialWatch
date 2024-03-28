@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import CustomGrid from '../components/CustomGrid';
+import PrimaryAppBar from '../components/PrimaryAppBar';
 
 const EmployeeProductivity = () => {
   const navigation = useNavigation();
@@ -37,6 +38,7 @@ const EmployeeProductivity = () => {
   ];
   return (
     <View style={styles.containerStyle}>
+      <PrimaryAppBar text={'Employee Productivity'} />
       <View style={styles.cardsWrapper}>
         <CustomGrid renderGrid={CardList} />
       </View>
@@ -44,9 +46,9 @@ const EmployeeProductivity = () => {
   );
 };
 const styles = StyleSheet.create({
-  containerStyle: {alignItems: 'center', flex: 1, backgroundColor: '#2E81FE'},
+  containerStyle: {flex: 1, backgroundColor: '#2196F3'},
   cardsWrapper: {
-    marginTop: '20%',
+    marginTop: '15%',
     paddingTop: '30%',
     backgroundColor: '#F3F3F3',
     flex: 1,

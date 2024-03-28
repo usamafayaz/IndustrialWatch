@@ -4,6 +4,7 @@ import {Text} from 'react-native-paper';
 import MonthPicker from 'react-native-month-year-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Progress from 'react-native-progress';
+import PrimaryAppBar from '../components/PrimaryAppBar';
 
 const EmployeeSummary = () => {
   const [showFromPicker, setShowFromPicker] = useState(false);
@@ -32,86 +33,90 @@ const EmployeeSummary = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>Summary</Text>
-      <Text style={styles.label}>From:</Text>
-      <TouchableOpacity onPress={toggleFromPicker} style={styles.row}>
-        <Icon
-          name="calendar-month"
-          size={20}
-          color="black"
-          style={styles.icon}
-        />
-        <Text style={styles.dateStyle}>
-          {selectedFromMonth.toLocaleDateString('default', {
-            month: 'long',
-            year: 'numeric',
-          })}
-        </Text>
-        <Text style={styles.arrow}>▶</Text>
-      </TouchableOpacity>
-      <View style={styles.horizontalLineStyle}></View>
+      <PrimaryAppBar text={'Muhammad Anees'} />
 
-      {showFromPicker && (
-        <MonthPicker
-          onChange={onFromMonthChange}
-          value={selectedFromMonth}
-          minimumDate={new Date('1900-01-01')}
-          maximumDate={new Date()}
-        />
-      )}
+      <View style={{paddingHorizontal: 20}}>
+        <Text style={styles.headerText}>Summary</Text>
+        <Text style={styles.label}>From:</Text>
+        <TouchableOpacity onPress={toggleFromPicker} style={styles.row}>
+          <Icon
+            name="calendar-month"
+            size={20}
+            color="black"
+            style={styles.icon}
+          />
+          <Text style={styles.dateStyle}>
+            {selectedFromMonth.toLocaleDateString('default', {
+              month: 'long',
+              year: 'numeric',
+            })}
+          </Text>
+          <Text style={styles.arrow}>▶</Text>
+        </TouchableOpacity>
+        <View style={styles.horizontalLineStyle}></View>
 
-      <Text style={styles.label}>To:</Text>
-      <TouchableOpacity onPress={toggleToPicker} style={styles.row}>
-        <Icon
-          name="calendar-month"
-          size={20}
-          color="black"
-          style={styles.icon}
-        />
-        <Text style={styles.dateStyle}>
-          {selectedToMonth.toLocaleDateString('default', {
-            month: 'long',
-            year: 'numeric',
-          })}
-        </Text>
-        <Text style={styles.arrow}>▶</Text>
-      </TouchableOpacity>
+        {showFromPicker && (
+          <MonthPicker
+            onChange={onFromMonthChange}
+            value={selectedFromMonth}
+            minimumDate={new Date('1900-01-01')}
+            maximumDate={new Date()}
+          />
+        )}
 
-      <View style={styles.horizontalLineStyle}></View>
+        <Text style={styles.label}>To:</Text>
+        <TouchableOpacity onPress={toggleToPicker} style={styles.row}>
+          <Icon
+            name="calendar-month"
+            size={20}
+            color="black"
+            style={styles.icon}
+          />
+          <Text style={styles.dateStyle}>
+            {selectedToMonth.toLocaleDateString('default', {
+              month: 'long',
+              year: 'numeric',
+            })}
+          </Text>
+          <Text style={styles.arrow}>▶</Text>
+        </TouchableOpacity>
 
-      {showToPicker && (
-        <MonthPicker
-          onChange={onToMonthChange}
-          value={selectedToMonth}
-          minimumDate={new Date('1900-01-01')}
-          maximumDate={new Date()}
-        />
-      )}
-      <View style={styles.progessContainer}>
-        <Progress.Circle
-          progress={0.667}
-          size={160}
-          showsText={true}
-          color="#02DE12"
-          thickness={15}
-          unfilledColor="#D4D4D4"
-          borderColor="#D4D4D4"
-          textStyle={{
-            fontSize: 18,
-            fontWeight: 'bold',
-            color: 'black',
-            textAlign: 'center',
-          }}
-          formatText={() => `20/30\nAttendance`}
-        />
-      </View>
-      <View style={styles.bottomContainer}>
-        <Text style={styles.headingStyle}>Fine</Text>
-        <Text style={styles.amountStyle}>2500</Text>
-      </View>
-      <View style={styles.bottomContainer}>
-        <Text style={styles.headingStyle}>Violation</Text>
-        <Text style={styles.amountStyle}>5</Text>
+        <View style={styles.horizontalLineStyle}></View>
+
+        {showToPicker && (
+          <MonthPicker
+            onChange={onToMonthChange}
+            value={selectedToMonth}
+            minimumDate={new Date('1900-01-01')}
+            maximumDate={new Date()}
+          />
+        )}
+        <View style={styles.progessContainer}>
+          <Progress.Circle
+            progress={0.667}
+            size={160}
+            showsText={true}
+            color="#02DE12"
+            thickness={15}
+            unfilledColor="#D4D4D4"
+            borderColor="#D4D4D4"
+            textStyle={{
+              fontSize: 18,
+              fontWeight: 'bold',
+              color: 'black',
+              textAlign: 'center',
+            }}
+            formatText={() => `20/30\nAttendance`}
+          />
+        </View>
+        <View style={styles.bottomContainer}>
+          <Text style={styles.headingStyle}>Fine</Text>
+          <Text style={styles.amountStyle}>2500</Text>
+        </View>
+        <View style={styles.bottomContainer}>
+          <Text style={styles.headingStyle}>Violation</Text>
+          <Text style={styles.amountStyle}>5</Text>
+        </View>
       </View>
     </View>
   );
@@ -121,13 +126,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    padding: 20,
   },
   headerText: {
     fontSize: 19,
     fontWeight: 'bold',
     marginBottom: 10,
     marginLeft: '8%',
+    marginTop: '5%',
     color: 'black',
   },
   row: {

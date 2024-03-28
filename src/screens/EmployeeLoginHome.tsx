@@ -3,12 +3,14 @@ import {View, Text, StyleSheet, FlatList} from 'react-native';
 import * as Progress from 'react-native-progress';
 import CardComponent from '../components/CardComponent';
 import {useNavigation} from '@react-navigation/native';
+import PrimaryAppBar from '../components/PrimaryAppBar';
 
 const EmployeeLoginHome = () => {
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
+      <PrimaryAppBar text="Home" />
       <Progress.Circle
         progress={0.75}
         size={170}
@@ -17,7 +19,7 @@ const EmployeeLoginHome = () => {
         thickness={15}
         unfilledColor="#D4D4D4"
         borderColor="#D4D4D4"
-        style={{marginBottom: '22%'}}
+        style={{marginBottom: '22%', marginTop: '10%'}}
         textStyle={styles.progressText}
         formatText={() => `75%\nProductivity`}
       />
@@ -37,7 +39,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: '13%',
     backgroundColor: '#FFFFFF',
   },
   fineContainer: {

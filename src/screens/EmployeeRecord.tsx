@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import SearchBarComponent from '../components/SearchBarComponent';
 import EmployeeCard from '../components/EmployeeCard';
+import PrimaryAppBar from '../components/PrimaryAppBar';
 
 const EmployeeRecord = () => {
   const handleSearch = (text: string) => {
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '##FFFFFF',
+    backgroundColor: 'FFFFFFF',
     paddingTop: '4%',
   },
 });

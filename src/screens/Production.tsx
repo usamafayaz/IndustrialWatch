@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ButtonComponent from '../components/ButtonComponent';
 import SearchBarComponent from '../components/SearchBarComponent';
+import SecondaryAppBar from '../components/SecondaryAppBar';
 
 const Production = () => {
   const navigation = useNavigation();
@@ -60,11 +61,12 @@ const Production = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     backgroundColor: 'white',
     paddingTop: '4%',
   },
+
   buttonWrapper: {
+    alignSelf: 'center',
     alignItems: 'center',
     width: '70%',
   },

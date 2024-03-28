@@ -13,11 +13,14 @@ import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';
 import TextField from '../components/TextField';
 import Modal from 'react-native-modal';
+import SecondaryAppBar from '../components/SecondaryAppBar';
 
 const AddBatch = () => {
   const [modalView, setModalView] = useState(false);
   const [batchNumber, setBatchNumber] = useState('');
   const [tolerance, setTolerance] = useState('');
+  const [angles, setAngles] = useState('');
+
   const [materialName, setMaterialName] = useState('');
   const [materialQuantity, setMaterialQuantity] = useState('');
   const [quantityPerItem, setQuantityPerItem] = useState('');
@@ -57,8 +60,9 @@ const AddBatch = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
+        <SecondaryAppBar text="" />
         <TouchableOpacity
-          style={{marginLeft: '50%'}}
+          style={{position: 'absolute', top: '2.5%', left: '58%'}}
           onPress={() => {
             setModalView(true);
           }}>
@@ -68,6 +72,11 @@ const AddBatch = () => {
           placeHolder="Batch#"
           value={batchNumber}
           onChangeText={(text: any) => setBatchNumber(text)}
+        />
+        <TextField
+          placeHolder="Number of angles"
+          value={angles}
+          onChangeText={(text: any) => setAngles(text)}
         />
         <TextField
           placeHolder="Tolerance %"
@@ -168,7 +177,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: 'white',
-    paddingTop: '5%',
   },
   buttonWrapper: {
     flex: 1,
@@ -177,7 +185,7 @@ const styles = StyleSheet.create({
     width: '70%',
   },
   buttonTextStyle: {
-    backgroundColor: '#2E81FE',
+    backgroundColor: '#2196F3',
     paddingHorizontal: 19,
     paddingVertical: 8,
     fontSize: 18,
@@ -224,16 +232,18 @@ const styles = StyleSheet.create({
     marginTop: '3%',
   },
   cancelStyle: {
-    color: '#2E81FE',
+    color: '#2196F3',
     marginRight: 10,
     paddingVertical: '5%',
+    fontWeight: 'bold',
   },
   addStyle: {
     color: 'white',
-    backgroundColor: '#2E81FE',
+    backgroundColor: '#2196F3',
     borderRadius: 20,
     paddingHorizontal: '10%',
     paddingVertical: '5%',
+    fontWeight: 'bold',
   },
 
   horizontalLineStyle: {

@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     marginTop: '10%',
   },
   headerStyle: {
-    fontSize: 20,
+    fontSize: 23,
     color: 'white',
     fontWeight: 'bold',
     marginTop: '6%',
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   welcomeStyle: {
     fontSize: 23,
     color: 'white',
-    marginTop: '23%',
+    marginTop: '18%',
   },
   nameStyle: {
     color: 'white',
@@ -159,16 +159,18 @@ const styles = StyleSheet.create({
     marginTop: '12%',
   },
   cancelStyle: {
-    color: '#2E81FE',
+    color: '#2196F3',
     marginRight: 10,
     paddingVertical: '5%',
+    fontWeight: 'bold',
   },
   OKStyle: {
     color: 'white',
-    backgroundColor: '#2E81FE',
+    backgroundColor: '#2196F3',
     borderRadius: 20,
     paddingHorizontal: '10%',
     paddingVertical: '5%',
+    fontWeight: 'bold',
   },
 });
 export default AdminDashboard;

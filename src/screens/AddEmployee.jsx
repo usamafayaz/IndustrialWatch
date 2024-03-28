@@ -172,14 +172,14 @@ const AddEmployee = () => {
                 value="Male"
                 status={checkedGender === 'Male' ? 'checked' : 'unchecked'}
                 onPress={() => setCheckedGender('Male')}
-                color="#2E81FE"
+                color="#2196F3"
               />
               <Text style={styles.optionStyle}>Male</Text>
               <RadioButton
                 value="Female"
                 status={checkedGender === 'Female' ? 'checked' : 'unchecked'}
                 onPress={() => setCheckedGender('Female')}
-                color="#2E81FE"
+                color="#2196F3"
               />
               <Text style={styles.optionStyle}>Female</Text>
             </View>
@@ -194,7 +194,7 @@ const AddEmployee = () => {
                   checkedJobType === 'Full Time' ? 'checked' : 'unchecked'
                 }
                 onPress={() => setCheckedJobType('Full Time')}
-                color="#2E81FE"
+                color="#2196F3"
               />
               <Text style={styles.optionStyle}>Full Time</Text>
               <RadioButton
@@ -203,7 +203,7 @@ const AddEmployee = () => {
                   checkedJobType === 'Part Time' ? 'checked' : 'unchecked'
                 }
                 onPress={() => setCheckedJobType('Part Time')}
-                color="#2E81FE"
+                color="#2196F3"
               />
               <Text style={styles.optionStyle}>Part Time</Text>
             </View>
@@ -265,30 +265,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  imageContainer: {
-    backgroundColor: '#c5e3e1',
-    padding: 30,
-    borderRadius: 600,
-    position: 'absolute',
-    top: 40,
-    height: 100,
-    width: 100,
-  },
   design: {
-    backgroundColor: '#2E81FE',
-    height: 92,
+    backgroundColor: '#2196F3',
+    height: 70,
     width: '100%',
-    borderBottomRightRadius: 60000,
-    borderBottomLeftRadius: 60000,
-    marginBottom: 55,
+    borderBottomRightRadius: 100,
+    borderBottomLeftRadius: 100,
+    marginBottom: 65,
   },
   whiteDesign: {
     backgroundColor: 'white',
     borderRadius: 600,
     position: 'absolute',
-    height: 110,
-    width: 110,
-    top: 35,
+    height: 112,
+    width: 112,
+    top: 20,
+  },
+  imageContainer: {
+    backgroundColor: '#c5e3e1',
+    padding: 30,
+    borderRadius: 110,
+    position: 'absolute',
+    top: 26,
+    height: 100,
+    width: 100,
   },
 });
 export default AddEmployee;

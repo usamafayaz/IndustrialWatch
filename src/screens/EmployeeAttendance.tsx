@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, FlatList} from 'react-native';
+import PrimaryAppBar from '../components/PrimaryAppBar';
 
 const EmployeeAttendance = () => {
   const dates = [
@@ -20,7 +21,9 @@ const EmployeeAttendance = () => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
+      <PrimaryAppBar text={'Muhammad Anees'} />
+
+      <View style={[styles.headerContainer, {marginTop: '5%'}]}>
         <Text style={[styles.tableHeading, {marginLeft: '10%'}]}>Date</Text>
         <Text style={[styles.tableHeading, {marginRight: '5%'}]}>Status</Text>
       </View>
@@ -55,7 +58,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: '10%',
     backgroundColor: '#FFFFFF',
   },
   headerContainer: {
@@ -74,17 +76,16 @@ const styles = StyleSheet.create({
   statusTextStyle: {color: 'grey', fontSize: 20, fontWeight: 'bold'},
   horizontalLineStyle: {
     width: '100%',
-    backgroundColor: 'grey',
+    backgroundColor: '#676767',
     marginTop: '2%',
     height: 1.5,
     opacity: 0.5,
   },
   verticalLineStyle: {
     width: 1.5,
-    backgroundColor: 'grey',
-    marginTop: '2%',
+    backgroundColor: '#676767',
     position: 'absolute',
-    top: '5%',
+    top: '12%',
     left: '60%',
   },
 });

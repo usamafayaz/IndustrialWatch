@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Modal from 'react-native-modal';
+import SecondaryAppBar from '../components/SecondaryAppBar';
 
 const Defects = () => {
   const [modalView, setModalView] = useState(false);
@@ -38,8 +39,7 @@ const Defects = () => {
   return (
     <TouchableWithoutFeedback onPress={closeImageModal}>
       <View style={styles.container}>
-        <Text style={styles.batchHeaderStyle}>Batch#11320051123</Text>
-        <View style={styles.horizontalLineStyle}></View>
+        <SecondaryAppBar text="Batch#11320051123" />
         <View style={styles.imageGrid}>
           <View style={styles.imageRow}>
             {images.slice(0, 3).map((image, index) => (
@@ -92,27 +92,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: 'white',
-    paddingTop: '4%',
-    paddingHorizontal: '4%',
-  },
-  batchHeaderStyle: {
-    fontSize: 23,
-    fontWeight: '600',
-    color: 'black',
-    marginVertical: 10,
   },
   textStyle: {
     fontSize: 20,
     fontWeight: '500',
     color: 'black',
   },
-  horizontalLineStyle: {
-    width: '65%',
-    height: 2,
-    backgroundColor: 'black',
-    alignSelf: 'center',
-    marginBottom: '7%',
-  },
+
   imageGrid: {marginTop: '10%', marginBottom: '3%'},
   dateStyle: {color: 'grey', fontSize: 16, fontWeight: '500'},
   imageRow: {
@@ -156,13 +142,13 @@ const styles = StyleSheet.create({
     marginTop: '7%',
   },
   cancelStyle: {
-    color: '#2E81FE',
+    color: '#2196F3',
     marginRight: 10,
     paddingVertical: '5%',
   },
   updateStyle: {
     color: 'white',
-    backgroundColor: '#2E81FE',
+    backgroundColor: '#2196F3',
     borderRadius: 20,
     paddingHorizontal: '10%',
     paddingVertical: '5%',

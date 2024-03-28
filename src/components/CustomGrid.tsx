@@ -57,10 +57,10 @@ const styles = StyleSheet.create({
     height: 100,
   },
   nameStyle: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: '700',
     textAlign: 'center',
-    color: 'black',
+    color: '#616161',
   },
 });
 

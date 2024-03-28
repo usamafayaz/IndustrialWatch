@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 20,
     height: 55,
+    alignSelf: 'center',
   },
   searchInput: {
     flex: 1,

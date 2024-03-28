@@ -3,15 +3,15 @@ import {StyleSheet, View, Text, TextInput} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import ButtonComponent from '../components/ButtonComponent';
 import TextField from '../components/TextField';
+import SecondaryAppBar from '../components/SecondaryAppBar';
 
 const BatchSummary = () => {
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.batchHeaderStyle}>Batch#11320051123</Text>
-      <View style={styles.horizontalLineStyle}></View>
-      <View style={styles.rowWrapper}>
+      <SecondaryAppBar text="Batch#11320051123" />
+      <View style={[styles.rowWrapper, {marginTop: '10%'}]}>
         <Text style={styles.textStyle}>Product#:</Text>
         <View style={styles.boxStyle}>
           <Text style={styles.boxTextStyle}>P#21215415512</Text>
@@ -45,15 +45,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: 'white',
-    paddingTop: '4%',
-    paddingHorizontal: '4%',
   },
-  batchHeaderStyle: {
-    fontSize: 23,
-    fontWeight: '600',
-    color: 'black',
-    marginVertical: 10,
-  },
+
   rowWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -69,7 +62,8 @@ const styles = StyleSheet.create({
   boxStyle: {
     flex: 1,
     borderRadius: 20,
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
     backgroundColor: '#E5E5E5',
     marginLeft: 15,
     paddingLeft: 20,
@@ -78,14 +72,7 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     alignItems: 'center',
     width: '70%',
-    marginTop: '105%',
-  },
-  horizontalLineStyle: {
-    width: '65%',
-    height: 2,
-    backgroundColor: 'black',
-    alignSelf: 'center',
-    marginBottom: '7%',
+    marginTop: '90%',
   },
 });
 

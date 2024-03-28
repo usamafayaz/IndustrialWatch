@@ -1,6 +1,6 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import Login from './src/screens/Login';
 import AdminDashboard from './src/screens/AdminDashboard';
 import Sections from './src/screens/Sections';
@@ -33,6 +33,8 @@ import EmployeeLoginHome from './src/screens/EmployeeLoginHome';
 import EmployeeProfile from './src/screens/EmployeeProfile';
 import EditProfile from './src/screens/EditProfile';
 import SplashScreen from './src/screens/SplashScreen';
+import PrimaryAppBar from './src/components/PrimaryAppBar';
+import SecondaryAppBar from './src/components/SecondaryAppBar';
 // adb tcpip 5555
 // adb connect 192.168.1.2
 // adb disconnect
@@ -49,7 +51,7 @@ const App = () => {
           headerTintColor: 'white',
           headerTransparent: false,
           headerStyle: {
-            backgroundColor: '#2E81FE',
+            backgroundColor: '#2196F3',
           },
           headerTitleStyle: {fontSize: 19},
         }}>
@@ -68,39 +70,137 @@ const App = () => {
           component={AdminDashboard}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="Sections" component={Sections} />
-        <Stack.Screen name="Add Section" component={AddSection} />
-        <Stack.Screen name="Section Detail" component={SectionDetails} />
-        <Stack.Screen name="Edit Section" component={EditSection} />
-        <Stack.Screen name="Supervisors" component={Supervisors} />
+        <Stack.Screen
+          name="Sections"
+          component={Sections}
+          options={{header: () => <PrimaryAppBar text="Sections" />}}
+        />
+        <Stack.Screen
+          name="Add Section"
+          component={AddSection}
+          options={{header: () => <PrimaryAppBar text="Add Section" />}}
+        />
+        <Stack.Screen
+          name="Section Detail"
+          component={SectionDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Edit Section"
+          component={EditSection}
+          options={{header: () => <PrimaryAppBar text="Edit Section" />}}
+        />
+        <Stack.Screen
+          name="Supervisors"
+          component={Supervisors}
+          options={() => ({
+            header: () => <PrimaryAppBar text={'Supervisors'} />,
+          })}
+        />
         <Stack.Screen name="Add Supervisor" component={AddSupervisor} />
-        <Stack.Screen name="Production" component={Production} />
-        <Stack.Screen name="Create Batch" component={AddBatch} />
-        <Stack.Screen name="Batch Detail" component={BatchDetails} />
-        <Stack.Screen name="Batch Summary" component={BatchSummary} />
-        <Stack.Screen name="Defects" component={Defects} />
-        <Stack.Screen name="Productivity Rules" component={ProductivityRules} />
-        <Stack.Screen name="Add Employee" component={AddEmployee} />
-        <Stack.Screen name="Employee Record" component={EmployeeRecord} />
-        <Stack.Screen name="Employee Detail" component={EmployeeDetail} />
-        <Stack.Screen name="Employee Violation" component={EmployeeViolation} />
-        <Stack.Screen name="Violation Details" component={ViolationDetails} />
-        <Stack.Screen name="Employee Summary" component={EmployeeSummary} />
-        <Stack.Screen name="Attendance" component={EmployeeAttendance} />
+        <Stack.Screen
+          name="Production"
+          component={Production}
+          options={() => ({
+            header: () => <SecondaryAppBar text="Production" />,
+          })}
+        />
+        <Stack.Screen
+          name="Create Batch"
+          component={AddBatch}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Batch Detail"
+          component={BatchDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Batch Summary"
+          component={BatchSummary}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Defects"
+          component={Defects}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Productivity Rules"
+          component={ProductivityRules}
+          options={() => ({
+            header: () => <PrimaryAppBar text={'Productivity Rules'} />,
+          })}
+        />
+        <Stack.Screen
+          name="Add Employee"
+          component={AddEmployee}
+          options={() => ({
+            header: () => <PrimaryAppBar text={'Add Employee'} />,
+          })}
+        />
+        <Stack.Screen
+          name="Employee Record"
+          component={EmployeeRecord}
+          options={() => ({
+            header: () => <PrimaryAppBar text={'Employee Record'} />,
+          })}
+        />
+        <Stack.Screen
+          name="Employee Detail"
+          component={EmployeeDetail}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Employee Violation"
+          component={EmployeeViolation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Violation Details"
+          component={ViolationDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Employee Summary"
+          component={EmployeeSummary}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Attendance"
+          component={EmployeeAttendance}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="Employee Productivity"
           component={EmployeeProductivity}
+          options={() => ({
+            headerShown: false,
+          })}
         />
-        <Stack.Screen name="Employees Ranking" component={EmployeeRanking} />
+        <Stack.Screen
+          name="Employees Ranking"
+          component={EmployeeRanking}
+          options={() => ({
+            header: () => <PrimaryAppBar text={'Employee Ranking'} />,
+          })}
+        />
         <Stack.Screen
           options={{headerShown: false}}
           name="Supervisor Dashboard"
           component={SupervisorDashboard}
         />
-        <Stack.Screen name="Defect Monitoring" component={DefectMonitoring} />
+        <Stack.Screen
+          name="Defect Monitoring"
+          component={DefectMonitoring}
+          options={{header: () => <SecondaryAppBar text="Defect Monitoring" />}}
+        />
         <Stack.Screen
           name="Employee Monitoring"
           component={EmployeeMonitoring}
+          options={{
+            header: () => <SecondaryAppBar text="" />,
+          }}
         />
         <Stack.Screen
           name="Product Scanning"
