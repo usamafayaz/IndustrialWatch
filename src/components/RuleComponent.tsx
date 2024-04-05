@@ -12,6 +12,14 @@ import {
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 
+interface Rule {
+  id: number;
+  title: string;
+  checkBox: boolean;
+  fine: Number;
+  allowedTime: string;
+  // Add more properties if necessary
+}
 const RuleComponent = (props: {
   title: string;
   fine: Number;

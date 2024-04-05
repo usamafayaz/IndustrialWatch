@@ -1,17 +1,86 @@
-import React, {useState} from 'react';
-import {FlatList, StyleSheet, Text, TextComponent, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  ActivityIndicator,
+  View,
+  ToastAndroid,
+} from 'react-native';
 import ButtonComponent from '../components/ButtonComponent';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native';
 import SupervisorCard from '../components/SupervisorCard';
 import Modal from 'react-native-modal';
 import TextField from '../components/TextField';
+import API_URL from '../../apiConfig';
 
+interface Supervisor {
+  id: number;
+  name: string;
+  username: string;
+  password: string;
+}
 const Supervisors = () => {
+  const [supervisorList, setSupervisorList] = useState<Supervisor[]>([]);
+  const [selectedSupervisor, setSelectedSupervisor] =
+    useState<Supervisor | null>(null);
+  const [loading, setLoading] = useState(true);
+
   const [modalView, setModalView] = useState(false);
   const navigation = useNavigation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchSupervisors();
+    }, []),
+  );
+
+  const fetchSupervisors = async () => {
+    try {
+      const response = await fetch(`${API_URL}/Supervisor/GetAllSupervisors`);
+      const data = await response.json();
+      const formattedData = data.map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        username: item.username,
+        password: item.password,
+      }));
+      setSupervisorList(formattedData);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Supervisors', ToastAndroid.SHORT);
+      console.error('Error fetching Supervisors:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteSupervisor = async (id: number) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Supervisor/DeleteSupervisor/?id=${id}`,
+        {
+          method: 'DELETE',
+        },
+      );
+
+      if (response.ok) {
+        ToastAndroid.show(
+          'Supervisor Deleted Successfully.',
+          ToastAndroid.SHORT,
+        );
+        setSupervisorList(prevList =>
+          prevList.filter(supervisor => supervisor.id !== id),
+        );
+      } else {
+        ToastAndroid.show('Error Deleting Supervisor.', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.error('Error Deleting Supervisor:', error);
+    }
+  };
 
   const handleUsernameChange = (text: string) => {
     setUsername(text);
@@ -21,41 +90,76 @@ const Supervisors = () => {
     setPassword(text);
   };
 
-  const updateSupervisor = () => {
-    // Updation Logic
+  const updateSupervisor = async () => {
+    try {
+      if (!username.trim() || !password.trim()) {
+        ToastAndroid.show(
+          'Please provide necessary credentials.',
+          ToastAndroid.SHORT,
+        );
+        return;
+      }
+      const updatedSupervisor = {
+        id: selectedSupervisor?.id,
+        name: selectedSupervisor?.name,
+        password: password,
+        role: 'Supervisor',
+        sections: [],
+        username: username,
+      };
+
+      const response = await fetch(`${API_URL}/Supervisor/UpdateSupervisor`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedSupervisor),
+      });
+
+      if (response.ok) {
+        ToastAndroid.show(
+          'Supervisor Updated Successfully',
+          ToastAndroid.SHORT,
+        );
+      } else {
+        ToastAndroid.show('Failed to Update Supervisor', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.error('Error updating Supervisor:', error);
+    }
     setModalView(false);
     setPassword('');
     setUsername('');
-    console.warn('Supervisor Updated.');
+    fetchSupervisors();
   };
-  const showEditModal = () => {
+  const showEditModal = (supervisor: Supervisor) => {
+    setSelectedSupervisor(supervisor);
+    setUsername(supervisor.username);
+    setPassword(supervisor.password);
     setModalView(true);
   };
-  const SupervisorList = [
-    {
-      name: 'Abdullah Mustafa',
-      password: 'Abd1025',
-    },
-    {
-      name: 'Muhammad Anees',
-      password: 'Annu4852',
-    },
-    {
-      name: 'Adeel Shahid',
-      password: 'Khan302',
-    },
-  ];
+  const deleteSupervisorHandler = (id: number) => () => {
+    deleteSupervisor(id);
+  };
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#2196F3" />
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <View style={styles.flatListContainer}>
         <FlatList
-          data={SupervisorList}
+          data={supervisorList}
           renderItem={({item}) => {
             return (
               <SupervisorCard
                 name={item.name}
-                password={item.password}
-                onEditPress={showEditModal}
+                username={item.username}
+                onEditPress={() => showEditModal(item)}
+                onDeletePress={deleteSupervisorHandler(item.id)}
               />
             );
           }}
@@ -64,7 +168,7 @@ const Supervisors = () => {
       <Modal isVisible={modalView}>
         <View style={styles.modalWrapper}>
           <Text style={styles.textStyle}>New Credentials for</Text>
-          <Text style={styles.nameStyle}>Abdullah Mustafa</Text>
+          <Text style={styles.nameStyle}>{selectedSupervisor?.name}</Text>
           <TextField
             placeHolder="Username"
             value={username}
@@ -147,6 +251,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     width: '70%',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 export default Supervisors;

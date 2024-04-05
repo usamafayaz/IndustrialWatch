@@ -5,15 +5,16 @@ import {useNavigation} from '@react-navigation/native';
 
 const SupervisorCard = (props: {
   name: string;
-  password: string;
+  username: string;
   onEditPress: () => void;
+  onDeletePress: () => void;
 }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.cardContainer}>
       <View style={styles.textContainer}>
         <Text style={styles.cardText}>{props.name}</Text>
-        <Text style={styles.passwordText}>{props.password}</Text>
+        <Text style={styles.passwordText}>{props.username}</Text>
       </View>
       <View style={styles.iconContainer}>
         <TouchableOpacity
@@ -24,7 +25,7 @@ const SupervisorCard = (props: {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            console.warn('Delete Pressed!');
+            props.onDeletePress(); // Pass supervisor id to onDeletePress
           }}>
           <Icon name="delete" size={25} color="#050505" style={styles.icon} />
         </TouchableOpacity>

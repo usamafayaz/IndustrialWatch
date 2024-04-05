@@ -4,12 +4,12 @@ import ButtonComponent from '../components/ButtonComponent';
 import TextField from '../components/TextField';
 import RuleComponent from '../components/RuleComponent';
 import {useNavigation} from '@react-navigation/native';
+import API_URL from '../../apiConfig';
 
-const EditSection = () => {
-  const [inputText, setInputText] = useState('');
-  const ApiUrl = 'http://192.168.1.8:5000/api/Section';
+const EditSection = props => {
+  const [inputText, setInputText] = useState(props.route.params.SectionName);
 
-  const handleInputChange = (text: any) => {
+  const handleInputChange = text => {
     setInputText(text);
   };
 
@@ -22,13 +22,14 @@ const EditSection = () => {
 
   const handleUpdateSection = async () => {
     try {
-      const response = await fetch(`${ApiUrl}/UpdateSection`, {
+      const response = await fetch(`${API_URL}/Section/UpdateSection`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           name: inputText,
+          id: props.route.params.id,
           rules: RulesList.map(rule => ({id: rule.id, fine: rule.fine})),
         }),
       });
@@ -36,7 +37,7 @@ const EditSection = () => {
       if (response.ok) {
         const data = await response.json();
         console.log(data); // Handle the response data
-        navigation.navigate('Sections' as never);
+        navigation.navigate('Sections');
       } else {
         console.error('Error:', response.statusText);
       }
@@ -48,7 +49,7 @@ const EditSection = () => {
   return (
     <View style={styles.container}>
       <TextField
-        placeHolder="Packing"
+        placeHolder="Section Name"
         value={inputText}
         onChangeText={handleInputChange}
       />
@@ -83,6 +84,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: 'white',
+    paddingTop: 15,
   },
   flatListContainer: {
     flex: 1,

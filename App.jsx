@@ -9,8 +9,8 @@ import SectionDetails from './src/screens/SectionDetails';
 import EditSection from './src/screens/EditSection';
 import Supervisors from './src/screens/Supervisors';
 import AddSupervisor from './src/screens/AddSupervisor';
-import Production from './src/screens/Production';
-import AddBatch from './src/screens/AddBatch';
+import Batch from './src/screens/Batch';
+import AddProduct from './src/screens/AddProduct.jsx';
 import BatchDetails from './src/screens/BatchDetails';
 import BatchSummary from './src/screens/BatchSummary';
 import Defects from './src/screens/Defects';
@@ -23,7 +23,7 @@ import EmployeeAttendance from './src/screens/EmployeeAttendance';
 import EmployeeViolation from './src/screens/EmployeeViolation';
 import ViolationDetails from './src/screens/ViolationDetails';
 import EmployeeRanking from './src/screens/EmployeeRanking';
-import EmployeeSummary from './src/screens/EmployeeSummary';
+import EmployeeSummary from './src/screens/EmployeeSummary.jsx';
 import SupervisorDashboard from './src/screens/SupervisorDashboard';
 import DefectMonitoring from './src/screens/DefectMonitoring';
 import EmployeeMonitoring from './src/screens/EmployeeMonitoring';
@@ -35,6 +35,10 @@ import EditProfile from './src/screens/EditProfile';
 import SplashScreen from './src/screens/SplashScreen';
 import PrimaryAppBar from './src/components/PrimaryAppBar';
 import SecondaryAppBar from './src/components/SecondaryAppBar';
+import ProductionDashboard from './src/screens/ProductionDashboard';
+import RawMaterials from './src/screens/RawMaterials';
+import Inventory from './src/screens/Inventory';
+import InventoryDetail from './src/screens/InventoryDetail';
 // adb tcpip 5555
 // adb connect 192.168.1.2
 // adb disconnect
@@ -97,17 +101,59 @@ const App = () => {
             header: () => <PrimaryAppBar text={'Supervisors'} />,
           })}
         />
-        <Stack.Screen name="Add Supervisor" component={AddSupervisor} />
         <Stack.Screen
+          name="Add Supervisor"
+          component={AddSupervisor}
+          options={() => ({
+            header: () => <PrimaryAppBar text={'Add Supervisor'} />,
+          })}
+        />
+        {/* Newly Added */}
+        <Stack.Screen
+          name="Production"
+          component={ProductionDashboard}
+          options={() => ({
+            header: () => <PrimaryAppBar text="Production" />,
+          })}
+        />
+        <Stack.Screen
+          name="Raw Material"
+          component={RawMaterials}
+          options={() => ({
+            header: () => <PrimaryAppBar text="Raw Materials" />,
+          })}
+        />
+        <Stack.Screen
+          name="Inventory"
+          component={Inventory}
+          options={() => ({
+            header: () => <PrimaryAppBar text={'Inventory'} />,
+          })}
+        />
+        <Stack.Screen
+          name="Inventory Detail"
+          component={InventoryDetail}
+          options={() => ({
+            headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name="Batch"
+          component={Batch}
+          options={() => ({
+            header: () => <PrimaryAppBar text={'Batch'} />,
+          })}
+        />
+        {/* <Stack.Screen
           name="Production"
           component={Production}
           options={() => ({
             header: () => <SecondaryAppBar text="Production" />,
           })}
-        />
+        /> */}
         <Stack.Screen
-          name="Create Batch"
-          component={AddBatch}
+          name="Add Product"
+          component={AddProduct}
           options={{headerShown: false}}
         />
         <Stack.Screen

@@ -1,34 +1,37 @@
 import React, {useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Button, Modal, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Text} from 'react-native-paper';
-import MonthPicker from 'react-native-month-year-picker';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Progress from 'react-native-progress';
 import PrimaryAppBar from '../components/PrimaryAppBar';
+import DatePicker from 'react-native-modern-datepicker';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const EmployeeSummary = () => {
-  const [showFromPicker, setShowFromPicker] = useState(false);
-  const [showToPicker, setShowToPicker] = useState(false);
-  const [selectedFromMonth, setSelectedFromMonth] = useState(new Date());
-  const [selectedToMonth, setSelectedToMonth] = useState(new Date());
+  const [showModal, setShowModal] = useState(false);
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
+  const [activePicker, setActivePicker] = useState(null);
 
-  const toggleFromPicker = () => {
-    setShowFromPicker(!showFromPicker);
+  const handleFromDateChange = date => {
+    setFromDate(date);
   };
 
-  const toggleToPicker = () => {
-    setShowToPicker(!showToPicker);
+  const handleToDateChange = date => {
+    setToDate(date);
   };
 
-  const onFromMonthChange = (event: any, newDate: any) => {
-    setSelectedFromMonth(newDate || new Date()); // Ensure newDate is valid
-    setShowFromPicker(false); // Hide the picker after selecting a date
-    console.log('From Date is Set to: ' + selectedFromMonth);
+  const handleSaveDate = () => {
+    // Do something with the selected dates, like save them to state or perform other actions
+    console.log('From Date:', fromDate);
+    console.log('To Date:', toDate);
+
+    // Close the modal
+    setShowModal(false);
   };
 
-  const onToMonthChange = (event: any, newDate: any) => {
-    setSelectedToMonth(newDate || new Date()); // Ensure newDate is valid
-    setShowToPicker(false); // Hide the picker after selecting a date
+  const openDatePicker = pickerType => {
+    setActivePicker(pickerType);
+    setShowModal(true);
   };
 
   return (
@@ -38,7 +41,9 @@ const EmployeeSummary = () => {
       <View style={{paddingHorizontal: 20}}>
         <Text style={styles.headerText}>Summary</Text>
         <Text style={styles.label}>From:</Text>
-        <TouchableOpacity onPress={toggleFromPicker} style={styles.row}>
+        <TouchableOpacity
+          onPress={() => openDatePicker('from')}
+          style={styles.row}>
           <Icon
             name="calendar-month"
             size={20}
@@ -46,26 +51,15 @@ const EmployeeSummary = () => {
             style={styles.icon}
           />
           <Text style={styles.dateStyle}>
-            {selectedFromMonth.toLocaleDateString('default', {
-              month: 'long',
-              year: 'numeric',
-            })}
+            {fromDate ? fromDate : 'Select Date'}
           </Text>
-          <Text style={styles.arrow}>▶</Text>
         </TouchableOpacity>
         <View style={styles.horizontalLineStyle}></View>
-
-        {showFromPicker && (
-          <MonthPicker
-            onChange={onFromMonthChange}
-            value={selectedFromMonth}
-            minimumDate={new Date('1900-01-01')}
-            maximumDate={new Date()}
-          />
-        )}
 
         <Text style={styles.label}>To:</Text>
-        <TouchableOpacity onPress={toggleToPicker} style={styles.row}>
+        <TouchableOpacity
+          onPress={() => openDatePicker('to')}
+          style={styles.row}>
           <Icon
             name="calendar-month"
             size={20}
@@ -73,24 +67,12 @@ const EmployeeSummary = () => {
             style={styles.icon}
           />
           <Text style={styles.dateStyle}>
-            {selectedToMonth.toLocaleDateString('default', {
-              month: 'long',
-              year: 'numeric',
-            })}
+            {toDate ? toDate : 'Select Date'}
           </Text>
-          <Text style={styles.arrow}>▶</Text>
         </TouchableOpacity>
 
         <View style={styles.horizontalLineStyle}></View>
 
-        {showToPicker && (
-          <MonthPicker
-            onChange={onToMonthChange}
-            value={selectedToMonth}
-            minimumDate={new Date('1900-01-01')}
-            maximumDate={new Date()}
-          />
-        )}
         <View style={styles.progessContainer}>
           <Progress.Circle
             progress={0.667}
@@ -118,6 +100,28 @@ const EmployeeSummary = () => {
           <Text style={styles.amountStyle}>5</Text>
         </View>
       </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showModal}
+        onRequestClose={() => setShowModal(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select Date</Text>
+            <DatePicker
+              mode="date"
+              selected={activePicker === 'from' ? fromDate : toDate}
+              onDateChange={
+                activePicker === 'from'
+                  ? handleFromDateChange
+                  : handleToDateChange
+              }
+            />
+            <Button title="Set Date" onPress={handleSaveDate} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -141,7 +145,7 @@ const styles = StyleSheet.create({
     marginVertical: '4%',
     paddingLeft: '25%',
   },
-  label: {fontSize: 16, marginRight: 10, color: 'black'},
+  label: {fontSize: 18, marginRight: 10, color: '#4C4C4C'},
   icon: {marginRight: 10},
   dateStyle: {fontSize: 18, fontWeight: '700', marginLeft: 10, color: 'black'},
   arrow: {marginLeft: 20},
@@ -170,6 +174,25 @@ const styles = StyleSheet.create({
   },
   headingStyle: {fontSize: 18, fontWeight: '700', color: '#4E4E4E'},
   amountStyle: {fontSize: 20, fontWeight: '900', color: 'black'},
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
 });
 
 export default EmployeeSummary;

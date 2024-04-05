@@ -12,7 +12,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 import CustomGrid from '../components/CustomGrid';
 
-const AdminDashboard = () => {
+const AdminDashboard = props => {
+  const {name} = props;
   const navigation = useNavigation();
   const [modalVisibility, setModalVisibility] = useState(false);
 
@@ -21,28 +22,28 @@ const AdminDashboard = () => {
       name: 'Sections',
       image: require('../../assets/icons/sections.png'),
       onPress: () => {
-        navigation.navigate('Sections' as never);
+        navigation.navigate('Sections');
       },
     },
     {
       name: 'Supervisors',
       image: require('../../assets/icons/supervisors.png'),
       onPress: () => {
-        navigation.navigate('Supervisors' as never);
+        navigation.navigate('Supervisors');
       },
     },
     {
       name: 'Productivity',
       image: require('../../assets/icons/employee_productivity.png'),
       onPress: () => {
-        navigation.navigate('Employee Productivity' as never);
+        navigation.navigate('Employee Productivity');
       },
     },
     {
       name: 'Production',
       image: require('../../assets/icons/production.png'),
       onPress: () => {
-        navigation.navigate('Production' as never);
+        navigation.navigate('Production');
       },
     },
   ];
@@ -56,7 +57,7 @@ const AdminDashboard = () => {
           <SafeAreaView style={styles.safeAreaView}>
             <Text style={styles.headerStyle}>Admin Dashboard</Text>
             <Text style={styles.welcomeStyle}>Welcome</Text>
-            <Text style={styles.nameStyle}>Usama Fayyaz</Text>
+            <Text style={styles.nameStyle}>{props.route.params.name}</Text>
             <TouchableOpacity
               style={styles.logoutButton}
               onPress={() => setModalVisibility(true)}>
@@ -81,7 +82,7 @@ const AdminDashboard = () => {
             <TouchableOpacity
               onPress={() => {
                 setModalVisibility(false);
-                navigation.navigate('Login' as never);
+                navigation.navigate('Login');
               }}>
               <Text style={styles.OKStyle}>Logout</Text>
             </TouchableOpacity>

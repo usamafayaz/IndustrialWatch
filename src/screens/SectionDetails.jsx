@@ -4,7 +4,10 @@ import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 
-const SectionDetails = () => {
+const SectionDetails = props => {
+  const title = props.route.params.SectionName;
+  const id = props.route.params.id;
+
   const RulesList = [
     {title: 'Smoking', fine: 500, allowedTime: '5:00', checkBox: true},
     {title: 'On Phone', fine: 300, allowedTime: '10:00', checkBox: false},
@@ -13,7 +16,7 @@ const SectionDetails = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <PrimaryAppBar text="Packing" />
+      <PrimaryAppBar text={title} />
       <Text style={styles.textStyle}>Rules Included</Text>
       <FlatList
         data={RulesList}
@@ -35,29 +38,24 @@ const SectionDetails = () => {
       <View style={styles.buttonWrapper}>
         <ButtonComponent
           title="Edit Section"
-          onPress={() => navigation.navigate('Edit Section' as never)}
+          onPress={() =>
+            navigation.navigate('Edit Section', {id: id, SectionName: title})
+          }
         />
       </View>
     </View>
   );
 };
 
-const Card = (props: {
-  title: string;
-  fine: Number;
-  allowedTime: string;
-  ruleNumber: Number;
-}) => {
+const Card = ({title, fine, allowedTime, ruleNumber}) => {
   return (
     <View style={styles.cardWrapper}>
-      <Text style={styles.numberingStyle}>{props.ruleNumber.toString()}.</Text>
+      <Text style={styles.numberingStyle}>{ruleNumber.toString()}.</Text>
       <View>
-        <Text style={styles.ruleTextStyle}>{props.title}</Text>
-        <Text style={styles.timeStyle}>
-          Time: {props.allowedTime.toString()}
-        </Text>
+        <Text style={styles.ruleTextStyle}>{title}</Text>
+        <Text style={styles.timeStyle}>Time: {allowedTime.toString()}</Text>
       </View>
-      <Text style={styles.ruleTextStyle}>Rs. {props.fine.toString()}</Text>
+      <Text style={styles.ruleTextStyle}>Rs. {fine.toString()}</Text>
     </View>
   );
 };

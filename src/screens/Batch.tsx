@@ -1,33 +1,40 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, TouchableOpacity, FlatList, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ButtonComponent from '../components/ButtonComponent';
 import SearchBarComponent from '../components/SearchBarComponent';
-import SecondaryAppBar from '../components/SecondaryAppBar';
+import API_URL from '../../apiConfig';
 
-const Production = () => {
+// interface Batch {
+//   batch_number: string;
+//   pack_per_batch: number;
+//   piece_per_pack: number;
+//   product_number: string;
+// }
+const Batch = () => {
   const navigation = useNavigation();
+  const [batchList, setBatchList] = useState([]);
 
-  const handleSearch = (text: string) => {
-    // Searched text is returned. use it however you want!
-    console.warn(text);
+  // const handleSearch = (text: string) => {
+  //   // Searched text is returned. use it however you want!
+  //   console.warn(text);
+  // };
+  useEffect(() => {
+    fetchAllBatches();
+  }, []);
+  const fetchAllBatches = async () => {
+    const response = await fetch(`${API_URL}/Production/GetAllBatch`);
+    const data = await response.json();
+    setBatchList(data);
   };
-
-  const BatchList = [
-    {batchNumber: 'Batch#11320051123'},
-    {batchNumber: 'Batch#21320011023'},
-    {batchNumber: 'Batch#31320251123'},
-    {batchNumber: 'Batch#31320251545'},
-    {batchNumber: 'Batch#31320254444'},
-  ];
 
   return (
     <View style={styles.container}>
-      <SearchBarComponent onSearch={handleSearch} placeHolder="Search Batch" />
+      {/* <SearchBarComponent onSearch={handleSearch} placeHolder="Search Batch" /> */}
       <FlatList
         style={{width: '100%'}}
-        data={BatchList}
+        data={batchList}
         renderItem={({item}) => {
           return (
             <View>
@@ -36,7 +43,9 @@ const Production = () => {
                   navigation.navigate('Batch Detail' as never);
                 }}>
                 <View style={styles.BatchesContainer}>
-                  <Text style={styles.BatchesStyle}>{item.batchNumber}</Text>
+                  <Text style={styles.BatchesStyle}>
+                    {item['batch_number']}
+                  </Text>
 
                   <Icon name="arrow-forward-ios" size={21} color="black" />
                 </View>
@@ -91,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Production;
+export default Batch;

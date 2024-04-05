@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
 import * as Progress from 'react-native-progress';
 import CardComponent from '../components/CardComponent';
 import {useNavigation} from '@react-navigation/native';
@@ -11,6 +11,10 @@ const EmployeeLoginHome = () => {
   return (
     <View style={styles.container}>
       <PrimaryAppBar text="Home" />
+      <Image
+        source={require('../../assets/images/employeevector.png')}
+        style={styles.imageStyle}
+      />
       <Progress.Circle
         progress={0.75}
         size={170}
@@ -62,6 +66,14 @@ const styles = StyleSheet.create({
 
   fineHeading: {color: '#4E4E4E', fontWeight: 'bold', fontSize: 20},
   fineAmount: {color: 'black', fontWeight: '900', fontSize: 28},
+  imageStyle: {
+    height: 50,
+    width: 50,
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    right: 20,
+    top: '1%',
+  },
 });
 
 export default EmployeeLoginHome;

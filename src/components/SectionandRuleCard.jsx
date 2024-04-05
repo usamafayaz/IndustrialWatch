@@ -3,30 +3,25 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 
-const SectionandRuleCard = (props: {
-  title: string;
-  editRequired?: boolean;
-  onDelete: () => void;
-}) => {
+const SectionandRuleCard = ({id, title, editRequired, onDelete}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.cardContainer}>
-      <Text style={styles.cardText}>{props.title}</Text>
+      <Text style={styles.cardText}>{title}</Text>
       <View style={styles.iconContainer}>
-        {props.editRequired && (
+        {editRequired && (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Edit Section' as never);
+              navigation.navigate('Edit Section', {id: id, SectionName: title});
             }}>
             <Icon name="edit" size={23} color="black" style={styles.icon} />
           </TouchableOpacity>
         )}
-        <TouchableOpacity
-          onPress={() => {
-            props.onDelete();
-          }}>
-          <Icon name="delete" size={23} color="#050505" style={styles.icon} />
-        </TouchableOpacity>
+        {onDelete ? (
+          <TouchableOpacity onPress={onDelete}>
+            <Icon name="delete" size={23} color="#050505" style={styles.icon} />
+          </TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );

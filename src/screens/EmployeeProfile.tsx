@@ -22,7 +22,7 @@ const EmployeeProfile = () => {
       <View style={styles.whiteDesign}></View>
       <View style={styles.imageContainer}>
         <Image
-          source={require('../../assets/images/employeevector.jpg')}
+          source={require('../../assets/images/employeevector.png')}
           style={styles.imageStyle}
         />
       </View>

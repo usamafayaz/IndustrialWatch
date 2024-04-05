@@ -9,7 +9,9 @@ const PrimaryAppBar = (props: {text: string}) => {
     <View
       style={{
         backgroundColor:
-          props.text == 'Employee Productivity' || props.text == 'Add Employee'
+          props.text == 'Employee Productivity' ||
+          props.text == 'Add Employee' ||
+          props.text == 'Production'
             ? '#2196F3'
             : '#FFFFFF',
       }}>

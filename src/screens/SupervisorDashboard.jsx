@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 import CustomGrid from '../components/CustomGrid';
 
-const SupervisorDashboard = () => {
+const SupervisorDashboard = props => {
   const navigation = useNavigation();
   const [modalVisibility, setModalVisibility] = useState(false);
 
@@ -21,21 +21,21 @@ const SupervisorDashboard = () => {
       name: 'Employee Monitoring',
       image: require('../../assets/icons/employee_monitoring.png'),
       onPress: () => {
-        navigation.navigate('Employee Monitoring' as never);
+        navigation.navigate('Employee Monitoring');
       },
     },
     {
       name: 'Defect Monitoring',
       image: require('../../assets/icons/defect_monitoring.png'),
       onPress: () => {
-        navigation.navigate('Defect Monitoring' as never);
+        navigation.navigate('Defect Monitoring');
       },
     },
     {
       name: 'My Attendance',
       image: require('../../assets/icons/attendance.png'),
       onPress: () => {
-        navigation.navigate('Attendance' as never);
+        navigation.navigate('Attendance');
       },
     },
   ];
@@ -49,7 +49,7 @@ const SupervisorDashboard = () => {
           <SafeAreaView style={styles.safeAreaView}>
             <Text style={styles.headerStyle}>Supervisor Dashboard</Text>
             <Text style={styles.welcomeStyle}>Welcome</Text>
-            <Text style={styles.nameStyle}>Anwar Ali </Text>
+            <Text style={styles.nameStyle}>{props.route.params.name} </Text>
             <TouchableOpacity
               style={styles.logoutButton}
               onPress={() => setModalVisibility(true)}>
@@ -74,7 +74,7 @@ const SupervisorDashboard = () => {
             <TouchableOpacity
               onPress={() => {
                 setModalVisibility(false);
-                navigation.navigate('Login' as never);
+                navigation.navigate('Login');
               }}>
               <Text style={styles.OKStyle}>Logout</Text>
             </TouchableOpacity>
