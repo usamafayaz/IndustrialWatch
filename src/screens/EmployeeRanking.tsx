@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
-import {SelectList} from 'react-native-dropdown-select-list';
+import SelectListComponent from '../components/SelectListComponent';
 //🥇🥈🥉
 const EmployeeRanking = () => {
   const SectionsList = [
@@ -59,19 +59,12 @@ const EmployeeRanking = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{width: '86%', marginTop: '2%'}}>
-        <SelectList
-          setSelected={(val: any) => setSelectedSection(val)}
+      <View style={{width: '92%', marginTop: '2%'}}>
+        <SelectListComponent
           data={SectionsList}
-          save="value" // also set save to key.
-          onSelect={() => {
-            console.warn(selectedSection);
-          }}
-          searchPlaceholder="Search Section"
-          dropdownTextStyles={{color: 'black'}}
-          boxStyles={styles.selectListStyle}
-          placeholder="Select Section"
-          inputStyles={styles.selectListInput}
+          placeholder={'Select Section'}
+          setSelected={setSelectedSection}
+          customStyle={{width: '92%'}}
         />
       </View>
       <FlatList

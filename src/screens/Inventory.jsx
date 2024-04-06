@@ -6,16 +6,13 @@ import ButtonComponent from '../components/ButtonComponent';
 import Modal from 'react-native-modal';
 import TextField from '../components/TextField';
 import {useNavigation} from '@react-navigation/native';
-import {
-  MultipleSelectList,
-  SelectList,
-} from 'react-native-dropdown-select-list';
+
 import {ToastAndroid} from 'react-native';
+import SelectListComponent from '../components/SelectListComponent';
 
 const Inventory = () => {
   const navigation = useNavigation();
   const [modalView, setModalView] = useState(false);
-  const [inputText, setInputText] = useState('');
 
   const [materialsListFromDB, setMaterialsListFromDB] = useState([]);
   const [selectedMaterial, setSelectedMaterial] = useState('');
@@ -53,7 +50,6 @@ const Inventory = () => {
 
   const addStock = async () => {
     if (!selectedMaterial || !quantity || !price || !selectedUnit) {
-      console.log(selectedMaterial);
       ToastAndroid.show('Please fill all fields', ToastAndroid.SHORT);
       return;
     }
@@ -95,9 +91,6 @@ const Inventory = () => {
     }
   };
 
-  const handleInputChange = text => {
-    setInputText(text);
-  };
   const fetchStock = async () => {
     const response = await fetch(`${API_URL}/Production/GetAllInventory`);
     const data = await response.json();
@@ -135,15 +128,11 @@ const Inventory = () => {
         <View style={styles.modalWrapper}>
           <Text style={styles.nameStyle}>Add Stock</Text>
           <Text style={styles.hintText}>Name:</Text>
-          <SelectList
-            setSelected={val => setSelectedMaterial(val)}
+
+          <SelectListComponent
             data={materialsListFromDB}
-            save="key" // also set save to key.
-            searchPlaceholder="Search Material"
-            dropdownTextStyles={{color: 'black'}}
-            boxStyles={styles.selectListStyle}
-            placeholder="Select Material"
-            inputStyles={styles.selectListInput}
+            setSelected={setSelectedMaterial}
+            placeholder={'Select Material'}
           />
           <Text style={styles.hintText}>Quantity:</Text>
           <TextField
@@ -153,15 +142,10 @@ const Inventory = () => {
           />
           <Text style={styles.hintText}>Unit:</Text>
 
-          <SelectList
-            setSelected={val => setSelectedUnit(val)}
+          <SelectListComponent
             data={unitList}
-            save="key" // also set save to key.
-            searchPlaceholder="Search Unit"
-            dropdownTextStyles={{color: 'black'}}
-            boxStyles={styles.selectListStyle}
-            placeholder="Select Unit"
-            inputStyles={styles.selectListInput}
+            setSelected={setSelectedUnit}
+            placeholder={'Select Unit'}
           />
           <Text style={styles.hintText}>Price:</Text>
           <TextField
@@ -248,15 +232,7 @@ const styles = StyleSheet.create({
     padding: 15,
     fontWeight: 'bold',
   },
-  selectListStyle: {
-    backgroundColor: '#E5E5E5',
-    borderColor: '#E5E5E5',
-    borderRadius: 20,
-    margin: '2%',
-    width: '86%',
-    alignSelf: 'center',
-  },
-  selectListInput: {color: 'black', fontSize: 18},
+
   nameStyle: {
     fontSize: 18,
     fontWeight: 'bold',

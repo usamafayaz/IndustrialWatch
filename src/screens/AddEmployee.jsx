@@ -12,10 +12,10 @@ import {
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';
 import TextField from '../components/TextField';
-import {SelectList} from 'react-native-dropdown-select-list';
 import {RadioButton} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import SelectListComponent from '../components/SelectListComponent';
 
 const AddEmployee = () => {
   const [name, setName] = useState('');
@@ -135,34 +135,18 @@ const AddEmployee = () => {
             value={password}
             onChangeText={text => setPassword(text)}
           />
-          <View style={{width: '86%'}}>
-            <SelectList
-              setSelected={val => setSelectedSection(val)}
+          <View style={{width: '100%'}}>
+            <SelectListComponent
+              setSelected={setSelectedSection}
               data={SectionsList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(selectedSection);
-              }}
-              searchPlaceholder="Search Section"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.selectListStyle}
               placeholder="Select Section"
-              inputStyles={styles.selectListInput}
             />
           </View>
-          <View style={{width: '86%', marginTop: '2%'}}>
-            <SelectList
-              setSelected={val => setSelectedRole(val)}
+          <View style={{width: '100%'}}>
+            <SelectListComponent
+              setSelected={setSelectedRole}
               data={RolesList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(selectedRole);
-              }}
-              searchPlaceholder="Search Role"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.selectListStyle}
-              placeholder="Select Section"
-              inputStyles={styles.selectListInput}
+              placeholder="Select Role"
             />
           </View>
           <View style={styles.radioContainer}>
@@ -236,13 +220,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '70%',
   },
-  selectListStyle: {
-    backgroundColor: '#E5E5E5',
-    borderColor: '#E5E5E5',
-    borderRadius: 20,
-    marginTop: '2%',
-  },
-  selectListInput: {color: 'black', fontSize: 18},
+
   titleStyle: {
     color: 'black',
     marginLeft: '9%',

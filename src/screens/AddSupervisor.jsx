@@ -9,8 +9,8 @@ import {
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';
 import TextField from '../components/TextField';
-import {MultipleSelectList} from 'react-native-dropdown-select-list';
 import API_URL from '../../apiConfig';
+import MultiSelectComponent from '../components/MultiSelectComponent';
 
 const AddSupervisor = () => {
   const [name, setName] = useState('');
@@ -111,17 +111,11 @@ const AddSupervisor = () => {
           onChangeText={text => setPassword(text)}
         />
         <View style={{width: '84%'}}>
-          <MultipleSelectList
-            setSelected={setSelectedSections}
+          <MultiSelectComponent
             data={sectionList}
-            save="key"
-            searchPlaceholder="Search Section"
-            dropdownTextStyles={{color: 'black'}}
-            labelStyles={{color: 'grey'}}
-            label="Sections"
-            boxStyles={styles.multipleListStyle}
-            placeholder="Select Section"
-            inputStyles={styles.multipleListInput}
+            setSelected={setSelectedSections}
+            placeholder={'Select Section'}
+            save={'key'}
           />
         </View>
         <View style={styles.buttonWrapper}>
@@ -148,13 +142,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '70%',
   },
-  multipleListStyle: {
-    backgroundColor: '#E5E5E5',
-    borderColor: '#E5E5E5',
-    borderRadius: 20,
-    marginTop: '2%',
-  },
-  multipleListInput: {color: 'grey', fontSize: 18},
 });
 
 export default AddSupervisor;

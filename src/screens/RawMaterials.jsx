@@ -28,7 +28,6 @@ const RawMaterials = () => {
     try {
       const response = await fetch(`${API_URL}/Production/GetAllRawMaterials`);
       const data = await response.json();
-      console.log(data);
       setRawMaterialsList(data);
     } catch (error) {
       ToastAndroid.show('Error fetching Raw Materials', ToastAndroid.SHORT);
@@ -118,8 +117,10 @@ const RawMaterials = () => {
       <Modal isVisible={modalVisibility}>
         <View style={styles.modalWrapper}>
           <Text style={styles.modalHeaderStyle}>Add Raw Material</Text>
+          <Text style={styles.hintText}>Name:</Text>
+
           <TextField
-            placeHolder="Raw Material Name.."
+            placeHolder="e.g. Metal"
             value={inputText}
             onChangeText={handleInputChange}
           />
@@ -175,7 +176,7 @@ const styles = StyleSheet.create({
   modalWrapper: {
     alignItems: 'center',
     backgroundColor: 'white',
-    height: 200,
+    height: 250,
     width: 300,
     alignSelf: 'center',
     borderRadius: 30,
@@ -201,6 +202,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  hintText: {
+    alignSelf: 'flex-start',
+    color: 'grey',
+    fontWeight: '700',
+    fontSize: 18,
+    marginLeft: 35,
+    marginTop: 20,
   },
 });
 

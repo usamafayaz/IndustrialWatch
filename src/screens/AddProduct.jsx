@@ -14,11 +14,10 @@ import {useNavigation} from '@react-navigation/native';
 import TextField from '../components/TextField';
 import Modal from 'react-native-modal';
 import SecondaryAppBar from '../components/SecondaryAppBar';
-import {
-  MultipleSelectList,
-  SelectList,
-} from 'react-native-dropdown-select-list';
+import {MultipleSelectList} from 'react-native-dropdown-select-list';
 import API_URL from '../../apiConfig';
+import SelectListComponent from '../components/SelectListComponent';
+import MultiSelectComponent from '../components/MultiSelectComponent';
 
 const AddProduct = () => {
   const [modalView, setModalView] = useState(false);
@@ -63,8 +62,8 @@ const AddProduct = () => {
     {key: 'back', value: 'Back'},
     {key: 'right', value: 'Right'},
     {key: 'left', value: 'Left'},
-    {key: 'front_flip', value: 'FrontFlip'},
-    {key: 'back_flip', value: 'BackFlip'},
+    {key: 'front_flip', value: 'Front Flip'},
+    {key: 'back_flip', value: 'Back Flip'},
   ];
   const addRawMaterial = () => {
     if (
@@ -138,7 +137,6 @@ const AddProduct = () => {
         );
       }
     } catch (error) {
-      // Handle any unexpected errors
       console.error('Error adding product:', error);
       ToastAndroid.show('An unexpected error occurred', ToastAndroid.SHORT);
     }
@@ -162,17 +160,11 @@ const AddProduct = () => {
           onChangeText={text => setProductName(text)}
         />
         <Text style={styles.hintText}>Inspection Angles:</Text>
-        <MultipleSelectList
-          setSelected={setSelectedAngles}
+        <MultiSelectComponent
           data={anglesList}
-          save="value"
-          searchPlaceholder="Select Angles"
-          dropdownTextStyles={{color: 'black'}}
-          labelStyles={{color: 'grey'}}
-          label="Angles"
-          boxStyles={styles.multipleListStyle}
-          placeholder="Select Angles"
-          inputStyles={styles.multipleListInput}
+          setSelected={setSelectedAngles}
+          placeholder={'Select Angles'}
+          save={'value'}
         />
         <Text style={styles.hintText}>Rejection Tolerance:</Text>
         <TextField
@@ -236,15 +228,11 @@ const AddProduct = () => {
           <View style={styles.modalWrapper}>
             <Text style={styles.nameStyle}>New Material</Text>
             <Text style={styles.hintText}>Name:</Text>
-            <SelectList
-              setSelected={val => setSelectedMaterial(val)}
+
+            <SelectListComponent
               data={materialsListFromDB}
-              save="key" // also set save to key.
-              searchPlaceholder="Search Material"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.selectListStyle}
+              setSelected={setSelectedMaterial}
               placeholder="Select Material"
-              inputStyles={styles.selectListInput}
             />
             <Text style={styles.hintText}>Quantity per Item:</Text>
             <TextField
@@ -253,15 +241,10 @@ const AddProduct = () => {
               onChangeText={text => setQuantityPerItem(text)}
             />
             <Text style={styles.hintText}>Unit:</Text>
-            <SelectList
-              setSelected={val => setSelectedUnit(val)}
+            <SelectListComponent
               data={unitList}
-              save="key" // also set save to key.
-              searchPlaceholder="Search Unit"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.selectListStyle}
+              setSelected={setSelectedUnit}
               placeholder="Select Unit"
-              inputStyles={styles.selectListInput}
             />
 
             <View style={styles.modalButtonWrapper}>
@@ -371,25 +354,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
     alignSelf: 'center',
   },
-
-  multipleListStyle: {
-    backgroundColor: '#E5E5E5',
-    borderColor: '#E5E5E5',
-    borderRadius: 20,
-    marginTop: '2%',
-    width: '86%',
-    alignSelf: 'center',
-  },
-  multipleListInput: {color: 'grey', fontSize: 18},
-  selectListStyle: {
-    backgroundColor: '#E5E5E5',
-    borderColor: '#E5E5E5',
-    borderRadius: 20,
-    margin: '2%',
-    width: '86%',
-    alignSelf: 'center',
-  },
-  selectListInput: {color: 'black', fontSize: 18},
 });
 
 export default AddProduct;
