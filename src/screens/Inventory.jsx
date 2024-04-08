@@ -16,16 +16,9 @@ const Inventory = () => {
 
   const [materialsListFromDB, setMaterialsListFromDB] = useState([]);
   const [selectedMaterial, setSelectedMaterial] = useState('');
-  const [selectedUnit, setSelectedUnit] = useState('');
 
   const [quantity, setQuantity] = useState('');
   const [price, setPrice] = useState('');
-
-  const unitList = [
-    {key: 'KG', value: 'KG'},
-    {key: 'MG', value: 'MG'},
-    {key: 'Gram', value: 'Gram'},
-  ];
 
   const [stockList, setStockList] = useState([]);
   useEffect(() => {
@@ -49,15 +42,14 @@ const Inventory = () => {
   };
 
   const addStock = async () => {
-    if (!selectedMaterial || !quantity || !price || !selectedUnit) {
+    if (!selectedMaterial || !quantity || !price) {
       ToastAndroid.show('Please fill all fields', ToastAndroid.SHORT);
       return;
     }
     try {
       const data = {
         raw_material_id: parseInt(selectedMaterial),
-        unit: selectedUnit,
-        price_per_unit: parseFloat(price),
+        price_per_kg: parseFloat(price),
         quantity: parseInt(quantity),
       };
 
@@ -127,27 +119,21 @@ const Inventory = () => {
       <Modal isVisible={modalView}>
         <View style={styles.modalWrapper}>
           <Text style={styles.nameStyle}>Add Stock</Text>
-          <Text style={styles.hintText}>Name:</Text>
+          <Text style={styles.hintText}>Name</Text>
 
           <SelectListComponent
             data={materialsListFromDB}
             setSelected={setSelectedMaterial}
             placeholder={'Select Material'}
           />
-          <Text style={styles.hintText}>Quantity:</Text>
+          <Text style={styles.hintText}>Quantity/Kg</Text>
           <TextField
             placeHolder="e.g 100"
             value={quantity}
             onChangeText={text => setQuantity(text)}
           />
-          <Text style={styles.hintText}>Unit:</Text>
 
-          <SelectListComponent
-            data={unitList}
-            setSelected={setSelectedUnit}
-            placeholder={'Select Unit'}
-          />
-          <Text style={styles.hintText}>Price:</Text>
+          <Text style={styles.hintText}>Price/Kg</Text>
           <TextField
             placeHolder="e.g 1500"
             value={price}
@@ -214,7 +200,7 @@ const styles = StyleSheet.create({
   },
   modalButtonWrapper: {
     flexDirection: 'row',
-    marginTop: '10%',
+    marginTop: '6%',
     marginRight: 30,
     justifyContent: 'flex-end',
     alignItems: 'center',

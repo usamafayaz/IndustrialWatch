@@ -29,10 +29,10 @@ const ProductionDashboard = () => {
       },
     },
     {
-      name: 'Batch',
-      image: require('../../assets/icons/batch.png'),
+      name: 'Products',
+      image: require('../../assets/icons/products.png'),
       onPress: () => {
-        navigation.navigate('Batch' as never);
+        navigation.navigate('Products' as never);
       },
     },
   ];

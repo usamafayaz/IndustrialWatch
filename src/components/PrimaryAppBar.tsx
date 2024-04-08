@@ -11,7 +11,8 @@ const PrimaryAppBar = (props: {text: string}) => {
         backgroundColor:
           props.text == 'Employee Productivity' ||
           props.text == 'Add Employee' ||
-          props.text == 'Production'
+          props.text == 'Production' ||
+          props.text == 'Add Batch'
             ? '#2196F3'
             : '#FFFFFF',
       }}>

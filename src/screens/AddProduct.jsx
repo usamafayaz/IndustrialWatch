@@ -14,7 +14,6 @@ import {useNavigation} from '@react-navigation/native';
 import TextField from '../components/TextField';
 import Modal from 'react-native-modal';
 import SecondaryAppBar from '../components/SecondaryAppBar';
-import {MultipleSelectList} from 'react-native-dropdown-select-list';
 import API_URL from '../../apiConfig';
 import SelectListComponent from '../components/SelectListComponent';
 import MultiSelectComponent from '../components/MultiSelectComponent';
@@ -25,7 +24,6 @@ const AddProduct = () => {
 
   const [productName, setProductName] = useState('');
   const [selectedAngles, setSelectedAngles] = useState([]);
-  const [tolerance, setTolerance] = useState('');
 
   const [selectedMaterial, setSelectedMaterial] = useState('');
   const [quantityPerItem, setQuantityPerItem] = useState('');
@@ -34,9 +32,9 @@ const AddProduct = () => {
   const [selectedMaterialsList, setSelectedMaterialsList] = useState([]);
 
   const unitList = [
-    {key: 'KG', value: 'KG'},
-    {key: 'MG', value: 'MG'},
-    {key: 'Gram', value: 'Gram'},
+    {key: 'kg', value: 'KG'},
+    {key: 'mg', value: 'MG'},
+    {key: 'g', value: 'Gram'},
   ];
 
   useEffect(() => {
@@ -93,7 +91,6 @@ const AddProduct = () => {
       if (
         !productName ||
         selectedAngles.length === 0 ||
-        !tolerance ||
         selectedMaterialsList.length === 0
       ) {
         ToastAndroid.show('Please fill all fields', ToastAndroid.SHORT);
@@ -104,7 +101,6 @@ const AddProduct = () => {
       const data = {
         name: productName,
         inspection_angles: inspectionAngles,
-        rejection_tolerance: parseFloat(tolerance),
         materials: selectedMaterialsList.map(material => ({
           raw_material_id: parseInt(material.name),
           quantity: parseFloat(material.quantityPerItem),
@@ -126,7 +122,6 @@ const AddProduct = () => {
 
         setProductName('');
         setSelectedAngles([]);
-        setTolerance('');
         setSelectedMaterialsList([]);
         navigation.goBack();
       } else {
@@ -166,12 +161,7 @@ const AddProduct = () => {
           placeholder={'Select Angles'}
           save={'value'}
         />
-        <Text style={styles.hintText}>Rejection Tolerance:</Text>
-        <TextField
-          placeHolder="Enter Rejection Tolerance"
-          value={tolerance}
-          onChangeText={text => setTolerance(text)}
-        />
+
         <Text style={styles.headingStyle}>Formula per Item</Text>
         <View style={{flex: 1}}>
           <View style={[styles.tableStyle, {marginVertical: 10}]}>

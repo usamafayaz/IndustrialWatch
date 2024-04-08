@@ -1,6 +1,6 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import Login from './src/screens/Login';
 import AdminDashboard from './src/screens/AdminDashboard';
 import Sections from './src/screens/Sections';
@@ -9,10 +9,9 @@ import SectionDetails from './src/screens/SectionDetails';
 import EditSection from './src/screens/EditSection';
 import Supervisors from './src/screens/Supervisors';
 import AddSupervisor from './src/screens/AddSupervisor';
-import Batch from './src/screens/Batch';
+import ProductBatches from './src/screens/ProductBatches';
 import AddProduct from './src/screens/AddProduct.jsx';
 import BatchDetails from './src/screens/BatchDetails';
-import BatchSummary from './src/screens/BatchSummary';
 import Defects from './src/screens/Defects';
 import EmployeeProductivity from './src/screens/EmployeeProductivity';
 import ProductivityRules from './src/screens/ProductivityRules';
@@ -39,9 +38,11 @@ import ProductionDashboard from './src/screens/ProductionDashboard';
 import RawMaterials from './src/screens/RawMaterials';
 import Inventory from './src/screens/Inventory';
 import InventoryDetail from './src/screens/InventoryDetail';
-// adb tcpip 5555
-// adb connect 192.168.1.2
-// adb disconnect
+import Products from './src/screens/Products';
+import LinkProduct from './src/screens/LinkProduct';
+import AddBatch from './src/screens/AddBatch';
+import ChooseStock from './src/screens/ChooseStock';
+
 // gradlew bundleRelease // for AAB
 // gradlew.bat assembleRelease // for APK
 // android/app/build/outputs/apk/release/app-release.apk
@@ -68,7 +69,7 @@ const App = () => {
         <Stack.Screen
           name="Login"
           component={Login}
-          options={{headerShown: false}}
+          options={{headerShown: false, statusBarColor: '#FFFFFF'}}
         />
         <Stack.Screen
           name="Admin Dashboard"
@@ -125,6 +126,11 @@ const App = () => {
           })}
         />
         <Stack.Screen
+          name="Add Product"
+          component={AddProduct}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name="Inventory"
           component={Inventory}
           options={() => ({
@@ -138,35 +144,50 @@ const App = () => {
             headerShown: false,
           })}
         />
+
         <Stack.Screen
-          name="Batch"
-          component={Batch}
+          name="Products"
+          component={Products}
           options={() => ({
-            header: () => <PrimaryAppBar text={'Batch'} />,
+            header: () => <PrimaryAppBar text={'Products'} />,
           })}
         />
-        {/* <Stack.Screen
-          name="Production"
-          component={Production}
-          options={() => ({
-            header: () => <SecondaryAppBar text="Production" />,
-          })}
-        /> */}
+
         <Stack.Screen
-          name="Add Product"
-          component={AddProduct}
-          options={{headerShown: false}}
+          name="Link Product"
+          component={LinkProduct}
+          options={() => ({
+            header: () => <PrimaryAppBar text={'Link Product'} />,
+          })}
+        />
+        <Stack.Screen
+          name="Product Batches"
+          component={ProductBatches}
+          options={() => ({
+            headerShown: false,
+          })}
+        />
+
+        <Stack.Screen
+          name="Add Batch"
+          component={AddBatch}
+          options={() => ({
+            headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name="Choose Stock"
+          component={ChooseStock}
+          options={() => ({
+            headerShown: false,
+          })}
         />
         <Stack.Screen
           name="Batch Detail"
           component={BatchDetails}
           options={{headerShown: false}}
         />
-        <Stack.Screen
-          name="Batch Summary"
-          component={BatchSummary}
-          options={{headerShown: false}}
-        />
+
         <Stack.Screen
           name="Defects"
           component={Defects}

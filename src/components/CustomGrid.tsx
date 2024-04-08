@@ -50,11 +50,12 @@ const styles = StyleSheet.create({
     paddingTop: 6,
     backgroundColor: 'white',
     alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 20,
   },
   imageStyle: {
-    width: 100,
-    height: 100,
+    width: 70,
+    height: 70,
   },
   nameStyle: {
     fontSize: 18,

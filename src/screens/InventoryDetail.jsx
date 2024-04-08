@@ -23,8 +23,8 @@ const InventoryDetail = props => {
   return (
     <View style={styles.container}>
       <PrimaryAppBar text={name} />
-      <View style={[styles.tableStyle, {width: '80%'}]}>
-        <Text style={styles.headerStyle}>#</Text>
+      <View style={[styles.tableStyle, {width: '85%'}]}>
+        <Text style={styles.headerStyle}>Stock Number</Text>
         <Text style={styles.headerStyle}>Quantity</Text>
         <Text style={styles.headerStyle}>Price/KG</Text>
         <Text style={styles.headerStyle}>Date</Text>
@@ -33,11 +33,11 @@ const InventoryDetail = props => {
         data={inventoryDetailList}
         renderItem={({item, index}) => {
           return (
-            <View style={[styles.tableStyle, {width: '85%'}]}>
-              <Text style={styles.columnStyle}>{index + 1}</Text>
+            <View style={[styles.tableStyle, {width: '87%'}]}>
+              <Text style={styles.columnStyle}>{item.stock_number}</Text>
               <Text style={styles.columnStyle}>{item.quantity} KG</Text>
               <Text style={styles.columnStyle}>
-                {parseInt(parseFloat(item.price_per_unit))}
+                {parseInt(parseFloat(item.price_per_kg))}
               </Text>
               <Text style={styles.columnStyle}>{item.purchased_date}</Text>
             </View>
@@ -59,11 +59,11 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   columnStyle: {
-    fontSize: 18,
+    fontSize: 15,
     color: 'black',
   },
   headerStyle: {
-    fontSize: 18,
+    fontSize: 16,
     color: 'black',
     fontWeight: 'bold',
   },

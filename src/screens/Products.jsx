@@ -1,45 +1,42 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import {StyleSheet, View, TouchableOpacity, FlatList, Text} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import SearchBarComponent from '../components/SearchBarComponent';
-import SecondaryAppBar from '../components/SecondaryAppBar';
+import API_URL from '../../apiConfig';
+import ButtonComponent from '../components/ButtonComponent';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 
-const BatchDetails = () => {
+const Products = () => {
+  const [productsList, setProductsList] = useState([]);
   const navigation = useNavigation();
 
-  const handleSearch = (text: string) => {
-    // Searched text is returned. use it however you want!
-    console.warn(text);
-  };
+  useFocusEffect(
+    useCallback(() => {
+      fetchLinkedProducts();
+    }, []),
+  );
 
-  const ProductList = [
-    {productNumber: 'P#11320051123'},
-    {productNumber: 'P#21320011023'},
-    {productNumber: 'P#31320251123'},
-    {productNumber: 'P#31320251111'},
-    {productNumber: 'P#31320251894'},
-  ];
+  const fetchLinkedProducts = async () => {
+    const response = await fetch(`${API_URL}/Production/GetLinkedProducts`);
+    const data = await response.json();
+    setProductsList(data);
+  };
 
   return (
     <View style={styles.container}>
-      <SecondaryAppBar text="Batch#11320051123" />
-      <SearchBarComponent
-        onSearch={handleSearch}
-        placeHolder="Search Product"
-      />
       <FlatList
-        style={{width: '100%'}}
-        data={ProductList}
+        style={{width: '100%', marginTop: 20}}
+        data={productsList}
         renderItem={({item}) => {
           return (
             <View>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('Batch Summary' as never);
+                  navigation.navigate('Product Batches', {
+                    item: item,
+                  });
                 }}>
                 <View style={styles.BatchesContainer}>
-                  <Text style={styles.productsStyle}>{item.productNumber}</Text>
+                  <Text style={styles.productsStyle}>{item.name}</Text>
 
                   <Icon name="arrow-forward-ios" size={20} color="#555" />
                 </View>
@@ -49,6 +46,12 @@ const BatchDetails = () => {
           );
         }}
       />
+      <View style={styles.buttonWrapper}>
+        <ButtonComponent
+          title="Link Product"
+          onPress={() => navigation.navigate('Link Product')}
+        />
+      </View>
     </View>
   );
 };
@@ -78,19 +81,12 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '500',
   },
-  batchHeaderStyle: {
-    fontSize: 23,
-    fontWeight: '600',
-    color: 'black',
-    marginVertical: 10,
-  },
-  horizontalLineHeader: {
-    width: '65%',
-    height: 2,
-    backgroundColor: 'black',
+  buttonWrapper: {
     alignSelf: 'center',
-    marginBottom: '7%',
+    width: '70%',
+    justifyContent: 'flex-end',
+    marginBottom: 15,
   },
 });
 
-export default BatchDetails;
+export default Products;

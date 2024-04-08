@@ -78,7 +78,9 @@ const Login = () => {
   const handlePasswordChange = text => {
     setPassword(text);
   };
-
+  const letHimGo = () => {
+    navigation.navigate('Admin Dashboard', {name: 'Rani'});
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ScrollView style={styles.container}>
@@ -103,7 +105,7 @@ const Login = () => {
             onChangeText={handlePasswordChange}
           />
           <View style={styles.buttonWrapper}>
-            <ButtonComponent title="Login" onPress={handleLoginPress} />
+            <ButtonComponent title="Login" onPress={letHimGo} />
           </View>
         </View>
       </ScrollView>
