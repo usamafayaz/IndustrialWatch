@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,27 +6,25 @@ import {
   FlatList,
   Text,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import API_URL from '../../apiConfig';
-import ButtonComponent from '../components/ButtonComponent';
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
+import RNFetchBlob from 'rn-fetch-blob';
+import ButtonComponent from '../components/ButtonComponent';
+import API_URL from '../../apiConfig';
 
 const ProductBatches = props => {
-  const {item} = props.route.params;
-  const product_number = item.product_number;
-  const product_name = item.name;
+  const {product_number, name: product_name} = props.route.params.item;
 
   const [batchesList, setBatchesList] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchBatches();
-    }, []),
-  );
+  useEffect(() => {
+    fetchBatches();
+  }, []);
 
   const fetchBatches = async () => {
     try {
@@ -43,6 +41,50 @@ const ProductBatches = props => {
     }
   };
 
+  const downloadImages = async productNumber => {
+    const dirs = RNFetchBlob.fs.dirs;
+    const downloadDir = dirs.DownloadDir;
+    try {
+      const folderPath = `${downloadDir}/DefectedImages`;
+
+      // Check if the folder exists, create it if not
+      const isFolderExists = await RNFetchBlob.fs.isDir(folderPath);
+      if (!isFolderExists) {
+        await RNFetchBlob.fs.mkdir(folderPath); // Create the folder
+      }
+
+      // Construct the file path within the folder
+      const filePath = `${folderPath}/${productNumber}.zip`;
+
+      RNFetchBlob.config({
+        addAndroidDownloads: {
+          useDownloadManager: false,
+          notification: true,
+          mime: 'application/zip',
+          title: 'Defected Images',
+          description: 'Downloading Defected Images',
+        },
+        path: filePath,
+      })
+        .fetch(
+          'GET',
+          `${API_URL}/Production/GetAllDefectedImages?product_number=${encodeURIComponent(
+            productNumber,
+          )}`,
+          {
+            'Content-Type': 'application/zip',
+          },
+        )
+        .then(res => {
+          ToastAndroid.show('Download Successful.', ToastAndroid.SHORT);
+          console.log('The file saved to ', res.path());
+        });
+    } catch (error) {
+      console.error('Download failed:', error);
+      ToastAndroid.show('Download Failed.', ToastAndroid.SHORT);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <PrimaryAppBar text={product_name} />
@@ -53,42 +95,60 @@ const ProductBatches = props => {
           {batchesList.length === 0 ? (
             <Text style={styles.noBatchesText}>No batches found.</Text>
           ) : (
-            <FlatList
-              style={{width: '100%', marginTop: 20}}
-              data={batchesList}
-              renderItem={({item}) => {
-                return (
-                  <View>
-                    <TouchableOpacity
-                      style={{
-                        backgroundColor: item.status == 0 ? 'pink' : '#FFFFFF',
-                        margin: 3,
-                        borderRadius: 10,
-                      }}
-                      onPress={() => {
-                        navigation.navigate('Batch Detail', {
-                          item: item,
-                        });
-                      }}>
-                      <View style={styles.BatchesContainer}>
-                        <Text style={styles.productsStyle}>
-                          {item.batch_number}
-                        </Text>
-                        <Icon name="arrow-forward-ios" size={20} color="#555" />
-                      </View>
-                    </TouchableOpacity>
-                    <View style={styles.horizontalLineStyle}></View>
-                  </View>
-                );
-              }}
-            />
+            <>
+              <TouchableOpacity
+                style={styles.downloadButton}
+                onPress={() => {
+                  downloadImages(product_number);
+                }}>
+                <Icon name="cloud-download" size={30} color="#FFFFFF" />
+                <Text style={styles.downloadButtonText}>Defected Batches</Text>
+              </TouchableOpacity>
+              <FlatList
+                style={{width: '100%', marginTop: 20}}
+                data={batchesList}
+                renderItem={({item}) => {
+                  return (
+                    <View>
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor:
+                            item.status == 1 ? 'pink' : '#FFFFFF',
+                          margin: 3,
+                          marginHorizontal: 10,
+                          borderRadius: 10,
+                        }}
+                        onPress={() => {
+                          navigation.navigate('Batch Detail', {
+                            item: item,
+                          });
+                        }}>
+                        <View style={styles.BatchesContainer}>
+                          <Text style={styles.productsStyle}>
+                            {item.batch_number}
+                          </Text>
+                          <Icon
+                            name="arrow-forward-ios"
+                            size={20}
+                            color="#555"
+                          />
+                        </View>
+                      </TouchableOpacity>
+                      <View style={styles.horizontalLineStyle}></View>
+                    </View>
+                  );
+                }}
+              />
+            </>
           )}
         </>
       )}
       <View style={styles.buttonWrapper}>
         <ButtonComponent
           title="Create Batch"
-          onPress={() => navigation.navigate('Add Batch', {item: item})}
+          onPress={() =>
+            navigation.navigate('Add Batch', {product_name, product_number})
+          }
         />
       </View>
     </View>
@@ -135,6 +195,18 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     marginTop: '80%',
   },
+  downloadButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#4F4F4F',
+    alignSelf: 'flex-end',
+    marginRight: '5%',
+    marginTop: '5%',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 20,
+  },
+  downloadButtonText: {color: 'white', fontWeight: 'bold', marginLeft: 20},
 });
 
 export default ProductBatches;

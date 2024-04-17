@@ -1,39 +1,80 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import API_URL from '../../apiConfig';
 
 const BatchDetails = props => {
-  const name = props.route.params.item.batch_number;
+  const [batchData, setBatchData] = useState(null);
+
+  // Function to fetch batch details
+  const fetchBatchDetails = async batchNumber => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Production/GetBatchDetails?batch_number=${encodeURIComponent(
+          batchNumber,
+        )}`,
+      );
+      const data = await response.json();
+      setBatchData(data);
+    } catch (error) {
+      console.error('Error fetching batch details:', error);
+    }
+  };
+
+  useEffect(() => {
+    const batchNumber = props.route.params.item.batch_number;
+    fetchBatchDetails(batchNumber);
+  }, []);
+
   return (
     <View style={styles.container}>
-      <PrimaryAppBar text={name} />
-      <View style={styles.rowStyle}>
-        <Text style={[styles.hintText, {marginTop: 30}]}>Status:</Text>
-        <TouchableOpacity>
-          <Text style={[styles.statusStyle, {backgroundColor: '#FF0000'}]}>
-            Rejected
-          </Text>
+      <PrimaryAppBar text={props.route.params.item.batch_number} />
+      {/* Check if batchData is available before rendering */}
+      {batchData && (
+        <>
+          <View style={styles.rowStyle}>
+            <Text style={[styles.hintText, {marginTop: 30}]}>Status:</Text>
+            <Text
+              style={[
+                styles.statusStyle,
+                {
+                  backgroundColor: batchData.status === 1 ? '#FF0000' : 'green',
+                },
+              ]}>
+              {batchData.status === 1 ? 'Rejected' : 'Accepted'}
+            </Text>
+          </View>
+          <View style={styles.rowStyle}>
+            <Text style={styles.hintText}>Dated:</Text>
+            <Text style={styles.valueText}>{batchData.date}</Text>
+          </View>
+          {/* Render other batch details similarly */}
+          <View style={styles.rowStyle}>
+            <Text style={styles.hintText}>Total Pieces:</Text>
+            <Text style={styles.valueText}>{batchData.total_piece}</Text>
+          </View>
+          <View style={styles.rowStyle}>
+            <Text style={styles.hintText}>Defected Pieces:</Text>
+            <Text style={styles.valueText}>{batchData.defected_piece}</Text>
+          </View>
+          <View style={styles.rowStyle}>
+            <Text style={styles.hintText}>Rejection Tolorence:</Text>
+            <Text style={styles.valueText}>
+              {batchData.rejection_tolerance}
+            </Text>
+          </View>
+          <View style={styles.rowStyle}>
+            <Text style={styles.hintText}>Total Yield:</Text>
+            <Text style={styles.valueText}>{batchData.batch_yield}</Text>
+          </View>
+        </>
+      )}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.downloadButton}>
+          <Icon name="cloud-download" size={30} color="#FFFFFF" />
+          <Text style={styles.downloadButtonText}>Download Images</Text>
         </TouchableOpacity>
-      </View>
-      <View style={styles.rowStyle}>
-        <Text style={styles.hintText}>Dated:</Text>
-        <Text style={styles.valueText}>20/04/2024</Text>
-      </View>
-      <View style={styles.rowStyle}>
-        <Text style={styles.hintText}>Total Pieces:</Text>
-        <Text style={styles.valueText}>200</Text>
-      </View>
-      <View style={styles.rowStyle}>
-        <Text style={styles.hintText}>Defected Pieces:</Text>
-        <Text style={styles.valueText}>20</Text>
-      </View>
-      <View style={styles.rowStyle}>
-        <Text style={styles.hintText}>Rejection Tolorence:</Text>
-        <Text style={styles.valueText}>2%</Text>
-      </View>
-      <View style={styles.rowStyle}>
-        <Text style={styles.hintText}>Total Yield:</Text>
-        <Text style={styles.valueText}>16%</Text>
       </View>
     </View>
   );
@@ -67,7 +108,25 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     color: '#FFFFFF',
     marginTop: 30,
+    fontSize: 18,
   },
+  buttonContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    marginRight: '6%',
+    marginBottom: '6%',
+  },
+  downloadButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#4F4F4F',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 20,
+  },
+  downloadButtonText: {color: 'white', fontWeight: 'bold', marginLeft: 20},
 });
 
 export default BatchDetails;

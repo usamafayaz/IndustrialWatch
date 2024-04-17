@@ -5,18 +5,31 @@ import {StyleSheet} from 'react-native';
 import TextField from '../components/TextField';
 import API_URL from '../../apiConfig';
 import ButtonComponent from '../components/ButtonComponent';
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 const AddBatch = props => {
-  const {item} = props.route.params;
-  const product_number = item.product_number;
-  const product_name = item.name;
+  const {product_number, product_name} = props.route.params;
+
   const [batchPerDay, setBatchPerDay] = useState();
   const [materialList, setMaterialList] = useState([]);
+  const [seletedMaterialList, setSeletedMaterialList] = useState([]);
+
   const navigation = useNavigation();
+  const route = useRoute(); // Use useRoute hook to access route parameters
+
   useEffect(() => {
     fetchProductFormula();
   }, []);
+
+  useEffect(() => {
+    // Check if selectedStocks are provided in the route params
+    if (route.params && route.params.selectedStocks) {
+      // Update materialList with selectedStocks
+      setSeletedMaterialList(route.params.selectedStocks);
+      console.log('dsadasd', seletedMaterialList);
+    }
+  }, [route.params]); // Run this effect when route params change
+
   const fetchProductFormula = async () => {
     const response = await fetch(
       `${API_URL}/Production/GetFormulaOfProduct?product_number=${encodeURIComponent(
@@ -24,7 +37,6 @@ const AddBatch = props => {
       )}`,
     );
     const data = await response.json();
-    console.log(data);
     setMaterialList(data);
   };
 
@@ -43,6 +55,7 @@ const AddBatch = props => {
         <Text style={styles.headerStyle}>Material</Text>
         <Text style={styles.headerStyle}>Quantity</Text>
       </View>
+
       <FlatList
         data={materialList}
         renderItem={({item, index}) => {
