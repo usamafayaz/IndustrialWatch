@@ -1,16 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, FlatList, View} from 'react-native';
+import {StyleSheet, Text, FlatList, View, ToastAndroid} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import API_URL from '../../apiConfig';
 import PrimaryAppBar from '../components/PrimaryAppBar';
-import MultiSelectComponent from '../components/MultiSelectComponent';
 import ButtonComponent from '../components/ButtonComponent';
+import {useNavigation} from '@react-navigation/native';
 
-const ChooseStock = ({navigation, route}) => {
-  const {raw_material_id} = route.params;
+const ChooseStock = props => {
+  const navigation = useNavigation();
+  const {raw_material_id, product_name} = props.route.params;
 
   const [inventoryDetailList, setInventoryDetailList] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedStocks, setSelectedStocks] = useState([]);
 
   useEffect(() => {
     fetchStock();
@@ -21,22 +22,46 @@ const ChooseStock = ({navigation, route}) => {
       `${API_URL}/Production/GetStockDetailOfRawMaterial?id=${raw_material_id}`,
     );
     const data = await response.json();
-    console.log(data);
+    console.log('Fethced Data from Database:', data);
     setInventoryDetailList(data);
   };
 
+  const handleCheckboxPress = (index, newValue) => {
+    setSelectedStocks(prevSelectedStocks => {
+      // If newValue is true, add the stock_number to the selectedStocks array
+      if (newValue) {
+        const stockNumber = inventoryDetailList[index].stock_number;
+        const updatedList = [...prevSelectedStocks, stockNumber];
+        console.log(updatedList);
+        return updatedList;
+      } else {
+        // If newValue is false, remove the stock_number from the selectedStocks array
+        const stockNumberToRemove = inventoryDetailList[index].stock_number;
+        const updatedList = prevSelectedStocks.filter(
+          stock => stock !== stockNumberToRemove,
+        );
+        console.log(updatedList);
+        return updatedList;
+      }
+    });
+  };
+
   const handleDone = () => {
-    console.warn('gv');
-    const selectedStocks = inventoryDetailList.filter((_, index) =>
-      selectedItems.includes(index),
-    );
-    console.log('bhejty waqt', selectedStocks);
-    navigation.navigate('Add Batch', {selectedStocks});
+    if (selectedStocks.length > 0) {
+      const stocksObject = {
+        stocks: selectedStocks,
+        raw_material_id: raw_material_id,
+      };
+      navigation.navigate('Add Batch', {
+        selectedStocks: stocksObject,
+      });
+    } else
+      ToastAndroid.show('Please Select atleast One Stock.', ToastAndroid.SHORT);
   };
 
   return (
     <View style={styles.container}>
-      <PrimaryAppBar text={'Choose Stock'} />
+      <PrimaryAppBar text={product_name} />
       <View style={[styles.tableStyle, {marginTop: 20}]}>
         <Text style={[styles.headerStyle, {flex: 1.8}]}>Stock Number</Text>
         <Text style={[styles.headerStyle, {flex: 0.7}]}>Qty</Text>
@@ -61,20 +86,9 @@ const ChooseStock = ({navigation, route}) => {
                 {item.purchased_date}
               </Text>
               <CheckBox
-                value={selectedItems.includes(index)}
+                value={selectedStocks.includes(item.stock_number)}
                 tintColors={{true: '#2196F3', false: 'black'}}
-                onValueChange={newValue => {
-                  setSelectedItems(prevSelectedItems => {
-                    if (newValue) {
-                      // If newValue is true, add the index to the selectedItems array
-                      return [...prevSelectedItems, index];
-                    } else {
-                      // If newValue is false, remove the index from the selectedItems array
-                      return prevSelectedItems.filter(item => item !== index);
-                    }
-                  });
-                  console.log(selectedItems);
-                }}
+                onValueChange={newValue => handleCheckboxPress(index, newValue)}
               />
             </View>
           );

@@ -79,7 +79,7 @@ const Login = () => {
     setPassword(text);
   };
   const letHimGo = () => {
-    navigation.navigate('Admin Dashboard', {name: 'Ranoo'});
+    navigation.navigate('Admin Dashboard', {name: 'Admin'});
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>

@@ -16,6 +16,7 @@ const BatchDetails = props => {
         )}`,
       );
       const data = await response.json();
+      console.log(data);
       setBatchData(data);
     } catch (error) {
       console.error('Error fetching batch details:', error);
@@ -39,10 +40,19 @@ const BatchDetails = props => {
               style={[
                 styles.statusStyle,
                 {
-                  backgroundColor: batchData.status === 1 ? '#FF0000' : 'green',
+                  backgroundColor:
+                    batchData.status === 1
+                      ? '#FF0000'
+                      : batchData.status === 2
+                      ? 'grey'
+                      : 'green',
                 },
               ]}>
-              {batchData.status === 1 ? 'Rejected' : 'Accepted'}
+              {batchData.status === 1
+                ? 'Rejected'
+                : batchData.status === 2
+                ? 'Pending'
+                : 'Accepted'}
             </Text>
           </View>
           <View style={styles.rowStyle}>

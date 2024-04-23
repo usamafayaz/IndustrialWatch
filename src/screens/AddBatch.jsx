@@ -1,34 +1,54 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, TouchableOpacity, FlatList} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  ToastAndroid,
+} from 'react-native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import {StyleSheet} from 'react-native';
 import TextField from '../components/TextField';
 import API_URL from '../../apiConfig';
 import ButtonComponent from '../components/ButtonComponent';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const AddBatch = props => {
-  const {product_number, product_name} = props.route.params;
-
-  const [batchPerDay, setBatchPerDay] = useState();
+  const [product_name, setProductName] = useState(
+    props.route.params.product_name,
+  );
+  const [product_number, setProductNumber] = useState(
+    props.route.params.product_number,
+  );
+  const [batchPerDay, setBatchPerDay] = useState('');
   const [materialList, setMaterialList] = useState([]);
-  const [seletedMaterialList, setSeletedMaterialList] = useState([]);
+
+  const [allStockList, setAllStockList] = useState([]);
 
   const navigation = useNavigation();
-  const route = useRoute(); // Use useRoute hook to access route parameters
 
   useEffect(() => {
     fetchProductFormula();
   }, []);
 
   useEffect(() => {
-    // Check if selectedStocks are provided in the route params
-    if (route.params && route.params.selectedStocks) {
-      // Update materialList with selectedStocks
-      setSeletedMaterialList(route.params.selectedStocks);
-      console.log('dsadasd', seletedMaterialList);
+    if (props.route.params && props.route.params.selectedStocks) {
+      const existingIndex = allStockList.findIndex(
+        item =>
+          item.raw_material_id ===
+          props.route.params.selectedStocks.raw_material_id,
+      );
+      if (existingIndex !== -1) {
+        // If the raw_material_id already exists, overwrite its stocks
+        const updatedList = [...allStockList];
+        updatedList[existingIndex] = props.route.params.selectedStocks;
+        setAllStockList(updatedList);
+      } else {
+        // If the raw_material_id doesn't exist, add it to the list
+        setAllStockList([...allStockList, props.route.params.selectedStocks]);
+      }
     }
-  }, [route.params]); // Run this effect when route params change
+  }, [props.route.params]);
 
   const fetchProductFormula = async () => {
     const response = await fetch(
@@ -38,6 +58,48 @@ const AddBatch = props => {
     );
     const data = await response.json();
     setMaterialList(data);
+  };
+
+  const addBatch = async () => {
+    if (batchPerDay === '' || allStockList.length === 0) {
+      ToastAndroid.show('Please fill all fields', ToastAndroid.SHORT);
+      return;
+    } else if (allStockList.length != materialList.length) {
+      ToastAndroid.show('Incomplete Stock.', ToastAndroid.SHORT);
+      return;
+    }
+    const data = {
+      batch_per_day: batchPerDay,
+      product_number: product_number,
+      stock_list: allStockList.map(item => ({
+        stocks: item.stocks,
+      })),
+    };
+    try {
+      const response = await fetch(`${API_URL}/Production/AddBatch`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        ToastAndroid.show(responseData.message, ToastAndroid.SHORT);
+        navigation.goBack();
+      } else {
+        const errorData = await response.json();
+        ToastAndroid.show(
+          errorData.message || 'Failed to add Batch',
+          ToastAndroid.SHORT,
+        );
+      }
+      setAllStockList([]);
+    } catch (error) {
+      console.error('Error adding Batch:', error);
+      ToastAndroid.show('An unexpected error occurred', ToastAndroid.SHORT);
+    }
   };
 
   return (
@@ -68,6 +130,7 @@ const AddBatch = props => {
                 onPress={() => {
                   navigation.navigate('Choose Stock', {
                     raw_material_id: item.raw_material_id,
+                    product_name: product_name,
                   });
                 }}>
                 <Text style={styles.detailLink}>Choose Stock</Text>
@@ -76,8 +139,9 @@ const AddBatch = props => {
           );
         }}
       />
+
       <View style={styles.buttonWrapper}>
-        <ButtonComponent title="Add Stock" onPress={() => setModalView(true)} />
+        <ButtonComponent title="Add Batch" onPress={addBatch} />
       </View>
     </View>
   );

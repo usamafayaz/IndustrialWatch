@@ -1,40 +1,60 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
+import API_URL from '../../apiConfig';
 
 const SectionDetails = props => {
+  const navigation = useNavigation();
   const title = props.route.params.SectionName;
   const id = props.route.params.id;
 
-  const RulesList = [
-    {title: 'Smoking', fine: 500, allowedTime: '5:00', checkBox: true},
-    {title: 'On Phone', fine: 300, allowedTime: '10:00', checkBox: false},
-    {title: 'Gossiping', fine: 200, allowedTime: '20:00', checkBox: true},
-  ];
-  const navigation = useNavigation();
+  const [rulesList, setRulesList] = useState([]);
+
+  useEffect(() => {
+    fetchProductivityRules();
+  }, []);
+
+  const fetchProductivityRules = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Section/GetSectionDetail?section_id=${id}`,
+      );
+      const data = await response.json();
+      setRulesList(data.rules);
+      console.log(data);
+    } catch (error) {
+      console.error('Error fetching productivity rules:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <PrimaryAppBar text={title} />
       <Text style={styles.textStyle}>Rules Included</Text>
-      <FlatList
-        data={RulesList}
-        renderItem={({item, index}) => {
-          return (
-            <>
-              <Card
-                title={item.title}
-                fine={item.fine}
-                allowedTime={item.allowedTime}
-                ruleNumber={index + 1}
-              />
-              <View style={styles.horizontalLineStyle}></View>
-            </>
-          );
-        }}
-      />
-
+      {rulesList.length > 0 ? (
+        <FlatList
+          data={rulesList}
+          renderItem={({item, index}) => {
+            return (
+              <>
+                <Card
+                  title={item.rule_name}
+                  fine={item.fine}
+                  allowedTime={item.allowed_time}
+                  ruleNumber={index + 1}
+                />
+                <View style={styles.horizontalLineStyle}></View>
+              </>
+            );
+          }}
+        />
+      ) : (
+        <View style={styles.noRuleWrapper}>
+          <Text style={styles.noRuleText}>No rule assigned</Text>
+        </View>
+      )}
       <View style={styles.buttonWrapper}>
         <ButtonComponent
           title="Edit Section"
@@ -59,6 +79,7 @@ const Card = ({title, fine, allowedTime, ruleNumber}) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -97,5 +118,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
     opacity: 0.5,
   },
+  noRuleWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noRuleText: {
+    marginTop: 20,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+    fontStyle: 'italic',
+  },
 });
+
 export default SectionDetails;

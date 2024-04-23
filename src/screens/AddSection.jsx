@@ -11,7 +11,6 @@ import {
   Button,
   TouchableWithoutFeedback,
   ToastAndroid,
-  RefreshControl,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {useNavigation} from '@react-navigation/native';
@@ -19,14 +18,11 @@ import API_URL from '../../apiConfig';
 import TextField from '../components/TextField';
 import ButtonComponent from '../components/ButtonComponent';
 
-const EditSection = props => {
-  const [inputText, setInputText] = useState(props.route.params.SectionName);
+const AddSection = () => {
+  const [inputText, setInputText] = useState('');
   const [rulesList, setRulesList] = useState([]);
-  const [assignedRules, setAssignedRules] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedRuleIndex, setSelectedRuleIndex] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false); // State for RefreshControl
 
   const navigation = useNavigation();
 
@@ -34,52 +30,21 @@ const EditSection = props => {
     fetchProductivityRules();
   }, []);
 
-  useEffect(() => {
-    if (!isLoading) {
-      fetchDetail();
-    }
-  }, [isLoading]);
-
   const fetchProductivityRules = async () => {
     try {
       const response = await fetch(`${API_URL}/Section/GetAllRule`);
       const data = await response.json();
-      const updatedRulesList = data.map(item => {
-        const assignedRule = assignedRules.find(
-          rule => rule.rule_id === item.id,
-        );
-        return {
+      setRulesList(
+        data.map(item => ({
           id: item.id,
           title: item.name,
-          fine: assignedRule ? assignedRule.fine : 0,
-          allowed_time: assignedRule
-            ? parseTime(assignedRule.allowed_time)
-            : {hours: 0, minutes: 0},
-          checkBox: !!assignedRule,
-        };
-      });
-      setRulesList(updatedRulesList);
-      setIsLoading(false);
-      setRefreshing(false);
+          fine: 0,
+          allowed_time: {hours: 0, minutes: 0},
+          checkBox: false,
+        })),
+      );
     } catch (error) {
       console.error('Error fetching Productivity Rules:', error);
-    }
-  };
-
-  const parseTime = timeString => {
-    const [hours, minutes] = timeString.split(':').map(Number);
-    return {hours, minutes};
-  };
-
-  const fetchDetail = async () => {
-    try {
-      const respose = await fetch(
-        `${API_URL}/Section/GetSectionDetail?section_id=${props.route.params.id}`,
-      );
-      const data = await respose.json();
-      setAssignedRules(data.rules);
-    } catch (error) {
-      console.error('Error fetching section detail:', error);
     }
   };
 
@@ -88,7 +53,6 @@ const EditSection = props => {
       try {
         const filteredList = rulesList.filter(item => item.checkBox);
         const data = {
-          id: props.route.params.id,
           name: inputText,
           rules: filteredList.map(rule => ({
             rule_id: rule.id,
@@ -96,8 +60,8 @@ const EditSection = props => {
             allowed_time: `${rule.allowed_time.hours}:${rule.allowed_time.minutes}`,
           })),
         };
-        const response = await fetch(`${API_URL}/Section/UpdateSection`, {
-          method: 'PUT',
+        const response = await fetch(`${API_URL}/Section/InsertSection`, {
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -105,22 +69,22 @@ const EditSection = props => {
         });
 
         if (response.ok) {
-          ToastAndroid.show('Section Updated Successfully', ToastAndroid.SHORT);
+          ToastAndroid.show('Section Added Successfully', ToastAndroid.SHORT);
           navigation.navigate('Sections');
         } else {
           ToastAndroid.show(
-            'Error occured while updating Section.',
+            'Error occured while adding Section.',
             ToastAndroid.SHORT,
           );
         }
       } catch (error) {
         ToastAndroid.show(
-          'Error occured while updating Section.',
+          'Error occured while adding Section.',
           ToastAndroid.SHORT,
         );
       }
     } else {
-      ToastAndroid.show("Section name can't be empty", ToastAndroid.SHORT);
+      ToastAndroid.show("Section Name can't be empty", ToastAndroid.SHORT);
     }
   };
 
@@ -130,7 +94,6 @@ const EditSection = props => {
       (item.allowed_time.hours === 0 && item.allowed_time.minutes === 0)
     ) {
       ToastAndroid.show('Enter Fine and Time First', ToastAndroid.LONG);
-      console.log(assignedRules);
     } else {
       const ruleIndex = rulesList.findIndex(rule => rule.id === item.id);
       if (ruleIndex !== -1) {
@@ -139,7 +102,6 @@ const EditSection = props => {
           !updatedRulesList[ruleIndex].checkBox;
         setRulesList(updatedRulesList);
       }
-      console.log(rulesList);
     }
   };
 
@@ -164,7 +126,6 @@ const EditSection = props => {
                 setRulesList(updatedRulesList);
               }
             }}
-            value={item.fine.toString()} // Added to display fine value
           />
           <Text style={styles.textStyle}>Time:</Text>
           <TouchableOpacity
@@ -222,16 +183,6 @@ const EditSection = props => {
           renderItem={renderRuleItem}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={styles.flatListContainer}
-          refreshControl={
-            // Adding RefreshControl
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={() => {
-                setRefreshing(true);
-                fetchProductivityRules(); // Refreshing data
-              }}
-            />
-          }
         />
         <View style={styles.buttonWrapper}>
           <ButtonComponent
@@ -317,6 +268,9 @@ const styles = StyleSheet.create({
     color: 'black',
     justifyContent: 'center',
   },
+  flatListContainer: {
+    flexGrow: 1,
+  },
   ruleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -386,4 +340,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditSection;
+export default AddSection;

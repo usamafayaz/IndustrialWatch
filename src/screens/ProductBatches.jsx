@@ -57,13 +57,14 @@ const ProductBatches = props => {
       const filePath = `${folderPath}/${productNumber}.zip`;
 
       RNFetchBlob.config({
-        addAndroidDownloads: {
-          useDownloadManager: false,
-          notification: true,
-          mime: 'application/zip',
-          title: 'Defected Images',
-          description: 'Downloading Defected Images',
-        },
+        // addAndroidDownloads: {
+        //   useDownloadManager: false,
+        //   notification: true,
+        //   mime: 'application/zip',
+        //   title: 'Defected Images',
+        //   description: 'Downloading Defected Images',
+        // },
+        // fileCache: true,
         path: filePath,
       })
         .fetch(
@@ -73,6 +74,7 @@ const ProductBatches = props => {
           )}`,
           {
             'Content-Type': 'application/zip',
+            timeout: 600000, // Set timeout in milliseconds (e.g., 600 seconds)
           },
         )
         .then(res => {
@@ -113,7 +115,11 @@ const ProductBatches = props => {
                       <TouchableOpacity
                         style={{
                           backgroundColor:
-                            item.status == 1 ? 'pink' : '#FFFFFF',
+                            item.status === 1
+                              ? 'pink'
+                              : item.status === 2
+                              ? 'transparent'
+                              : '#FFFFFF',
                           margin: 3,
                           marginHorizontal: 10,
                           borderRadius: 10,
