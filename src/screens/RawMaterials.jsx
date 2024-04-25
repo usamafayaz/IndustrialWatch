@@ -7,9 +7,8 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import SectionandRuleCard from '../components/SectionandRuleCard';
+import SectionandMaterialCard from '../components/SectionandMaterialCard';
 import ButtonComponent from '../components/ButtonComponent';
-import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 import TextField from '../components/TextField';
@@ -104,11 +103,10 @@ const RawMaterials = () => {
           data={rawMaterialsList}
           renderItem={({item, index}) => {
             return (
-              <SectionandRuleCard
+              <SectionandMaterialCard
                 id={item.id}
                 title={item.name}
-                editRequired={false}
-                onDelete={false}
+                archiveRequired={false}
               />
             );
           }}

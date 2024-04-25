@@ -8,7 +8,6 @@ import AddSection from './src/screens/AddSection';
 import SectionDetails from './src/screens/SectionDetails';
 import EditSection from './src/screens/EditSection';
 import Supervisors from './src/screens/Supervisors';
-import AddSupervisor from './src/screens/AddSupervisor';
 import ProductBatches from './src/screens/ProductBatches';
 import AddProduct from './src/screens/AddProduct.jsx';
 import BatchDetails from './src/screens/BatchDetails';
@@ -42,6 +41,7 @@ import Products from './src/screens/Products';
 import LinkProduct from './src/screens/LinkProduct';
 import AddBatch from './src/screens/AddBatch';
 import ChooseStock from './src/screens/ChooseStock';
+import DeactivatedSections from './src/screens/DeactivatedSections';
 
 // gradlew bundleRelease // for AAB
 // gradlew.bat assembleRelease // for APK
@@ -79,7 +79,16 @@ const App = () => {
         <Stack.Screen
           name="Sections"
           component={Sections}
-          options={{header: () => <PrimaryAppBar text="Sections" />}}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Deactivated Sections"
+          component={DeactivatedSections}
+          options={{
+            header: () => <PrimaryAppBar text="Deactivated Sections" />,
+          }}
         />
         <Stack.Screen
           name="Add Section"
@@ -101,13 +110,6 @@ const App = () => {
           component={Supervisors}
           options={() => ({
             header: () => <PrimaryAppBar text={'Supervisors'} />,
-          })}
-        />
-        <Stack.Screen
-          name="Add Supervisor"
-          component={AddSupervisor}
-          options={() => ({
-            header: () => <PrimaryAppBar text={'Add Supervisor'} />,
           })}
         />
         {/* Newly Added */}

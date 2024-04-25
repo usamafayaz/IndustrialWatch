@@ -86,6 +86,7 @@ const LinkProduct = () => {
           <TextField
             placeHolder="e.g  60"
             value={packsPerBatch}
+            isNumeric={true}
             onChangeText={setPacksPerBatch}
           />
         </View>
@@ -93,6 +94,7 @@ const LinkProduct = () => {
           <TextField
             placeHolder="e.g  12"
             value={piecePerPack}
+            isNumeric={true}
             onChangeText={setPiecePerPack}
           />
         </View>
@@ -101,6 +103,7 @@ const LinkProduct = () => {
       <TextField
         placeHolder="e.g  0.5"
         value={rejectionTolerance}
+        isNumeric={true}
         onChangeText={setRejectionTolerance}
       />
       <View style={styles.buttonWrapper}>

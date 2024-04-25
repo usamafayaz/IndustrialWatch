@@ -74,7 +74,6 @@ const ProductBatches = props => {
           )}`,
           {
             'Content-Type': 'application/zip',
-            timeout: 600000, // Set timeout in milliseconds (e.g., 600 seconds)
           },
         )
         .then(res => {

@@ -228,6 +228,7 @@ const AddProduct = () => {
             <TextField
               placeHolder="Quantity per Item"
               value={quantityPerItem}
+              isNumeric={true}
               onChangeText={text => setQuantityPerItem(text)}
             />
             <Text style={styles.hintText}>Unit:</Text>

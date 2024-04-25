@@ -110,6 +110,7 @@ const AddBatch = props => {
         placeHolder="e.g  200"
         value={batchPerDay}
         onChangeText={setBatchPerDay}
+        isNumeric={true}
       />
 
       <View style={[styles.tableStyle, {width: '55%'}]}>

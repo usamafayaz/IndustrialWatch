@@ -130,6 +130,7 @@ const Inventory = () => {
           <TextField
             placeHolder="e.g 100"
             value={quantity}
+            isNumeric={true}
             onChangeText={text => setQuantity(text)}
           />
 
@@ -137,6 +138,7 @@ const Inventory = () => {
           <TextField
             placeHolder="e.g 1500"
             value={price}
+            isNumeric={true}
             onChangeText={text => setPrice(text)}
           />
 

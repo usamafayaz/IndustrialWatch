@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 const TextField = (props: {
   placeHolder: string;
   eyeIcon?: boolean;
+  isNumeric?: boolean;
   onChangeText: any;
   value: any;
 }) => {
@@ -18,6 +19,7 @@ const TextField = (props: {
         placeholderTextColor={'grey'}
         value={props.value}
         onChangeText={props.onChangeText}
+        keyboardType={props.isNumeric ? 'numeric' : 'default'}
       />
       {props.eyeIcon && (
         <TouchableOpacity

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,6 +8,7 @@ import {
   Text,
   Button,
   Image,
+  ToastAndroid,
 } from 'react-native';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';
@@ -16,33 +17,113 @@ import {RadioButton} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import SelectListComponent from '../components/SelectListComponent';
+import API_URL from '../../apiConfig';
 
 const AddEmployee = () => {
+  const [sectionsList, setSectionList] = useState([]);
+  const [rolesList, setRolesList] = useState([]);
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [salary, setSalary] = useState('');
   const [selectedSection, setSelectedSection] = useState('');
   const [selectedRole, setSelectedRole] = useState('');
-  const [checkedGender, setCheckedGender] = React.useState('Male');
-  const [checkedJobType, setCheckedJobType] = React.useState('Full Time');
-  const [image, setImage] = React.useState('');
+  const [checkedGender, setCheckedGender] = useState('Male');
+  const [checkedJobType, setCheckedJobType] = useState('Full-Time');
+  const [images, setImages] = useState([]);
 
-  const SectionsList = [
-    {key: '1', value: 'Manufactring'},
-    {key: '2', value: 'Packing'},
-    {key: '3', value: 'Management'},
-    {key: '4', value: 'Shipping'},
-    {key: '5', value: 'Marketing'},
-  ];
-  const RolesList = [
-    {key: '1', value: 'Manager'},
-    {key: '2', value: 'Cashier'},
-    {key: '3', value: 'Welder'},
-    {key: '4', value: 'Assembler'},
-    {key: '5', value: 'Electrician'},
-    {key: '6', value: 'Industrial Designer'},
-    {key: '7', value: 'Quality Control Inspector'},
-  ];
+  useEffect(() => {
+    fetchData(`${API_URL}/Section/GetAllSections?status=${1}`, setSectionList);
+    fetchData(`${API_URL}/Employee/GetAllJobRoles`, setRolesList);
+  }, []);
+
+  const fetchData = async (url, setter) => {
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      const formattedData = data.map(item => ({
+        key: item.id.toString(),
+        value: item.name,
+      }));
+      setter(formattedData);
+    } catch (error) {
+      ToastAndroid.show(
+        'Failed to fetch data. Please try again.',
+        ToastAndroid.SHORT,
+      );
+    }
+  };
+
+  const addEmployee = async () => {
+    if (
+      !name ||
+      !username ||
+      !password ||
+      !salary ||
+      !selectedSection ||
+      !selectedRole ||
+      images.length === 0
+    ) {
+      ToastAndroid.show(
+        'Please fill all fields and select images',
+        ToastAndroid.SHORT,
+      );
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('username', username);
+      formData.append('password', password);
+      formData.append('salary', salary);
+      formData.append('section_id', selectedSection);
+      formData.append('job_role_id', selectedRole);
+      formData.append('gender', checkedGender);
+      formData.append('job_type', checkedJobType);
+
+      images.forEach((image, index) => {
+        formData.append('files', {
+          uri: image,
+          name: `image_${index}.jpg`, // You can adjust the file name as needed
+          type: 'image/jpeg',
+        });
+      });
+
+      const response = await fetch(`${API_URL}/Employee/AddEmployee`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        ToastAndroid.show('Employee added successfully', ToastAndroid.SHORT);
+        clearFields();
+      } else {
+        ToastAndroid.show(
+          'Failed to add employee. Please try again.',
+          ToastAndroid.SHORT,
+        );
+      }
+    } catch (error) {
+      ToastAndroid.show(
+        'Failed to add employee. Please try again.',
+        ToastAndroid.SHORT,
+      );
+    }
+  };
+
+  const clearFields = () => {
+    setName('');
+    setUsername('');
+    setPassword('');
+    setSalary('');
+    setSelectedRole('');
+    setSelectedSection('');
+    setCheckedGender('Male');
+    setCheckedJobType('Full-Time');
+    setImages([]);
+  };
+
   const openImagePicker = () => {
     let options = {
       mediaType: 'photo',
@@ -50,45 +131,30 @@ const AddEmployee = () => {
       maxHeight: 550,
       quality: 1,
       includeBase64: true,
+      selectionLimit: 5, // Allow selection of up to 5 images
     };
     launchImageLibrary(options, response => {
       if (!response) {
         console.log('Invalid response from image picker');
         return;
       }
-
       if (response.didCancel) {
-        console.log('User cancelled image picker');
-        return;
-      } else if (response.errorCode == 'camera_unavailable') {
-        console.log('Camera not available on the device');
-        return;
-      } else if (response.errorCode == 'permission') {
-        console.log('Permission not satisfied');
-        return;
-      } else if (response.errorCode == 'others') {
-        console.log(response.errorMessage);
+        ToastAndroid.show('User cancelled Image Picker', ToastAndroid.SHORT);
         return;
       }
-
-      if (
-        response.assets &&
-        response.assets.length > 0 &&
-        response.assets[0].uri
-      ) {
-        console.log(response.assets[0].uri);
-        setImage(response.assets[0].uri);
+      if (response.assets && response.assets.length > 0) {
+        setImages(response.assets.map(image => image.uri));
       } else {
-        console.log('No valid image URI found in the response');
+        console.log('No valid images selected');
       }
     });
   };
 
   const renderImageContent = () => {
-    if (image) {
+    if (images.length > 0) {
       return (
         <Image
-          source={{uri: image}}
+          source={{uri: images[0]}}
           style={{
             width: 100,
             height: 100,
@@ -110,6 +176,7 @@ const AddEmployee = () => {
       );
     }
   };
+
   const navigation = useNavigation();
   return (
     <ScrollView>
@@ -125,9 +192,9 @@ const AddEmployee = () => {
             onChangeText={text => setName(text)}
           />
           <TextField
-            placeHolder="Email"
-            value={email}
-            onChangeText={text => setEmail(text)}
+            placeHolder="Username"
+            value={username}
+            onChangeText={text => setUsername(text)}
           />
           <TextField
             placeHolder="Password"
@@ -135,17 +202,23 @@ const AddEmployee = () => {
             value={password}
             onChangeText={text => setPassword(text)}
           />
+          <TextField
+            placeHolder="Salary"
+            value={salary}
+            isNumeric={true}
+            onChangeText={text => setSalary(text)}
+          />
           <View style={{width: '100%'}}>
             <SelectListComponent
               setSelected={setSelectedSection}
-              data={SectionsList}
+              data={sectionsList}
               placeholder="Select Section"
             />
           </View>
           <View style={{width: '100%'}}>
             <SelectListComponent
               setSelected={setSelectedRole}
-              data={RolesList}
+              data={rolesList}
               placeholder="Select Role"
             />
           </View>
@@ -173,20 +246,20 @@ const AddEmployee = () => {
             <Text style={styles.titleStyle}>Job Type</Text>
             <View style={styles.rowContainer}>
               <RadioButton
-                value="Full Time"
+                value="Full-Time"
                 status={
-                  checkedJobType === 'Full Time' ? 'checked' : 'unchecked'
+                  checkedJobType === 'Full-Time' ? 'checked' : 'unchecked'
                 }
-                onPress={() => setCheckedJobType('Full Time')}
+                onPress={() => setCheckedJobType('Full-Time')}
                 color="#2196F3"
               />
               <Text style={styles.optionStyle}>Full Time</Text>
               <RadioButton
-                value="Part Time"
+                value="Part-Time"
                 status={
-                  checkedJobType === 'Part Time' ? 'checked' : 'unchecked'
+                  checkedJobType === 'Part-Time' ? 'checked' : 'unchecked'
                 }
-                onPress={() => setCheckedJobType('Part Time')}
+                onPress={() => setCheckedJobType('Part-Time')}
                 color="#2196F3"
               />
               <Text style={styles.optionStyle}>Part Time</Text>
@@ -194,13 +267,7 @@ const AddEmployee = () => {
           </View>
 
           <View style={styles.buttonWrapper}>
-            <ButtonComponent
-              title="Add"
-              onPress={() => {
-                console.warn('Employee Added');
-                navigation.navigate('Employee Productivity');
-              }}
-            />
+            <ButtonComponent title="Add" onPress={addEmployee} />
           </View>
         </View>
       </TouchableWithoutFeedback>

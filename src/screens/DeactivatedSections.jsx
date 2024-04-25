@@ -8,15 +8,13 @@ import {
   ToastAndroid,
   RefreshControl,
 } from 'react-native';
+import SectionandMaterialCard from '../components/SectionandMaterialCard';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native';
 import API_URL from '../../apiConfig';
-import PrimaryAppBar from '../components/PrimaryAppBar';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import SectionandMaterialCard from '../components/SectionandMaterialCard';
 
-const Sections = () => {
+const DeactivatedSections = () => {
   const navigation = useNavigation();
   const [sectionsList, setSectionList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +23,7 @@ const Sections = () => {
   const fetchSections = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/Section/GetAllSections?status=${1}`,
+        `${API_URL}/Section/GetAllSections?status=${0}`,
       );
       const data = await response.json();
       setSectionList(data);
@@ -57,15 +55,12 @@ const Sections = () => {
         `${API_URL}/Section/ChangeSectionAcitivityStatus?section_id=${id}`,
       );
       if (response.ok) {
-        ToastAndroid.show(
-          'Section Successfully Deactivated',
-          ToastAndroid.SHORT,
-        );
+        ToastAndroid.show('Section Successfully Activated', ToastAndroid.SHORT);
         fetchSections();
       }
     } catch (error) {
-      ToastAndroid.show('Error while deactivating section', ToastAndroid.SHORT);
-      console.error('Error while deactivating section:', error);
+      ToastAndroid.show('Error while activating section', ToastAndroid.SHORT);
+      console.error('Error while activating section:', error);
     }
   };
 
@@ -78,17 +73,7 @@ const Sections = () => {
   }
   return (
     <View style={styles.container}>
-      <PrimaryAppBar text="Sections" />
       <View style={styles.flatListContainer}>
-        <Icon
-          name="archive"
-          size={26}
-          color="white"
-          style={styles.archiveButtonStyle}
-          onPress={() => {
-            navigation.navigate('Deactivated Sections');
-          }}
-        />
         <FlatList
           style={styles.flatList}
           data={sectionsList}
@@ -118,13 +103,6 @@ const Sections = () => {
           }
         />
       </View>
-
-      <View style={styles.buttonWrapper}>
-        <ButtonComponent
-          title="Add Section"
-          onPress={() => navigation.navigate('Add Section')}
-        />
-      </View>
     </View>
   );
 };
@@ -143,25 +121,11 @@ const styles = StyleSheet.create({
   flatList: {
     width: '100%',
   },
-  buttonWrapper: {
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    width: '70%',
-  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  icon: {
-    marginRight: 15,
-  },
-  archiveButtonStyle: {
-    position: 'absolute',
-    bottom: '103.5%',
-    left: '80%',
-    zIndex: 1,
-  },
 });
 
-export default Sections;
+export default DeactivatedSections;
