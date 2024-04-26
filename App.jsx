@@ -13,7 +13,6 @@ import AddProduct from './src/screens/AddProduct.jsx';
 import BatchDetails from './src/screens/BatchDetails';
 import Defects from './src/screens/Defects';
 import EmployeeProductivity from './src/screens/EmployeeProductivity';
-import ProductivityRules from './src/screens/ProductivityRules';
 import AddEmployee from './src/screens/AddEmployee';
 import EmployeeRecord from './src/screens/EmployeeRecord';
 import EmployeeDetail from './src/screens/EmployeeDetail';
@@ -42,6 +41,7 @@ import LinkProduct from './src/screens/LinkProduct';
 import AddBatch from './src/screens/AddBatch';
 import ChooseStock from './src/screens/ChooseStock';
 import DeactivatedSections from './src/screens/DeactivatedSections';
+import EditSupervisor from './src/screens/EditSupervisor';
 
 // gradlew bundleRelease // for AAB
 // gradlew.bat assembleRelease // for APK
@@ -110,6 +110,13 @@ const App = () => {
           component={Supervisors}
           options={() => ({
             header: () => <PrimaryAppBar text={'Supervisors'} />,
+          })}
+        />
+        <Stack.Screen
+          name="Edit Supervisor"
+          component={EditSupervisor}
+          options={() => ({
+            header: () => <PrimaryAppBar text={'Edit Supervisor'} />,
           })}
         />
         {/* Newly Added */}
@@ -195,13 +202,7 @@ const App = () => {
           component={Defects}
           options={{headerShown: false}}
         />
-        <Stack.Screen
-          name="Productivity Rules"
-          component={ProductivityRules}
-          options={() => ({
-            header: () => <PrimaryAppBar text={'Productivity Rules'} />,
-          })}
-        />
+
         <Stack.Screen
           name="Add Employee"
           component={AddEmployee}

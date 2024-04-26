@@ -72,7 +72,12 @@ const Sections = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#2196F3" />
+        <PrimaryAppBar text="Sections" />
+        <ActivityIndicator
+          size="large"
+          color="#2196F3"
+          style={{marginTop: '80%'}}
+        />
       </View>
     );
   }
@@ -80,15 +85,14 @@ const Sections = () => {
     <View style={styles.container}>
       <PrimaryAppBar text="Sections" />
       <View style={styles.flatListContainer}>
-        <Icon
-          name="archive"
-          size={26}
-          color="white"
-          style={styles.archiveButtonStyle}
+        <TouchableOpacity
+          style={styles.archiveRow}
           onPress={() => {
             navigation.navigate('Deactivated Sections');
-          }}
-        />
+          }}>
+          <Icon name="archive" size={23} color="white" />
+          <Text style={styles.archiveText}>Archives</Text>
+        </TouchableOpacity>
         <FlatList
           style={styles.flatList}
           data={sectionsList}
@@ -150,17 +154,27 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   icon: {
     marginRight: 15,
   },
-  archiveButtonStyle: {
+  archiveRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     position: 'absolute',
-    bottom: '103.5%',
-    left: '80%',
+    backgroundColor: '#4F4F4F',
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    bottom: '102.5%',
+    left: '65%',
     zIndex: 1,
+  },
+  archiveText: {
+    color: '#FFFFFF',
+    marginLeft: 10,
+    fontSize: 15,
   },
 });
 

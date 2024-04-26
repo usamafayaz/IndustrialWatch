@@ -3,16 +3,20 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 
-const SupervisorCard = (props: {id: string; name: string; section: string}) => {
+const SupervisorCard = ({id, name, sections}) => {
   const navigation = useNavigation();
+
   return (
     <View style={styles.cardContainer}>
       <View style={styles.textContainer}>
-        <Text style={styles.nameText}>{props.name}</Text>
-        <Text style={styles.sectionText}>{props.section}</Text>
+        <Text style={styles.nameText}>{name}</Text>
+        <Text style={styles.sectionText}>{sections}</Text>
       </View>
       <View style={styles.iconContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Edit Supervisor', {id});
+          }}>
           <Icon name="edit" size={25} color="black" style={styles.icon} />
         </TouchableOpacity>
       </View>

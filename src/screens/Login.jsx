@@ -34,7 +34,7 @@ const Login = () => {
       }
 
       const response = await fetch(
-        `${API_URL}/User/Login?username=${usernameEmail.trim()}&password=${password.trim()}`,
+        `${API_URL}/Employee/Login?username=${usernameEmail.trim()}&password=${password.trim()}`,
       );
 
       if (!response.ok) {
@@ -46,9 +46,7 @@ const Login = () => {
       }
 
       const data = await response.json();
-      console.log(data.name);
-
-      let role = data.role.toLowerCase();
+      let role = data.user_role.toLowerCase();
 
       if (role === 'supervisor') {
         navigation.navigate('Supervisor Dashboard', {name: data.name});
@@ -63,7 +61,6 @@ const Login = () => {
         );
         return;
       }
-      // Clear input fields after successful login
       setUsernameEmail('');
       setPassword('');
     } catch (error) {

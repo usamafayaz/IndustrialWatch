@@ -8,13 +8,6 @@ const EmployeeProductivity = () => {
   const navigation = useNavigation();
   const CardList = [
     {
-      name: 'Productivity Rules',
-      image: require('../../assets/icons/rules.png'),
-      onPress: () => {
-        navigation.navigate('Productivity Rules' as never);
-      },
-    },
-    {
       name: 'Add Employee',
       image: require('../../assets/icons/add_employee.png'),
       onPress: () => {

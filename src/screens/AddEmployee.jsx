@@ -98,6 +98,7 @@ const AddEmployee = () => {
       if (response.ok) {
         ToastAndroid.show('Employee added successfully', ToastAndroid.SHORT);
         clearFields();
+        navigation.goBack();
       } else {
         ToastAndroid.show(
           'Failed to add employee. Please try again.',
