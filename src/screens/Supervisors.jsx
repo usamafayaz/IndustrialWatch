@@ -6,13 +6,12 @@ import {
   View,
   ToastAndroid,
 } from 'react-native';
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import SupervisorCard from '../components/SupervisorCard';
 import API_URL from '../../apiConfig';
 const Supervisors = () => {
   const [supervisorList, setSupervisorList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigation = useNavigation();
 
   useFocusEffect(
     useCallback(() => {
@@ -27,10 +26,9 @@ const Supervisors = () => {
       const formattedData = data.map(item => ({
         id: item.employee_id,
         name: item.employee_name,
-        sections: item.sections.join(', ') || 'No sections assigned', // Show 'No sections assigned' if sections array is empty
+        sections: item.sections.join(', '),
       }));
       setSupervisorList(formattedData);
-      console.log(formattedData);
     } catch (error) {
       ToastAndroid.show('Error fetching Supervisors', ToastAndroid.SHORT);
       console.error('Error fetching Supervisors:', error);

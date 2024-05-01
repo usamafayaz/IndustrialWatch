@@ -49,6 +49,13 @@ const EditSupervisor = props => {
         sup_password: item.password,
         sup_sections: item.sections,
       }));
+      console.log(formattedData[0].sup_sections);
+      setSelectedSection([
+        {
+          key: formattedData[0].sup_sections.id,
+          value: formattedData[0].sup_sections.name,
+        },
+      ]);
       setUsername(formattedData[0].sup_username);
       setPassword(formattedData[0].sup_password);
     } catch (error) {
@@ -95,8 +102,9 @@ const EditSupervisor = props => {
       ToastAndroid.show('An unexpected error occurred', ToastAndroid.SHORT);
     }
   };
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={[styles.hintText, {marginTop: '10%'}]}>Username</Text>
       <TextField
         placeHolder="Enter Username"
@@ -117,7 +125,6 @@ const EditSupervisor = props => {
         placeholder="Select Sections"
         save={'key'}
       />
-
       <View style={styles.buttonWrapper}>
         <ButtonComponent title="Edit Supervisor" onPress={updateSupervisor} />
       </View>
@@ -129,7 +136,7 @@ export default EditSupervisor;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: '#FFFFFF',
   },
   hintText: {
@@ -141,13 +148,14 @@ const styles = StyleSheet.create({
   },
   rowStyle: {
     width: '90%',
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
   buttonWrapper: {
-    marginTop: '63%',
-    alignItems: 'center',
     width: '70%',
     alignSelf: 'center',
-    marginBottom: 20,
+    position: 'absolute',
+    bottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

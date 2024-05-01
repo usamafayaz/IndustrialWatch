@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,7 +9,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import RNFetchBlob from 'rn-fetch-blob';
 import ButtonComponent from '../components/ButtonComponent';
@@ -17,15 +17,15 @@ import API_URL from '../../apiConfig';
 
 const ProductBatches = props => {
   const {product_number, name: product_name} = props.route.params.item;
-
   const [batchesList, setBatchesList] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
-  useEffect(() => {
-    fetchBatches();
-  }, []);
-
+  useFocusEffect(
+    useCallback(() => {
+      fetchBatches();
+    }, []),
+  );
   const fetchBatches = async () => {
     try {
       const response = await fetch(
@@ -47,25 +47,24 @@ const ProductBatches = props => {
     try {
       const folderPath = `${downloadDir}/DefectedImages`;
 
-      // Check if the folder exists, create it if not
       const isFolderExists = await RNFetchBlob.fs.isDir(folderPath);
       if (!isFolderExists) {
         await RNFetchBlob.fs.mkdir(folderPath); // Create the folder
       }
 
       // Construct the file path within the folder
-      const filePath = `${folderPath}/${productNumber}.zip`;
+      const filePath = `${folderPath}/${encodeURIComponent(productNumber)}.zip`;
 
       RNFetchBlob.config({
-        // addAndroidDownloads: {
-        //   useDownloadManager: false,
-        //   notification: true,
-        //   mime: 'application/zip',
-        //   title: 'Defected Images',
-        //   description: 'Downloading Defected Images',
-        // },
-        // fileCache: true,
-        path: filePath,
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          mime: 'application/zip',
+          title: 'Defected Images',
+          description: 'Downloading Defected Images',
+          path: filePath,
+        },
+        fileCache: true,
       })
         .fetch(
           'GET',
@@ -118,14 +117,16 @@ const ProductBatches = props => {
                               ? 'pink'
                               : item.status === 2
                               ? 'transparent'
-                              : '#FFFFFF',
+                              : 'lightgreen',
                           margin: 3,
                           marginHorizontal: 10,
                           borderRadius: 10,
                         }}
                         onPress={() => {
+                          console.log(item, product_number);
                           navigation.navigate('Batch Detail', {
-                            item: item,
+                            item,
+                            product_number,
                           });
                         }}>
                         <View style={styles.BatchesContainer}>

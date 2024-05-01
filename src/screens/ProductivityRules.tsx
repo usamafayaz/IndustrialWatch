@@ -9,41 +9,44 @@ import {
 } from 'react-native';
 import SectionandMaterialCard from '../components/SectionandMaterialCard';
 import ButtonComponent from '../components/ButtonComponent';
+import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 import TextField from '../components/TextField';
 import API_URL from '../../apiConfig';
 
-const RawMaterials = () => {
+interface Rule {
+  id: number;
+  name: string;
+  // Add more properties if necessary
+}
+
+const ProductivityRules = () => {
   const [modalVisibility, setModalVisibility] = useState(false);
   const [inputText, setInputText] = useState('');
   const [loading, setLoading] = useState(true);
-  const [rawMaterialsList, setRawMaterialsList] = useState([]);
 
-  useEffect(() => {
-    fetchRawMaterials();
-  }, []);
-  const fetchRawMaterials = async () => {
+  const [rulesList, setRulesList] = useState<Rule[]>([]);
+  const fetchProductivityRules = async () => {
     try {
-      const response = await fetch(`${API_URL}/Production/GetAllRawMaterials`);
+      const response = await fetch(`${API_URL}/Rule/GetAllRule`);
       const data = await response.json();
-      setRawMaterialsList(data);
+      setRulesList(data);
     } catch (error) {
-      ToastAndroid.show('Error fetching Raw Materials', ToastAndroid.SHORT);
-      console.error('Error fetching Raw Materials:', error);
+      ToastAndroid.show(
+        'Error fetching Productivity Rules',
+        ToastAndroid.SHORT,
+      );
+      console.error('Error fetching Productivity Rules:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const addRawMaterials = async () => {
-    if (!inputText) {
-      ToastAndroid.show('Please enter Raw Material Name', ToastAndroid.SHORT);
-      return;
-    }
+  const addProductivityRule = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/Production/AddRawMaterial?name=${inputText}`,
+        `${API_URL}/Rule/AddRule?name=${inputText}`,
         {
           method: 'POST',
           headers: {
@@ -52,11 +55,11 @@ const RawMaterials = () => {
         },
       );
       const data = await response.json();
-      ToastAndroid.show('Raw Material Added Successfully', ToastAndroid.SHORT);
-      setRawMaterialsList(data);
+      ToastAndroid.show('Rule Added Successfully', ToastAndroid.SHORT);
+      setRulesList(data);
       setInputText('');
       setModalVisibility(false);
-      fetchRawMaterials();
+      fetchProductivityRules();
     } catch (error) {
       ToastAndroid.show(
         'Error fetching Productivity Rules',
@@ -67,11 +70,14 @@ const RawMaterials = () => {
     }
   };
 
-  const handleInputChange = text => {
+  useEffect(() => {
+    fetchProductivityRules();
+  }, []);
+  const handleInputChange = (text: any) => {
     setInputText(text);
   };
 
-  const handleDeleteRule = async indexToDelete => {
+  const handleDeleteRule = async (indexToDelete: number) => {
     try {
       const response = await fetch(
         `${API_URL}/Rule/DeleteRule/?id=${indexToDelete}`,
@@ -81,10 +87,10 @@ const RawMaterials = () => {
       );
       if (response.ok) {
         ToastAndroid.show('Rule deleted successfully.', ToastAndroid.SHORT);
-        fetchRawMaterials();
+        fetchProductivityRules();
       } else {
         ToastAndroid.show(
-          `Failed to delete Raw Materials `,
+          `Failed to delete Productivity Rule `,
           ToastAndroid.SHORT,
         );
       }
@@ -104,25 +110,24 @@ const RawMaterials = () => {
       <View style={styles.flatListContainer}>
         <FlatList
           style={styles.flatList}
-          data={rawMaterialsList}
+          data={rulesList}
           renderItem={({item, index}) => {
             return (
-              <SectionandMaterialCard
-                id={item.id}
-                title={item.name}
-                archiveRequired={false}
-              />
+              <View></View>
+              // <SectionandMaterialCard
+              //   id={item.id}
+              //   title={item.name}
+              //   onDelete={() => handleDeleteRule(item.id)}
+              // />
             );
           }}
         />
       </View>
       <Modal isVisible={modalVisibility}>
         <View style={styles.modalWrapper}>
-          <Text style={styles.modalHeaderStyle}>Add Raw Material</Text>
-          <Text style={styles.hintText}>Name:</Text>
-
+          <Text style={styles.modalHeaderStyle}>Add Rule</Text>
           <TextField
-            placeHolder="e.g. Metal"
+            placeHolder="Rule Name.."
             value={inputText}
             onChangeText={handleInputChange}
           />
@@ -130,7 +135,7 @@ const RawMaterials = () => {
             <TouchableOpacity onPress={() => setModalVisibility(false)}>
               <Text style={styles.cancelStyle}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={addRawMaterials}>
+            <TouchableOpacity onPress={addProductivityRule}>
               <Text style={styles.OKStyle}>OK</Text>
             </TouchableOpacity>
           </View>
@@ -139,7 +144,7 @@ const RawMaterials = () => {
 
       <View style={styles.buttonWrapper}>
         <ButtonComponent
-          title="Add Raw Material"
+          title="Add Rule"
           onPress={() => setModalVisibility(true)}
         />
       </View>
@@ -178,7 +183,7 @@ const styles = StyleSheet.create({
   modalWrapper: {
     alignItems: 'center',
     backgroundColor: 'white',
-    height: 250,
+    height: 200,
     width: 300,
     alignSelf: 'center',
     borderRadius: 30,
@@ -205,14 +210,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  hintText: {
-    alignSelf: 'flex-start',
-    color: 'grey',
-    fontWeight: '700',
-    fontSize: 18,
-    marginLeft: 35,
-    marginTop: 20,
-  },
 });
 
-export default RawMaterials;
+export default ProductivityRules;

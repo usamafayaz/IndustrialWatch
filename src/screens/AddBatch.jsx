@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   FlatList,
   ToastAndroid,
+  ActivityIndicator,
 } from 'react-native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import {StyleSheet} from 'react-native';
@@ -22,8 +23,8 @@ const AddBatch = props => {
   );
   const [batchPerDay, setBatchPerDay] = useState('');
   const [materialList, setMaterialList] = useState([]);
-
   const [allStockList, setAllStockList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
 
@@ -64,17 +65,19 @@ const AddBatch = props => {
     if (batchPerDay === '' || allStockList.length === 0) {
       ToastAndroid.show('Please fill all fields', ToastAndroid.SHORT);
       return;
-    } else if (allStockList.length != materialList.length) {
+    } else if (allStockList.length !== materialList.length) {
       ToastAndroid.show('Incomplete Stock.', ToastAndroid.SHORT);
       return;
     }
+
+    setIsLoading(true);
+
     const data = {
       batch_per_day: batchPerDay,
       product_number: product_number,
-      stock_list: allStockList.map(item => ({
-        stocks: item.stocks,
-      })),
+      stock_list: allStockList,
     };
+
     try {
       const response = await fetch(`${API_URL}/Production/AddBatch`, {
         method: 'POST',
@@ -99,6 +102,8 @@ const AddBatch = props => {
     } catch (error) {
       console.error('Error adding Batch:', error);
       ToastAndroid.show('An unexpected error occurred', ToastAndroid.SHORT);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -144,6 +149,12 @@ const AddBatch = props => {
       <View style={styles.buttonWrapper}>
         <ButtonComponent title="Add Batch" onPress={addBatch} />
       </View>
+
+      {isLoading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#2196F3" />
+        </View>
+      )}
     </View>
   );
 };
@@ -188,5 +199,11 @@ const styles = StyleSheet.create({
     width: '70%',
     alignSelf: 'center',
     marginBottom: 20,
+  },
+  loadingContainer: {
+    ...StyleSheet.absoluteFill,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 });

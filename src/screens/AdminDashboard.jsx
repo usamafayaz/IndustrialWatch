@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ImageBackground,
+  BackHandler,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -13,7 +14,6 @@ import Modal from 'react-native-modal';
 import CustomGrid from '../components/CustomGrid';
 
 const AdminDashboard = props => {
-  const {name} = props;
   const navigation = useNavigation();
   const [modalVisibility, setModalVisibility] = useState(false);
 
@@ -175,3 +175,14 @@ const styles = StyleSheet.create({
   },
 });
 export default AdminDashboard;
+
+// React.useEffect(() => {
+//   const backHandler = BackHandler.addEventListener(
+//     'hardwareBackPress',
+//     () => {
+//       BackHandler.exitApp();
+//       return true;
+//     },
+//   );
+//   return () => backHandler.remove();
+// }, []);

@@ -9,6 +9,7 @@ import {
   Button,
   Image,
   ToastAndroid,
+  ActivityIndicator,
 } from 'react-native';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';
@@ -31,6 +32,7 @@ const AddEmployee = () => {
   const [checkedGender, setCheckedGender] = useState('Male');
   const [checkedJobType, setCheckedJobType] = useState('Full-Time');
   const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false); // State to manage loading indicator
 
   useEffect(() => {
     fetchData(`${API_URL}/Section/GetAllSections?status=${1}`, setSectionList);
@@ -70,6 +72,8 @@ const AddEmployee = () => {
       );
       return;
     }
+
+    setLoading(true); // Show loading indicator when API call starts
 
     try {
       const formData = new FormData();
@@ -111,6 +115,8 @@ const AddEmployee = () => {
         ToastAndroid.SHORT,
       );
     }
+
+    setLoading(false); // Hide loading indicator after API call completes
   };
 
   const clearFields = () => {
@@ -132,8 +138,9 @@ const AddEmployee = () => {
       maxHeight: 550,
       quality: 1,
       includeBase64: true,
-      selectionLimit: 5, // Allow selection of up to 5 images
+      selectionLimit: 10,
     };
+
     launchImageLibrary(options, response => {
       if (!response) {
         console.log('Invalid response from image picker');
@@ -143,10 +150,24 @@ const AddEmployee = () => {
         ToastAndroid.show('User cancelled Image Picker', ToastAndroid.SHORT);
         return;
       }
-      if (response.assets && response.assets.length > 0) {
+      if (response.assets && response.assets.length < 5) {
+        ToastAndroid.show(
+          'Please select at least 5 images',
+          ToastAndroid.SHORT,
+        );
+        return;
+      }
+      if (response.assets && response.assets.length > 10) {
+        ToastAndroid.show('You can select up to 10 images', ToastAndroid.SHORT);
+        return;
+      }
+      if (
+        response.assets &&
+        response.assets.length >= 5 &&
+        response.assets.length <= 10
+      ) {
+        // If between 5 and 10 images are selected, set the images
         setImages(response.assets.map(image => image.uri));
-      } else {
-        console.log('No valid images selected');
       }
     });
   };
@@ -270,6 +291,13 @@ const AddEmployee = () => {
           <View style={styles.buttonWrapper}>
             <ButtonComponent title="Add" onPress={addEmployee} />
           </View>
+
+          {/* Loading indicator */}
+          {loading && (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#2196F3" />
+            </View>
+          )}
         </View>
       </TouchableWithoutFeedback>
     </ScrollView>
@@ -336,5 +364,12 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
   },
+  loadingContainer: {
+    ...StyleSheet.absoluteFill,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
 });
+
 export default AddEmployee;

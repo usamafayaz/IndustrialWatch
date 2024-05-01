@@ -6,16 +6,16 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ToastAndroid,
-  Dimensions, // Import Dimensions from react-native
+  Dimensions,
 } from 'react-native';
 import TextField from '../components/TextField';
 import ButtonComponent from '../components/ButtonComponent';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, CommonActions} from '@react-navigation/native';
 import {ScrollView} from 'react-native';
 import {Text} from 'react-native';
 import API_URL from '../../apiConfig';
 
-const {width, height} = Dimensions.get('window'); // Get the dimensions of the screen
+const {width, height} = Dimensions.get('window');
 
 const Login = () => {
   const [usernameEmail, setUsernameEmail] = useState('');
@@ -24,7 +24,6 @@ const Login = () => {
 
   const handleLoginPress = async () => {
     try {
-      // Check if usernameEmail and password are not empty
       if (!usernameEmail.trim() || !password.trim()) {
         ToastAndroid.show(
           'Please provide necessary credentials.',
@@ -49,11 +48,21 @@ const Login = () => {
       let role = data.user_role.toLowerCase();
 
       if (role === 'supervisor') {
-        navigation.navigate('Supervisor Dashboard', {name: data.name});
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'Supervisor Dashboard', params: {name: data.name}}],
+          }),
+        );
       } else if (role === 'employee') {
         navigation.navigate('Employee Login');
       } else if (role === 'admin') {
-        navigation.navigate('Admin Dashboard', {name: data.name});
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'Admin Dashboard', params: {name: data.name}}],
+          }),
+        );
       } else {
         ToastAndroid.show(
           'Incorrect credentials. Please try again.',
@@ -75,9 +84,7 @@ const Login = () => {
   const handlePasswordChange = text => {
     setPassword(text);
   };
-  const letHimGo = () => {
-    navigation.navigate('Admin Dashboard', {name: 'Admin'});
-  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ScrollView style={styles.container}>
@@ -102,7 +109,7 @@ const Login = () => {
             onChangeText={handlePasswordChange}
           />
           <View style={styles.buttonWrapper}>
-            <ButtonComponent title="Login" onPress={letHimGo} />
+            <ButtonComponent title="Login" onPress={handleLoginPress} />
           </View>
         </View>
       </ScrollView>

@@ -22,7 +22,6 @@ const ChooseStock = props => {
       `${API_URL}/Production/GetStockDetailOfRawMaterial?id=${raw_material_id}`,
     );
     const data = await response.json();
-    console.log('Fethced Data from Database:', data);
     setInventoryDetailList(data);
   };
 
@@ -32,7 +31,6 @@ const ChooseStock = props => {
       if (newValue) {
         const stockNumber = inventoryDetailList[index].stock_number;
         const updatedList = [...prevSelectedStocks, stockNumber];
-        console.log(updatedList);
         return updatedList;
       } else {
         // If newValue is false, remove the stock_number from the selectedStocks array
@@ -40,7 +38,6 @@ const ChooseStock = props => {
         const updatedList = prevSelectedStocks.filter(
           stock => stock !== stockNumberToRemove,
         );
-        console.log(updatedList);
         return updatedList;
       }
     });

@@ -3,16 +3,17 @@ import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import API_URL from '../../apiConfig';
+import RNFetchBlob from 'rn-fetch-blob';
 
 const BatchDetails = props => {
   const [batchData, setBatchData] = useState(null);
 
   // Function to fetch batch details
-  const fetchBatchDetails = async batchNumber => {
+  const fetchBatchDetails = async () => {
     try {
       const response = await fetch(
         `${API_URL}/Production/GetBatchDetails?batch_number=${encodeURIComponent(
-          batchNumber,
+          props.route.params.item.batch_number,
         )}`,
       );
       const data = await response.json();
@@ -24,9 +25,55 @@ const BatchDetails = props => {
   };
 
   useEffect(() => {
-    const batchNumber = props.route.params.item.batch_number;
-    fetchBatchDetails(batchNumber);
+    fetchBatchDetails();
   }, []);
+
+  const downloadImages = async () => {
+    const product_number = props.route.params.product_number;
+    const batch_number = props.route.params.item.batch_number;
+    const dirs = RNFetchBlob.fs.dirs;
+    const downloadDir = dirs.DownloadDir;
+    try {
+      const folderPath = `${downloadDir}/DefectedImages`;
+
+      // Check if the folder exists, create it if not
+      const isFolderExists = await RNFetchBlob.fs.isDir(folderPath);
+      if (!isFolderExists) {
+        await RNFetchBlob.fs.mkdir(folderPath); // Create the folder
+      }
+
+      // Construct the file path within the folder
+      const filePath = `${folderPath}/${encodeURIComponent(batch_number)}.zip`;
+
+      RNFetchBlob.config({
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          mime: 'application/zip',
+          title: 'Defected Images',
+          description: 'Downloading Defected Images',
+          path: filePath,
+        },
+        fileCache: true,
+      })
+        .fetch(
+          'GET',
+          `${API_URL}/Production/GetDefectedImagesOfBatch?product_number=${encodeURIComponent(
+            product_number,
+          )}&batch_number=${encodeURIComponent(batch_number)}`,
+          {
+            'Content-Type': 'application/zip',
+          },
+        )
+        .then(res => {
+          ToastAndroid.show('Download Successful.', ToastAndroid.SHORT);
+          console.log('The file saved to ', res.path());
+        });
+    } catch (error) {
+      console.error('Download failed:', error);
+      ToastAndroid.show('Download Failed.', ToastAndroid.SHORT);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -71,17 +118,21 @@ const BatchDetails = props => {
           <View style={styles.rowStyle}>
             <Text style={styles.hintText}>Rejection Tolorence:</Text>
             <Text style={styles.valueText}>
-              {batchData.rejection_tolerance}
+              {batchData.rejection_tolerance}%
             </Text>
           </View>
           <View style={styles.rowStyle}>
             <Text style={styles.hintText}>Total Yield:</Text>
-            <Text style={styles.valueText}>{batchData.batch_yield}</Text>
+            <Text style={styles.valueText}>{batchData.batch_yield}%</Text>
           </View>
         </>
       )}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.downloadButton}>
+        <TouchableOpacity
+          style={styles.downloadButton}
+          onPress={() => {
+            downloadImages();
+          }}>
           <Icon name="cloud-download" size={30} color="#FFFFFF" />
           <Text style={styles.downloadButtonText}>Download Images</Text>
         </TouchableOpacity>
