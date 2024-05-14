@@ -11,7 +11,7 @@ import {
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SectionandMaterialCard from '../components/SectionandMaterialCard';

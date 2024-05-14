@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, FlatList} from 'react-native';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 
 const SectionDetails = props => {
   const navigation = useNavigation();

@@ -4,7 +4,7 @@ import * as Progress from 'react-native-progress';
 import CardComponent from '../components/CardComponent';
 import {useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 
 const EmployeeDetail = props => {
   const navigation = useNavigation();

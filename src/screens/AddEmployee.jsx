@@ -18,7 +18,7 @@ import {RadioButton} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import SelectListComponent from '../components/SelectListComponent';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 
 const AddEmployee = () => {
   const [sectionsList, setSectionList] = useState([]);

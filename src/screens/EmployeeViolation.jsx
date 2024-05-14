@@ -10,7 +10,7 @@ import {
 import ViolationCard from '../components/ViolationCard';
 import {useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 
 const EmployeeViolation = props => {
   const [employeeViolations, setEmployeeViolations] = useState([]);

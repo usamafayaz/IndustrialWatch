@@ -17,7 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import TextField from '../components/TextField';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation, CommonActions} from '@react-navigation/native';
-
+import {API_URL, updateAPIUrl} from '../../apiConfig';
 const {width, height} = Dimensions.get('window');
 
 const Login = () => {
@@ -32,13 +32,19 @@ const Login = () => {
     const fetchIPAddress = async () => {
       try {
         const ipAddress = await AsyncStorage.getItem('IPAddress');
-        setCurrentIP(ipAddress || 'Not Set');
+        if (ipAddress !== null) {
+          setCurrentIP(ipAddress);
+          setApiAddress(ipAddress);
+        } else {
+          setCurrentIP('Not Set');
+        }
       } catch (error) {
         console.error('Error fetching IP address:', error);
       }
     };
 
     fetchIPAddress();
+    updateAPIUrl();
   }, []);
 
   const toggleApiModal = () => {
@@ -47,9 +53,15 @@ const Login = () => {
 
   const saveApiAddress = async () => {
     try {
+      if (!apiAddress) {
+        ToastAndroid.show('Please enter an IP address.', ToastAndroid.SHORT);
+        return;
+      }
       await AsyncStorage.setItem('IPAddress', apiAddress);
       setApiModalVisible(false);
       setCurrentIP(apiAddress);
+      updateAPIUrl();
+      ToastAndroid.show('IP Address changed successfully.', ToastAndroid.SHORT);
     } catch (error) {
       console.error('Error saving API address to AsyncStorage:', error);
     }
@@ -66,8 +78,6 @@ const Login = () => {
 
   const handleLoginPress = async () => {
     try {
-      const API_URL = await AsyncStorage.getItem('IPAddress');
-
       if (!usernameEmail.trim() || !password.trim()) {
         ToastAndroid.show(
           'Please provide necessary credentials.',
@@ -77,9 +87,8 @@ const Login = () => {
       }
 
       const response = await fetch(
-        `http://${API_URL}:5000/api/Employee/Login?username=${usernameEmail.trim()}&password=${password.trim()}`,
+        `${API_URL}/Employee/Login?username=${usernameEmail.trim()}&password=${password.trim()}`,
       );
-
       if (!response.ok) {
         ToastAndroid.show(
           'Incorrect credentials. Please try again.',
@@ -129,10 +138,6 @@ const Login = () => {
     setPassword(text);
   };
 
-  const handleApiAddressChange = text => {
-    setApiAddress(text);
-  };
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ScrollView style={styles.container}>
@@ -169,6 +174,7 @@ const Login = () => {
               placeHolder="Enter IP Address"
               value={apiAddress}
               onChangeText={setApiAddress}
+              isNumeric={true}
             />
             <View style={styles.modalButtonWrapper}>
               <TouchableOpacity onPress={() => setApiModalVisible(false)}>

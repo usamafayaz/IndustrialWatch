@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {ScrollView, StyleSheet, Text, ToastAndroid, View} from 'react-native';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 import TextField from '../components/TextField';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';

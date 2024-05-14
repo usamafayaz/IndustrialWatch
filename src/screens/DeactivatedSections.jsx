@@ -12,7 +12,7 @@ import SectionandMaterialCard from '../components/SectionandMaterialCard';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 
 const DeactivatedSections = () => {
   const navigation = useNavigation();

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, FlatList} from 'react-native';
 import {View} from 'react-native';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 
 const InventoryDetail = props => {

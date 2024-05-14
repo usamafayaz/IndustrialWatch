@@ -10,7 +10,7 @@ import {
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import {StyleSheet} from 'react-native';
 import TextField from '../components/TextField';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';
 

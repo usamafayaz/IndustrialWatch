@@ -3,7 +3,7 @@ import {StyleSheet, ToastAndroid, View} from 'react-native';
 import SearchBarComponent from '../components/SearchBarComponent';
 import EmployeeCard from '../components/EmployeeCard';
 import SelectListComponent from '../components/SelectListComponent';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 
 const EmployeeRecord = () => {
   const [sectionsList, setSectionList] = useState([

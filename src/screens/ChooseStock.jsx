@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, FlatList, View, ToastAndroid} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';

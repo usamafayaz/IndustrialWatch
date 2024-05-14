@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import SupervisorCard from '../components/SupervisorCard';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 const Supervisors = () => {
   const [supervisorList, setSupervisorList] = useState([]);
   const [loading, setLoading] = useState(true);

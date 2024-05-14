@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, FlatList, TouchableOpacity} from 'react-native';
 import {View} from 'react-native';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 import ButtonComponent from '../components/ButtonComponent';
 import Modal from 'react-native-modal';
 import TextField from '../components/TextField';

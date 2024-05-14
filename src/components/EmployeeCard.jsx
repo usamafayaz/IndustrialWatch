@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 
 const EmployeeCard = ({employees}) => {
   const getContainerWidth = () => {

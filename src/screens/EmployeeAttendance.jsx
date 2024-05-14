@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, FlatList, ToastAndroid} from 'react-native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 
 const EmployeeAttendance = props => {
   const [employeeAttendance, setEmployeeAttendance] = useState([]);
@@ -23,14 +23,11 @@ const EmployeeAttendance = props => {
       const data = await response.json();
 
       if (data.message) {
-        throw new Error(data.message);
+        ToastAndroid.show('No Data Found', ToastAndroid.SHORT);
       }
       setEmployeeAttendance(data);
     } catch (error) {
-      ToastAndroid.show(
-        'Error fetching employee attendance:',
-        ToastAndroid.SHORT,
-      );
+      console.log('Error fetching employee attendance:' + error);
       setError(true);
     }
   };

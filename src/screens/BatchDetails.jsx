@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 import RNFetchBlob from 'rn-fetch-blob';
 
 const BatchDetails = props => {

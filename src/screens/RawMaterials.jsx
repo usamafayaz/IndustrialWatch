@@ -12,7 +12,7 @@ import ButtonComponent from '../components/ButtonComponent';
 import {TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 import TextField from '../components/TextField';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 
 const RawMaterials = () => {
   const [modalVisibility, setModalVisibility] = useState(false);

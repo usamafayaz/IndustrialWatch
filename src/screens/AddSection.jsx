@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {useNavigation} from '@react-navigation/native';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 import TextField from '../components/TextField';
 import ButtonComponent from '../components/ButtonComponent';
 

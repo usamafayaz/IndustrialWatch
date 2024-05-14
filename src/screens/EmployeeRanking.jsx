@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import SelectListComponent from '../components/SelectListComponent';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 import {useNavigation} from '@react-navigation/native';
 //🥇🥈🥉
 const EmployeeRanking = () => {

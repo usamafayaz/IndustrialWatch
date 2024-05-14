@@ -14,7 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import TextField from '../components/TextField';
 import Modal from 'react-native-modal';
 import SecondaryAppBar from '../components/SecondaryAppBar';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 import SelectListComponent from '../components/SelectListComponent';
 import MultiSelectComponent from '../components/MultiSelectComponent';
 

@@ -13,7 +13,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import RNFetchBlob from 'rn-fetch-blob';
 import ButtonComponent from '../components/ButtonComponent';
-import API_URL from '../../apiConfig';
+import {API_URL} from '../../apiConfig';
 
 const ProductBatches = props => {
   const {product_number, name: product_name} = props.route.params.item;
