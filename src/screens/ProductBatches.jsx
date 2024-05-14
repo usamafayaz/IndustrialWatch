@@ -114,11 +114,10 @@ const ProductBatches = props => {
                         style={{
                           backgroundColor:
                             item.status === 1
-                              ? 'pink'
+                              ? 'rgba(256, 0, 0, 0.2)'
                               : item.status === 2
                               ? 'transparent'
-                              : 'lightgreen',
-                          margin: 3,
+                              : 'rgba(0, 256, 0, 0.2)',
                           marginHorizontal: 10,
                           borderRadius: 10,
                         }}
@@ -176,9 +175,9 @@ const styles = StyleSheet.create({
     paddingRight: 13,
   },
   horizontalLineStyle: {
-    width: '88%',
-    height: 1,
-    backgroundColor: 'black',
+    width: '90%',
+    height: 0.5,
+    backgroundColor: 'grey',
     alignSelf: 'center',
   },
   productsStyle: {

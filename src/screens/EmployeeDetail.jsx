@@ -1,37 +1,55 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, FlatList} from 'react-native';
 import * as Progress from 'react-native-progress';
 import CardComponent from '../components/CardComponent';
 import {useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
+import API_URL from '../../apiConfig';
 
-const EmployeeDetail = () => {
+const EmployeeDetail = props => {
   const navigation = useNavigation();
+  useEffect(() => {
+    fetchEmployeeDetails();
+  }, []);
+  const [productivity, setProductivity] = useState(0);
+  const [totalFine, setTotalFine] = useState(0);
+  const fetchEmployeeDetails = async () => {
+    const response = await fetch(
+      `${API_URL}/Employee/GetEmployeeDetail?employee_id=${props.route.params.employee.employee_id}`,
+    );
+    const data = await response.json();
+    setProductivity(data.productivity);
+    setTotalFine(data.total_fine);
+  };
   const CardList = [
     {
       name: 'Attendance',
       onPress: () => {
-        navigation.navigate('Attendance' as never);
+        navigation.navigate('Attendance', {
+          employee: props.route.params.employee,
+        });
       },
     },
     {
       name: 'Violation',
       onPress: () => {
-        navigation.navigate('Employee Violation' as never);
+        navigation.navigate('Employee Violation', {
+          employee: props.route.params.employee,
+        });
       },
     },
     {
       name: 'Summary',
       onPress: () => {
-        navigation.navigate('Employee Summary' as never);
+        navigation.navigate('Employee Summary');
       },
     },
   ];
   return (
     <View style={styles.container}>
-      <PrimaryAppBar text={'Muhammad Anees'} />
+      <PrimaryAppBar text={props.route.params.employee.name} />
       <Progress.Circle
-        progress={0.75}
+        progress={productivity / 100}
         size={170}
         showsText={true}
         color="#02DE12"
@@ -45,11 +63,11 @@ const EmployeeDetail = () => {
           textAlign: 'center',
         }}
         style={{marginTop: '10%'}}
-        formatText={() => `75%\nProductivity`}
+        formatText={() => `${productivity}%\nProductivity`}
       />
       <View style={styles.fineContainer}>
         <Text style={styles.fineHeading}>Total Fine</Text>
-        <Text style={styles.fineAmount}>2500</Text>
+        <Text style={styles.fineAmount}>{totalFine}</Text>
       </View>
       <FlatList
         style={{width: '100%'}}

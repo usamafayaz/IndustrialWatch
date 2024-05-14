@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -10,32 +10,41 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import API_URL from '../../apiConfig';
 
-const EmployeeCard = (props: {employees: any}) => {
+const EmployeeCard = ({employees}) => {
+  const getContainerWidth = () => {
+    if (employees.length === 1) {
+      return '65%';
+    }
+    return '46%';
+  };
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={props.employees}
+        data={employees}
         renderItem={({item}) => {
           return (
             <TouchableOpacity
-              style={styles.employeeContainer}
+              style={[styles.employeeContainer, {width: getContainerWidth()}]}
               onPress={() => {
-                navigation.navigate('Employee Detail' as never);
+                navigation.navigate('Employee Detail', {employee: item});
               }}>
               <View style={styles.imageContainer}>
                 <Image
-                  resizeMode="center"
-                  source={item.image}
+                  resizeMode="cover"
+                  source={{
+                    uri: `${API_URL}/EmployeeImage/${encodeURIComponent(
+                      item.image,
+                    )}`,
+                  }}
                   style={styles.image}
                 />
               </View>
               <View style={styles.textContainer}>
-                <View>
-                  <Text style={styles.nameStyle}>{item.name}</Text>
-                  <Text style={styles.positionStyle}>{item.position}</Text>
-                </View>
+                <Text style={styles.nameStyle}>{item.name}</Text>
+
                 <View style={styles.productivityContainer}>
                   <Icon name="clock" color={'#FFB800'} size={15}></Icon>
                   <Text style={styles.productivityStyle}>
@@ -43,10 +52,11 @@ const EmployeeCard = (props: {employees: any}) => {
                   </Text>
                 </View>
               </View>
+              <Text style={styles.positionStyle}>{item.section_name}</Text>
             </TouchableOpacity>
           );
         }}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.employee_id.toString()}
         numColumns={2}
         contentContainerStyle={styles.grid}
       />
@@ -73,20 +83,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: 'black',
     shadowOffset: {width: 0, height: 2},
-    shadowRadius: 5, // Adjust the radius as needed
-    elevation: 2, // Android shadow elevation
+    shadowRadius: 5,
+    elevation: 2,
   },
   imageContainer: {
-    backgroundColor: '#F2F2F2', // Background color for the image
-    width: 155,
-    height: 105,
     borderRadius: 10,
-    justifyContent: 'center',
-    alignSelf: 'center',
     alignItems: 'center',
-    overflow: 'hidden', // Clip the image within the rounded corners
+    marginBottom: 6,
   },
-  image: {width: 140, height: 90, borderRadius: 10},
+  image: {width: 155, height: 105, borderRadius: 10},
   textContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

@@ -79,7 +79,7 @@ const EditSupervisor = props => {
         sections: selectedSections.map(item => parseInt(item)),
       };
       const response = await fetch(`${API_URL}/Employee/UpdateSupervisor`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
