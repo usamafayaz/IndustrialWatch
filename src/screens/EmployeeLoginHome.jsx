@@ -1,16 +1,15 @@
 import React from 'react';
-import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import * as Progress from 'react-native-progress';
-import CardComponent from '../components/CardComponent';
 import {useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 
-const EmployeeLoginHome = () => {
-  const navigation = useNavigation();
+const EmployeeLoginHome = props => {
+  const {name, employee_id} = props.route.params.employee;
 
   return (
     <View style={styles.container}>
-      <PrimaryAppBar text="Home" />
+      <PrimaryAppBar text={name} arrowNotRequired={true} />
       <Image
         source={require('../../assets/images/employeevector.png')}
         style={styles.imageStyle}

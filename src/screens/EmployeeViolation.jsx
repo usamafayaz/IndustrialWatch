@@ -20,15 +20,12 @@ const EmployeeViolation = props => {
   }, []);
   const navigation = useNavigation();
   const fetchEmployeeViolations = async () => {
-    console.log('Called');
     try {
       const response = await fetch(
         `${API_URL}/Employee/GetAllViolations?employee_id=${props.route.params.employee.employee_id}`,
       );
       const data = await response.json();
-      console.log('date', data);
       setEmployeeViolations(data);
-      console.log('dataaa', employeeViolations);
     } catch (error) {
       ToastAndroid.show(
         'Error fetching employee Violations:',

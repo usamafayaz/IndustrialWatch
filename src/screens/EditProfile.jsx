@@ -1,76 +1,76 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, Image, ToastAndroid} from 'react-native';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {launchImageLibrary} from 'react-native-image-picker';
 import TextField from '../components/TextField';
 import {Text} from 'react-native-paper';
+import {API_URL} from '../../apiConfig';
 
-const AddEmployee = () => {
-  const [name, setName] = useState('Usama Fayyaz');
-  const [username, setUsername] = useState('Usama@gmail.conm');
-  const [password, setPassword] = useState('abc@123');
+const AddEmployee = props => {
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [image, setImage] = React.useState('');
 
-  const openImagePicker = () => {
-    let options = {
-      mediaType: 'photo',
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
-      includeBase64: true,
-    };
-    launchImageLibrary(options, response => {
-      if (!response) {
-        console.log('Invalid response from image picker');
-        return;
-      }
-      if (
-        response.assets &&
-        response.assets.length > 0 &&
-        response.assets[0].uri
-      ) {
-        console.log(response.assets[0].uri);
-        setImage(response.assets[0].uri);
-      } else {
-        console.log('No valid image URI found in the response');
-      }
-    });
-  };
+  const employee = props.route.params.employeeDetail;
+  const id = props.route.params.id;
+  useEffect(() => {
+    setName(employee.name);
+    setUsername(employee.username);
+    setPassword(employee.password);
+    setImage(employee.image);
+  }, []);
 
-  const renderImageContent = () => {
-    if (image) {
-      return (
-        <Image
-          source={{uri: image}}
-          style={{
-            width: 100,
-            height: 100,
-            borderRadius: 60,
-            position: 'absolute',
-          }}
-        />
+  const updateProfile = async () => {
+    if (!name || !username || !password) {
+      ToastAndroid.show('Please Fill all the fields.', ToastAndroid.SHORT);
+      return;
+    }
+    const data = {
+      id: id,
+      name: name,
+      username: username,
+      password: password,
+    };
+    try {
+      const response = await fetch(
+        `${API_URL}/Employee/UpdateEmployeeProfile`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
       );
-    } else {
-      return (
-        <Icon
-          name="add-a-photo"
-          size={35}
-          color="black"
-          onPress={() => {
-            openImagePicker();
-          }}
-        />
-      );
+
+      if (response.ok) {
+        ToastAndroid.show('Information Updated.', ToastAndroid.SHORT);
+      } else {
+        throw new Error('Failed to update profile');
+      }
+    } catch (error) {
+      ToastAndroid.show('Failed to update profile.', ToastAndroid.SHORT);
     }
   };
+
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>Edit Profile</Text>
+      </View>
       <View style={styles.design}></View>
       <View style={styles.whiteDesign}></View>
-      <View style={styles.imageContainer}>{renderImageContent()}</View>
+      <View style={styles.imageContainer}>
+        <Image
+          resizeMode="cover"
+          source={{
+            uri: `${API_URL}/EmployeeImage/${encodeURIComponent(image)}`,
+          }}
+          style={styles.imageStyle}
+        />
+      </View>
       <View style={{width: '100%', alignItems: 'center', marginTop: 80}}>
         <Text style={styles.hintStyle}>Name</Text>
         <TextField
@@ -78,7 +78,7 @@ const AddEmployee = () => {
           value={name}
           onChangeText={text => setName(text)}
         />
-        <Text style={styles.hintStyle}>Email</Text>
+        <Text style={styles.hintStyle}>Username</Text>
         <TextField
           placeHolder=""
           value={username}
@@ -94,13 +94,7 @@ const AddEmployee = () => {
         />
       </View>
       <View style={styles.buttonWrapper}>
-        <ButtonComponent
-          title="Update Profile"
-          onPress={() => {
-            console.warn('Profile Updated');
-            navigation.navigate('Employee Profile');
-          }}
-        />
+        <ButtonComponent title="Update Profile" onPress={updateProfile} />
       </View>
     </View>
   );
@@ -130,7 +124,7 @@ const styles = StyleSheet.create({
   },
   design: {
     backgroundColor: '#2196F3',
-    height: 140,
+    height: 115,
     width: '100%',
     borderBottomRightRadius: 140,
     borderBottomLeftRadius: 140,
@@ -150,5 +144,19 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: '9%',
   },
+  imageStyle: {
+    width: 100,
+    height: 100,
+    borderRadius: 60,
+    position: 'absolute',
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    paddingLeft: '8%',
+    paddingTop: '2%',
+  },
+  headerContainer: {backgroundColor: '#2196F3', width: '100%'},
 });
 export default AddEmployee;

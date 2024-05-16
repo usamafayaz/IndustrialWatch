@@ -2,7 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-const PrimaryAppBar = (props: {text: string}) => {
+const PrimaryAppBar = (props: {text: string; arrowNotRequired?: boolean}) => {
   const navigation = useNavigation();
 
   return (
@@ -17,14 +17,16 @@ const PrimaryAppBar = (props: {text: string}) => {
             : '#FFFFFF',
       }}>
       <View style={styles.rowContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon
-            name="arrow-back"
-            size={30}
-            color={'white'}
-            style={{backgroundColor: '#2196F3', borderRadius: 30, padding: 5}}
-          />
-        </TouchableOpacity>
+        {props.arrowNotRequired ? null : (
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon
+              name="arrow-back"
+              size={30}
+              color={'white'}
+              style={{backgroundColor: '#2196F3', borderRadius: 30, padding: 5}}
+            />
+          </TouchableOpacity>
+        )}
         <Text style={styles.headerStyle}>{props.text}</Text>
       </View>
     </View>

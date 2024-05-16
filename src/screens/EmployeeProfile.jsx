@@ -1,9 +1,24 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-const EmployeeProfile = () => {
+import {API_URL} from '../../apiConfig';
+const EmployeeProfile = props => {
+  const employee = props.route.params.employee;
+  const [employeeDetail, setEmployeeDetail] = useState({});
+
+  useEffect(() => {
+    fetchEmployeeProfile();
+  }, []);
+
+  const fetchEmployeeProfile = async () => {
+    const response = await fetch(
+      `${API_URL}/Employee/GetEmployeeProfile?employee_id=${employee.employee_id}`,
+    );
+    const data = await response.json();
+    setEmployeeDetail(data);
+  };
   const navigation = useNavigation();
   const [modalVisibility, setModalVisibility] = useState(false);
   return (
@@ -13,7 +28,10 @@ const EmployeeProfile = () => {
           <Text style={styles.headerText}>Profile</Text>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Edit Profile' as never);
+              navigation.navigate('Edit Profile', {
+                employeeDetail,
+                id: employee.employee_id,
+              });
             }}>
             <Icon name="edit" size={23} color={'white'} />
           </TouchableOpacity>
@@ -22,31 +40,36 @@ const EmployeeProfile = () => {
       <View style={styles.whiteDesign}></View>
       <View style={styles.imageContainer}>
         <Image
-          source={require('../../assets/images/employeevector.png')}
+          resizeMode="cover"
+          source={{
+            uri: `${API_URL}/EmployeeImage/${encodeURIComponent(
+              employeeDetail.image,
+            )}`,
+          }}
           style={styles.imageStyle}
         />
       </View>
-      <Text style={styles.nameStyle}>Usama Fayyaz</Text>
-      <Text style={styles.roleStyle}>Mechanic</Text>
+      <Text style={styles.nameStyle}>{employeeDetail.name}</Text>
+      <Text style={styles.roleStyle}>{employeeDetail.username}</Text>
       <View style={styles.rowField}>
-        <Icon name="mail" size={20} color={'#2196F3'} />
-        <Text style={styles.textStyle}>Usama Fayyaz</Text>
+        <Icon name="diversity-1" size={20} color={'#2196F3'} />
+        <Text style={styles.textStyle}>{employeeDetail.job_role}</Text>
       </View>
       <View style={styles.rowField}>
         <Icon name="factory" size={20} color={'#2196F3'} />
-        <Text style={styles.textStyle}>Manufacturing</Text>
+        <Text style={styles.textStyle}>{employeeDetail.section}</Text>
       </View>
       <View style={styles.rowField}>
         <Icon name="schedule" size={20} color={'#2196F3'} />
-        <Text style={styles.textStyle}>Full Time</Text>
+        <Text style={styles.textStyle}>{employeeDetail.job_type}</Text>
       </View>
       <TouchableOpacity
-        style={styles.rowField}
+        style={[styles.rowField, styles.logoutButton]}
         onPress={() => {
           setModalVisibility(true);
         }}>
-        <Icon name="logout" size={22} color="#2196F3" />
-        <Text style={styles.textStyle}>Logout</Text>
+        <Icon name="logout" size={22} color="#EB5757" />
+        <Text style={[styles.textStyle, {color: '#EB5757'}]}>Logout</Text>
       </TouchableOpacity>
       <Modal isVisible={modalVisibility}>
         <View style={styles.modalWrapper}>
@@ -60,7 +83,7 @@ const EmployeeProfile = () => {
             <TouchableOpacity
               onPress={() => {
                 setModalVisibility(false);
-                navigation.navigate('Login' as never);
+                navigation.navigate('Login');
               }}>
               <Text style={styles.OKStyle}>Logout</Text>
             </TouchableOpacity>
@@ -90,7 +113,7 @@ const styles = StyleSheet.create({
     padding: 30,
     borderRadius: 600,
     position: 'absolute',
-    top: 90,
+    top: 95,
     height: 100,
     width: 100,
   },
@@ -112,8 +135,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 600,
     position: 'absolute',
-    height: 105,
-    width: 105,
+    height: 110,
+    width: 110,
     top: 90,
   },
   nameStyle: {color: 'black', fontSize: 24, fontWeight: 'bold'},
@@ -127,24 +150,30 @@ const styles = StyleSheet.create({
     height: '7%',
     marginBottom: '3%',
   },
+  logoutButton: {
+    justifyContent: 'center',
+    borderColor: '#BBBBBB',
+    borderWidth: 1,
+    marginTop: 30,
+  },
   textStyle: {color: 'black', fontSize: 18, marginLeft: 20},
   confirmationMessage: {
     fontSize: 18,
     color: 'black',
     fontWeight: 'bold',
-    marginTop: '10%',
   },
   modalWrapper: {
-    alignItems: 'center',
+    paddingLeft: '5%',
+    paddingTop: '5%',
     backgroundColor: 'white',
-    height: '20%',
+    height: '18%',
     width: '90%',
     alignSelf: 'center',
     borderRadius: 20,
   },
   modalButtonWrapper: {
     flexDirection: 'row',
-    marginLeft: '43%',
+    marginLeft: '50%',
     marginTop: '12%',
   },
   cancelStyle: {

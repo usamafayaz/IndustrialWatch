@@ -8,6 +8,7 @@ const EmployeeAttendance = props => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    console.log(props.route.params.employee);
     fetchEmployeeAttendance();
   }, []);
 

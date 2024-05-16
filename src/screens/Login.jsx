@@ -8,7 +8,6 @@ import {
   ToastAndroid,
   Dimensions,
   Text,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import Modal from 'react-native-modal';
@@ -42,15 +41,67 @@ const Login = () => {
         console.error('Error fetching IP address:', error);
       }
     };
-
     fetchIPAddress();
     updateAPIUrl();
   }, []);
 
-  const toggleApiModal = () => {
-    setApiModalVisible(!apiModalVisible);
-  };
+  const handleLoginPress = async () => {
+    try {
+      if (!usernameEmail.trim() || !password.trim()) {
+        ToastAndroid.show(
+          'Please provide necessary credentials.',
+          ToastAndroid.SHORT,
+        );
+        return;
+      }
 
+      const response = await fetch(
+        `${API_URL}/Employee/Login?username=${usernameEmail.trim()}&password=${password.trim()}`,
+      );
+      if (!response.ok) {
+        ToastAndroid.show(
+          'Incorrect credentials. Please try again.',
+          ToastAndroid.SHORT,
+        );
+        return;
+      }
+      const data = await response.json();
+      let role = data.user_role.toLowerCase();
+
+      if (role === 'supervisor') {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'Supervisor Dashboard', params: {name: data.name}}],
+          }),
+        );
+      } else if (role === 'employee') {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'Employee Login', params: {data: data}}],
+          }),
+        );
+      } else if (role === 'admin') {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'Admin Dashboard', params: {name: data.name}}],
+          }),
+        );
+      } else {
+        ToastAndroid.show(
+          'Incorrect credentials. Please try again.',
+          ToastAndroid.SHORT,
+        );
+        return;
+      }
+      setUsernameEmail('');
+      setPassword('');
+    } catch (error) {
+      console.error('Error occurred during login:', error);
+    }
+  };
   const saveApiAddress = async () => {
     try {
       if (!apiAddress) {
@@ -76,68 +127,6 @@ const Login = () => {
     );
   };
 
-  const handleLoginPress = async () => {
-    try {
-      if (!usernameEmail.trim() || !password.trim()) {
-        ToastAndroid.show(
-          'Please provide necessary credentials.',
-          ToastAndroid.SHORT,
-        );
-        return;
-      }
-
-      const response = await fetch(
-        `${API_URL}/Employee/Login?username=${usernameEmail.trim()}&password=${password.trim()}`,
-      );
-      if (!response.ok) {
-        ToastAndroid.show(
-          'Incorrect credentials. Please try again.',
-          ToastAndroid.SHORT,
-        );
-        return;
-      }
-
-      const data = await response.json();
-      let role = data.user_role.toLowerCase();
-
-      if (role === 'supervisor') {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{name: 'Supervisor Dashboard', params: {name: data.name}}],
-          }),
-        );
-      } else if (role === 'employee') {
-        navigation.navigate('Employee Login');
-      } else if (role === 'admin') {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{name: 'Admin Dashboard', params: {name: data.name}}],
-          }),
-        );
-      } else {
-        ToastAndroid.show(
-          'Incorrect credentials. Please try again.',
-          ToastAndroid.SHORT,
-        );
-        return;
-      }
-      setUsernameEmail('');
-      setPassword('');
-    } catch (error) {
-      console.error('Error occurred during login:', error);
-    }
-  };
-
-  const handleUsernameEmailChange = text => {
-    setUsernameEmail(text);
-  };
-
-  const handlePasswordChange = text => {
-    setPassword(text);
-  };
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ScrollView style={styles.container}>
@@ -153,13 +142,13 @@ const Login = () => {
           <TextField
             placeHolder="Username/Email"
             value={usernameEmail}
-            onChangeText={handleUsernameEmailChange}
+            onChangeText={setUsernameEmail}
           />
           <TextField
             placeHolder="Password"
             eyeIcon={true}
             value={password}
-            onChangeText={handlePasswordChange}
+            onChangeText={setPassword}
           />
           <View style={styles.buttonWrapper}>
             <ButtonComponent title="Login" onPress={handleLoginPress} />
@@ -186,9 +175,12 @@ const Login = () => {
             </View>
           </View>
         </Modal>
-        <TouchableWithoutFeedback onPress={toggleApiModal}>
-          <View style={styles.apiButtonContainer}>
-            <Text style={styles.apiButtonText}>API</Text>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setApiModalVisible(!apiModalVisible);
+          }}>
+          <View style={styles.IPButtonContainer}>
+            <Text style={styles.IPButtonText}>IP Address</Text>
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>
@@ -232,7 +224,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 10,
   },
-  apiButtonContainer: {
+  IPButtonContainer: {
     position: 'absolute',
     top: 20,
     right: 20,
@@ -241,8 +233,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 20,
   },
-  apiButtonText: {
+  IPButtonText: {
     color: 'white',
+    fontWeight: 'bold',
   },
   modalHeaderStyle: {
     fontSize: 18,

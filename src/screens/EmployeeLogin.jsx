@@ -2,7 +2,6 @@ import React from 'react';
 import {View, TouchableOpacity, Text, Image, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useNavigation} from '@react-navigation/native';
-// import Icon from 'react-native-vector-icons/FontAwesome';
 import EmployeeAttendance from './EmployeeAttendance';
 import EmployeeViolation from './EmployeeViolation';
 import EmployeeLoginHome from './EmployeeLoginHome';
@@ -11,7 +10,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Tab = createBottomTabNavigator();
 
-const EmployeeLogin = () => {
+const EmployeeLogin = props => {
+  const {id, name, user_role} = props.route.params.data;
+  const employee = {employee_id: id, name, user_role};
   const navigation = useNavigation();
   return (
     <View style={{flex: 1}}>
@@ -36,22 +37,29 @@ const EmployeeLogin = () => {
             return <Icon name={iconName} size={22} color={color} />;
           },
         })}>
-        <Tab.Screen name="Home" component={EmployeeLoginHome} />
+        <Tab.Screen
+          name="Home"
+          component={EmployeeLoginHome}
+          initialParams={{employee: employee}}
+        />
         <Tab.Screen
           name="Attendance"
           component={EmployeeAttendance}
           options={{headerShown: false}}
+          initialParams={{employee: employee}}
         />
         <Tab.Screen name=" " component={EmployeeLoginHome} />
         <Tab.Screen
           name="Violations"
           component={EmployeeViolation}
           options={{headerShown: false}}
+          initialParams={{employee: employee}}
         />
         <Tab.Screen
           name="Profile"
           component={EmployeeProfile}
           options={{headerShown: false}}
+          initialParams={{employee: employee}}
         />
       </Tab.Navigator>
       <TouchableOpacity

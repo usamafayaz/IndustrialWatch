@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'black',
     fontWeight: 'bold',
-    marginTop: '10%',
   },
   headerStyle: {
     fontSize: 23,
@@ -147,16 +146,17 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   modalWrapper: {
-    alignItems: 'center',
+    paddingLeft: '5%',
+    paddingTop: '5%',
     backgroundColor: 'white',
-    height: '20%',
+    height: '18%',
     width: '90%',
     alignSelf: 'center',
     borderRadius: 20,
   },
   modalButtonWrapper: {
     flexDirection: 'row',
-    marginLeft: '43%',
+    marginLeft: '50%',
     marginTop: '12%',
   },
   cancelStyle: {
