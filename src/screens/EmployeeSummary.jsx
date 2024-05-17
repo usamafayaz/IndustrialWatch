@@ -5,24 +5,42 @@ import * as Progress from 'react-native-progress';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import MonthPicker from 'react-native-month-year-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {API_URL} from '../../apiConfig';
 
-const EmployeeSummary = () => {
+const EmployeeSummary = props => {
+  const {employee_id} = props.route.params.employee;
   const [date, setDate] = useState(new Date());
   const [pickerVisibility, setPickerVisibility] = useState(false);
-  const [displayedMonthYear, setDisplayedMonthYear] = useState('');
+  const [employeeSummary, setEmployeeSummary] = useState(null);
 
   useEffect(() => {
-    setDisplayedMonthYear(getDisplayedMonthYear(date));
-  }, [date]);
+    fetchEmployeeSummary(date);
+  }, []);
 
-  const showPicker = () => setPickerVisibility(true);
+  const fetchEmployeeSummary = async selectedDate => {
+    try {
+      const formattedDate = `${
+        selectedDate.getMonth() + 1
+      },${selectedDate.getFullYear()}`;
+      console.log('me', date);
+      const response = await fetch(
+        `${API_URL}/Employee/GetEmployeeSummary?employee_id=${employee_id}&date=${formattedDate}`,
+      );
+      const data = await response.json();
+      setEmployeeSummary(data);
+    } catch (error) {
+      console.error('Error fetching employee summary:', error);
+    }
+  };
 
   const onValueChange = (event, newDate) => {
     const selectedDate = new Date(date);
     selectedDate.setMonth(newDate.getMonth());
     selectedDate.setFullYear(newDate.getFullYear());
     setPickerVisibility(false);
+    console.log(selectedDate);
     setDate(selectedDate);
+    fetchEmployeeSummary(newDate);
   };
 
   const getDisplayedMonthYear = date => {
@@ -50,9 +68,13 @@ const EmployeeSummary = () => {
       <PrimaryAppBar text={'Summary'} />
       <View style={{paddingHorizontal: 20}}>
         <Text style={styles.label}>Select Month:</Text>
-        <TouchableOpacity style={styles.dateRow} onPress={showPicker}>
+        <TouchableOpacity
+          style={styles.dateRow}
+          onPress={() => {
+            setPickerVisibility(true);
+          }}>
           <Icon name="calendar-month" color={'#000000'} size={30} />
-          <Text style={styles.dateStyle}>{displayedMonthYear}</Text>
+          <Text style={styles.dateStyle}>{getDisplayedMonthYear(date)}</Text>
           <Icon name="arrow-right" color={'#000000'} size={30} />
         </TouchableOpacity>
         {pickerVisibility && (
@@ -65,33 +87,51 @@ const EmployeeSummary = () => {
           />
         )}
         <View style={styles.horizontalLineStyle}></View>
-
-        <View style={styles.progessContainer}>
-          <Progress.Circle
-            progress={0.667}
-            size={160}
-            showsText={true}
-            color="#02DE12"
-            thickness={15}
-            unfilledColor="#D4D4D4"
-            borderColor="#D4D4D4"
-            textStyle={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              color: 'black',
-              textAlign: 'center',
-            }}
-            formatText={() => `20/30\nAttendance`}
-          />
-        </View>
-        <View style={styles.bottomContainer}>
-          <Text style={styles.headingStyle}>Fine</Text>
-          <Text style={styles.amountStyle}>2500</Text>
-        </View>
-        <View style={styles.bottomContainer}>
-          <Text style={styles.headingStyle}>Violation</Text>
-          <Text style={styles.amountStyle}>5</Text>
-        </View>
+        {employeeSummary && (
+          <>
+            <View style={styles.progessContainer}>
+              <Progress.Circle
+                progress={
+                  employeeSummary.attendance_rate == 'N/A'
+                    ? 0
+                    : parseFloat(
+                        employeeSummary.attendance_rate.split('/')[0],
+                      ) /
+                      parseFloat(employeeSummary.attendance_rate.split('/')[1])
+                }
+                size={160}
+                showsText={true}
+                color="#02DE12"
+                thickness={15}
+                unfilledColor="#D4D4D4"
+                borderColor="#D4D4D4"
+                textStyle={{
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  color: 'black',
+                  textAlign: 'center',
+                }}
+                formatText={() =>
+                  employeeSummary.attendance_rate == 'N/A'
+                    ? 'No Record'
+                    : `${employeeSummary.attendance_rate}\nAttendance`
+                }
+              />
+            </View>
+            <View style={styles.bottomContainer}>
+              <Text style={styles.headingStyle}>Fine</Text>
+              <Text style={styles.amountStyle}>
+                {employeeSummary.total_fine}
+              </Text>
+            </View>
+            <View style={styles.bottomContainer}>
+              <Text style={styles.headingStyle}>Violation</Text>
+              <Text style={styles.amountStyle}>
+                {employeeSummary.violation_count}
+              </Text>
+            </View>
+          </>
+        )}
       </View>
     </View>
   );

@@ -1,11 +1,24 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import * as Progress from 'react-native-progress';
 import {useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
+import {API_URL} from '../../apiConfig';
 
 const EmployeeLoginHome = props => {
   const {name, employee_id} = props.route.params.employee;
+
+  useEffect(() => {
+    fetchEmployeeDetails();
+  }, []);
+  const [employeeDetail, setEmployeeDetail] = useState({});
+  const fetchEmployeeDetails = async () => {
+    const response = await fetch(
+      `${API_URL}/Employee/GetEmployeeDetail?employee_id=${employee_id}`,
+    );
+    const data = await response.json();
+    setEmployeeDetail(data);
+  };
 
   return (
     <View style={styles.container}>
@@ -15,7 +28,9 @@ const EmployeeLoginHome = props => {
         style={styles.imageStyle}
       />
       <Progress.Circle
-        progress={0.75}
+        progress={
+          employeeDetail.productivity ? employeeDetail.productivity / 100 : 0
+        }
         size={170}
         showsText={true}
         color="#02DE12"
@@ -24,15 +39,19 @@ const EmployeeLoginHome = props => {
         borderColor="#D4D4D4"
         style={{marginBottom: '22%', marginTop: '10%'}}
         textStyle={styles.progressText}
-        formatText={() => `75%\nProductivity`}
+        formatText={() =>
+          employeeDetail.productivity
+            ? `${employeeDetail.productivity}%\nProductivity`
+            : 'No Record'
+        }
       />
       <View style={styles.fineContainer}>
         <Text style={styles.fineHeading}>Total Fine</Text>
-        <Text style={styles.fineAmount}>2500</Text>
+        <Text style={styles.fineAmount}>{employeeDetail.total_fine}</Text>
       </View>
       <View style={styles.fineContainer}>
         <Text style={styles.fineHeading}>Total Attendance</Text>
-        <Text style={styles.fineAmount}>25/30</Text>
+        <Text style={styles.fineAmount}>{employeeDetail.total_attendance}</Text>
       </View>
     </View>
   );

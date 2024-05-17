@@ -41,7 +41,9 @@ const EmployeeDetail = props => {
     {
       name: 'Summary',
       onPress: () => {
-        navigation.navigate('Employee Summary');
+        navigation.navigate('Employee Summary', {
+          employee: props.route.params.employee,
+        });
       },
     },
   ];

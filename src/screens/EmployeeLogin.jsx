@@ -65,16 +65,9 @@ const EmployeeLogin = props => {
       <TouchableOpacity
         style={styles.floatingButtonStyle}
         onPress={() => {
-          navigation.navigate('Employee Summary');
+          navigation.navigate('Employee Summary', {employee});
         }}>
-        <Icon
-          name="summarize"
-          size={25}
-          color="white"
-          onPress={() => {
-            navigation.navigate('Employee Summary');
-          }}
-        />
+        <Icon name="summarize" size={25} color="white" />
       </TouchableOpacity>
     </View>
   );
