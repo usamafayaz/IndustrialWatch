@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderBottomRightRadius: 19.99,
   },
 
   fineHeading: {color: '#4E4E4E', fontWeight: 'bold', fontSize: 20},

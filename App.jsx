@@ -119,7 +119,6 @@ const App = () => {
             header: () => <PrimaryAppBar text={'Edit Supervisor'} />,
           })}
         />
-        {/* Newly Added */}
         <Stack.Screen
           name="Production"
           component={ProductionDashboard}

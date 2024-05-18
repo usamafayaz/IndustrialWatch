@@ -1,15 +1,23 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Image, StyleSheet, View, Text} from 'react-native';
+import {API_URL} from '../../apiConfig';
 
-const ViolationCard = (props: {name: string; date: string; time: string}) => {
-  const navigation = useNavigation();
+const ViolationCard = (props: {
+  name: string;
+  date: string;
+  time: string;
+  images: string;
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.rowContainer}>
         <Image
-          resizeMode="center"
-          source={require('../../assets/images/Violation.png')}
+          resizeMode="cover"
+          source={{
+            uri: `${API_URL}/EmployeeViolationImage/${encodeURIComponent(
+              props.images[0],
+            )}`,
+          }}
           style={styles.imageStyle}
         />
         <View>

@@ -22,7 +22,6 @@ const EmployeeSummary = props => {
       const formattedDate = `${
         selectedDate.getMonth() + 1
       },${selectedDate.getFullYear()}`;
-      console.log('me', date);
       const response = await fetch(
         `${API_URL}/Employee/GetEmployeeSummary?employee_id=${employee_id}&date=${formattedDate}`,
       );
@@ -38,7 +37,6 @@ const EmployeeSummary = props => {
     selectedDate.setMonth(newDate.getMonth());
     selectedDate.setFullYear(newDate.getFullYear());
     setPickerVisibility(false);
-    console.log(selectedDate);
     setDate(selectedDate);
     fetchEmployeeSummary(newDate);
   };
@@ -161,7 +159,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     shadowColor: 'black',
     elevation: 1,
-    borderRadius: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 19.99,
   },
   headingStyle: {fontSize: 18, fontWeight: '700', color: '#4E4E4E'},
   amountStyle: {fontSize: 20, fontWeight: '900', color: 'black'},

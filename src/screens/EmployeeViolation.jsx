@@ -14,7 +14,7 @@ import {API_URL} from '../../apiConfig';
 
 const EmployeeViolation = props => {
   const [employeeViolations, setEmployeeViolations] = useState([]);
-
+  const name = props.route.params.employee.name;
   useEffect(() => {
     fetchEmployeeViolations();
   }, []);
@@ -35,13 +35,16 @@ const EmployeeViolation = props => {
   };
 
   const formatDate = date => {
-    const formattedDate = new Date(date);
+    const [day, month, year] = date.split('-').map(Number);
+    const formattedDate = new Date(year, month - 1, day);
+    console.log(date);
+    console.log(formattedDate.toDateString());
     return formattedDate.toDateString();
   };
 
   return (
     <View style={styles.container}>
-      <PrimaryAppBar text={props.route.params.employee.name} />
+      <PrimaryAppBar text={name} />
 
       <Text style={styles.headingStyle}>Violations</Text>
       <FlatList
@@ -50,12 +53,13 @@ const EmployeeViolation = props => {
           return (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Violation Details');
+                navigation.navigate('Violation Details', {item, name});
               }}>
               <ViolationCard
                 name={item.rule_name}
                 date={formatDate(item.date)}
                 time={item.time}
+                images={item.images}
               />
             </TouchableOpacity>
           );

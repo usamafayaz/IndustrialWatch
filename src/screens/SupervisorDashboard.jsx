@@ -14,6 +14,8 @@ import CustomGrid from '../components/CustomGrid';
 
 const SupervisorDashboard = props => {
   const navigation = useNavigation();
+  const {id, name, user_role} = props.route.params.data;
+  const employee = {employee_id: id, name, user_role};
   const [modalVisibility, setModalVisibility] = useState(false);
 
   const CardList = [
@@ -35,7 +37,7 @@ const SupervisorDashboard = props => {
       name: 'My Attendance',
       image: require('../../assets/icons/attendance.png'),
       onPress: () => {
-        navigation.navigate('Attendance');
+        navigation.navigate('Attendance', {employee});
       },
     },
   ];
@@ -49,7 +51,7 @@ const SupervisorDashboard = props => {
           <SafeAreaView style={styles.safeAreaView}>
             <Text style={styles.headerStyle}>Supervisor Dashboard</Text>
             <Text style={styles.welcomeStyle}>Welcome</Text>
-            <Text style={styles.nameStyle}>{props.route.params.name} </Text>
+            <Text style={styles.nameStyle}>{name}</Text>
             <TouchableOpacity
               style={styles.logoutButton}
               onPress={() => setModalVisibility(true)}>
@@ -106,7 +108,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'black',
     fontWeight: 'bold',
-    marginTop: '10%',
   },
   headerStyle: {
     fontSize: 20,
@@ -139,22 +140,24 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   modalWrapper: {
-    alignItems: 'center',
+    paddingLeft: '5%',
+    paddingTop: '5%',
     backgroundColor: 'white',
-    height: '20%',
+    height: '18%',
     width: '90%',
     alignSelf: 'center',
-    borderRadius: 30,
+    borderRadius: 20,
   },
   modalButtonWrapper: {
     flexDirection: 'row',
-    marginLeft: '43%',
+    marginLeft: '50%',
     marginTop: '12%',
   },
   cancelStyle: {
     color: '#2196F3',
     marginRight: 10,
     paddingVertical: '5%',
+    fontWeight: 'bold',
   },
   OKStyle: {
     color: 'white',
@@ -162,6 +165,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: '10%',
     paddingVertical: '5%',
+    fontWeight: 'bold',
   },
 });
 export default SupervisorDashboard;

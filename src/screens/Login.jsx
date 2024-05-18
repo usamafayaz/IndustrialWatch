@@ -67,12 +67,12 @@ const Login = () => {
       }
       const data = await response.json();
       let role = data.user_role.toLowerCase();
-
+      console.log(data);
       if (role === 'supervisor') {
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{name: 'Supervisor Dashboard', params: {name: data.name}}],
+            routes: [{name: 'Supervisor Dashboard', params: {data: data}}],
           }),
         );
       } else if (role === 'employee') {

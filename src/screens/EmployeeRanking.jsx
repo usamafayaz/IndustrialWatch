@@ -97,7 +97,7 @@ const EmployeeRanking = () => {
               borderRadius={30}
             />
             <Text style={styles.nameStyle}>{item.name}</Text>
-            <Text style={styles.productivityStyle}>{item.productivity}</Text>
+            <Text style={styles.productivityStyle}>{item.productivity}%</Text>
           </TouchableOpacity>
         )}
       />
