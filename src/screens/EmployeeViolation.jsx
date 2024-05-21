@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   Text,
@@ -8,16 +8,19 @@ import {
   ToastAndroid,
 } from 'react-native';
 import ViolationCard from '../components/ViolationCard';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import {API_URL} from '../../apiConfig';
 
 const EmployeeViolation = props => {
   const [employeeViolations, setEmployeeViolations] = useState([]);
   const name = props.route.params.employee.name;
-  useEffect(() => {
-    fetchEmployeeViolations();
-  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchEmployeeViolations();
+    }, []),
+  );
   const navigation = useNavigation();
   const fetchEmployeeViolations = async () => {
     try {
@@ -37,8 +40,6 @@ const EmployeeViolation = props => {
   const formatDate = date => {
     const [day, month, year] = date.split('-').map(Number);
     const formattedDate = new Date(year, month - 1, day);
-    console.log(date);
-    console.log(formattedDate.toDateString());
     return formattedDate.toDateString();
   };
 

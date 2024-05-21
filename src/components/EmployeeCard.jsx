@@ -52,7 +52,7 @@ const EmployeeCard = ({employees}) => {
                   </Text>
                 </View>
               </View>
-              <Text style={styles.positionStyle}>{item.section_name}</Text>
+              <Text style={styles.positionStyle}>{item.job_role}</Text>
             </TouchableOpacity>
           );
         }}

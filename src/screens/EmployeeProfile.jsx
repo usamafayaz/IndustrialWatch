@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {API_URL} from '../../apiConfig';
@@ -8,9 +8,11 @@ const EmployeeProfile = props => {
   const employee = props.route.params.employee;
   const [employeeDetail, setEmployeeDetail] = useState({});
 
-  useEffect(() => {
-    fetchEmployeeProfile();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchEmployeeProfile();
+    }, []),
+  );
 
   const fetchEmployeeProfile = async () => {
     const response = await fetch(

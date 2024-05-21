@@ -107,7 +107,7 @@ const LinkProduct = () => {
         onChangeText={setRejectionTolerance}
       />
       <View style={styles.buttonWrapper}>
-        <ButtonComponent title="Save" onPress={linkProduct} />
+        <ButtonComponent title="Link" onPress={linkProduct} />
       </View>
     </View>
   );

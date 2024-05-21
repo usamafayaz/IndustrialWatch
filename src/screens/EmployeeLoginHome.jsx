@@ -1,16 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 import * as Progress from 'react-native-progress';
-import {useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import {API_URL} from '../../apiConfig';
+import {useFocusEffect} from '@react-navigation/native';
 
 const EmployeeLoginHome = props => {
   const {name, employee_id} = props.route.params.employee;
 
-  useEffect(() => {
-    fetchEmployeeDetails();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchEmployeeDetails();
+    }, []),
+  );
+
   const [employeeDetail, setEmployeeDetail] = useState({});
   const fetchEmployeeDetails = async () => {
     const response = await fetch(
@@ -23,10 +26,6 @@ const EmployeeLoginHome = props => {
   return (
     <View style={styles.container}>
       <PrimaryAppBar text={name} arrowNotRequired={true} />
-      <Image
-        source={require('../../assets/images/employeevector.png')}
-        style={styles.imageStyle}
-      />
       <Progress.Circle
         progress={
           employeeDetail.productivity ? employeeDetail.productivity / 100 : 0
@@ -81,17 +80,8 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
   },
-
   fineHeading: {color: '#4E4E4E', fontWeight: 'bold', fontSize: 20},
   fineAmount: {color: 'black', fontWeight: '900', fontSize: 28},
-  imageStyle: {
-    height: 50,
-    width: 50,
-    position: 'absolute',
-    alignSelf: 'flex-end',
-    right: 20,
-    top: '1%',
-  },
 });
 
 export default EmployeeLoginHome;

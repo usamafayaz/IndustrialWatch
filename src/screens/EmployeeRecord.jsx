@@ -52,7 +52,6 @@ const EmployeeRecord = () => {
       const response = await fetch(url);
       const data = await response.json();
       setEmployees(data);
-      console.log('Data Fetched', employees);
     } catch (error) {
       ToastAndroid.show(
         'Failed to fetch data. Please try again.',

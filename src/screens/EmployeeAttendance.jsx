@@ -1,15 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {View, Text, StyleSheet, FlatList, ToastAndroid} from 'react-native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import {API_URL} from '../../apiConfig';
+import {useFocusEffect} from '@react-navigation/native';
 
 const EmployeeAttendance = props => {
   const [employeeAttendance, setEmployeeAttendance] = useState([]);
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    fetchEmployeeAttendance();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchEmployeeAttendance();
+    }, []),
+  );
 
   const fetchEmployeeAttendance = async () => {
     try {

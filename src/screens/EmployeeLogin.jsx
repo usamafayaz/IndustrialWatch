@@ -48,7 +48,11 @@ const EmployeeLogin = props => {
           options={{headerShown: false}}
           initialParams={{employee: employee}}
         />
-        <Tab.Screen name=" " component={EmployeeLoginHome} />
+        <Tab.Screen
+          name=" "
+          component={EmployeeLoginHome}
+          initialParams={{employee: employee}}
+        />
         <Tab.Screen
           name="Violations"
           component={EmployeeViolation}
