@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   FlatList,
   Keyboard,
@@ -14,7 +14,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {API_URL} from '../../apiConfig';
 import TextField from '../components/TextField';
 import ButtonComponent from '../components/ButtonComponent';
@@ -26,14 +26,51 @@ const EditSection = props => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedRuleIndex, setSelectedRuleIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false); // State for RefreshControl
+  const [refreshing, setRefreshing] = useState(false); // State for  RefreshControl
 
   const navigation = useNavigation();
 
-  useEffect(() => {
-    fetchProductivityRules();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        try {
+          const rulesResponse = await fetch(`${API_URL}/Section/GetAllRule`);
+          const rulesData = await rulesResponse.json();
 
+          const detailResponse = await fetch(
+            `${API_URL}/Section/GetSectionDetail?section_id=${props.route.params.id}`,
+          );
+          const detailData = await detailResponse.json();
+
+          const updatedRulesList = rulesData.map(item => {
+            const assignedRule = detailData.rules.find(
+              rule => rule.rule_id === item.id,
+            );
+            return {
+              id: item.id,
+              title: item.name,
+              fine: assignedRule ? assignedRule.fine : 0,
+              allowed_time: assignedRule
+                ? parseTime(assignedRule.allowed_time)
+                : {hours: 0, minutes: 0},
+              checkBox: !!assignedRule,
+            };
+          });
+
+          setRulesList(updatedRulesList);
+          setAssignedRules(detailData.rules);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+
+      fetchData();
+
+      return () => {
+        // Clean up function (if needed)
+      };
+    }, []),
+  );
   useEffect(() => {
     if (!isLoading) {
       fetchDetail();
@@ -147,7 +184,11 @@ const EditSection = props => {
     <View>
       <View style={styles.ruleContainer}>
         <View style={{marginLeft: 20}}>
-          <Text style={styles.ruleTitle}>{item.title}</Text>
+          <Text style={[styles.ruleTitle, {fontWeight: '600'}]}>
+            {item.title}
+          </Text>
+          <Text style={styles.textStyle}>Fine:</Text>
+
           <TextInput
             placeholder={'Enter Fine'}
             style={styles.textInputStyle}
@@ -164,9 +205,9 @@ const EditSection = props => {
                 setRulesList(updatedRulesList);
               }
             }}
-            value={item.fine.toString()} // Added to display fine value
+            value={item.fine.toString()}
           />
-          <Text style={styles.textStyle}>Time:</Text>
+          <Text style={styles.textStyle}>Allowed Time:</Text>
           <TouchableOpacity
             onPress={() => {
               setModalVisible(true);
@@ -216,7 +257,9 @@ const EditSection = props => {
           onChangeText={text => setInputText(text)}
           style={styles.textInputStyle}
         />
-        <Text style={[styles.textStyle, {fontSize: 21}]}>Rules</Text>
+        <Text style={[styles.textStyle, {fontSize: 21, fontWeight: 'bold'}]}>
+          Rules
+        </Text>
         <FlatList
           data={rulesList}
           renderItem={renderRuleItem}

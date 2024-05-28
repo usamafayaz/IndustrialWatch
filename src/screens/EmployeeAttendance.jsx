@@ -28,7 +28,7 @@ const EmployeeAttendance = props => {
       if (data.message) {
         ToastAndroid.show('No Data Found', ToastAndroid.SHORT);
       }
-      setEmployeeAttendance(data);
+      setEmployeeAttendance(data.reverse());
     } catch (error) {
       console.log('Error fetching employee attendance:' + error);
       setError(true);

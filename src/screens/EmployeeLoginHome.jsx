@@ -40,7 +40,7 @@ const EmployeeLoginHome = props => {
         textStyle={styles.progressText}
         formatText={() =>
           employeeDetail.productivity
-            ? `${employeeDetail.productivity}%\nProductivity`
+            ? `${employeeDetail.productivity.toFixed(1)}%\nProductivity`
             : 'No Record'
         }
       />

@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Image, ToastAndroid} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  ToastAndroid,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import ButtonComponent from '../components/ButtonComponent';
 import {useNavigation} from '@react-navigation/native';
 import TextField from '../components/TextField';
@@ -10,10 +17,11 @@ const AddEmployee = props => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [image, setImage] = React.useState('');
+  const [image, setImage] = useState('');
 
   const employee = props.route.params.employeeDetail;
-  const id = props.route.params.id;
+  const {employee_id} = props.route.params.employee;
+
   useEffect(() => {
     setName(employee.name);
     setUsername(employee.username);
@@ -27,7 +35,7 @@ const AddEmployee = props => {
       return;
     }
     const data = {
-      id: id,
+      id: employee_id,
       name: name,
       username: username,
       password: password,
@@ -46,6 +54,7 @@ const AddEmployee = props => {
 
       if (response.ok) {
         ToastAndroid.show('Information Updated.', ToastAndroid.SHORT);
+        navigation.goBack({employee: employee});
       } else {
         throw new Error('Failed to update profile');
       }
@@ -56,7 +65,7 @@ const AddEmployee = props => {
 
   const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior={'height'}>
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Edit Profile</Text>
       </View>
@@ -66,7 +75,9 @@ const AddEmployee = props => {
         <Image
           resizeMode="cover"
           source={{
-            uri: `${API_URL}/EmployeeImage/${encodeURIComponent(image)}`,
+            uri: `${API_URL}/EmployeeImage/${employee_id}/${encodeURIComponent(
+              image,
+            )}`,
           }}
           style={styles.imageStyle}
         />
@@ -85,7 +96,6 @@ const AddEmployee = props => {
           onChangeText={text => setUsername(text)}
         />
         <Text style={styles.hintStyle}>Password</Text>
-
         <TextField
           placeHolder=""
           eyeIcon={true}
@@ -96,7 +106,7 @@ const AddEmployee = props => {
       <View style={styles.buttonWrapper}>
         <ButtonComponent title="Update Profile" onPress={updateProfile} />
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -107,11 +117,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   buttonWrapper: {
-    flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
     width: '70%',
-    marginBottom: 100,
+    marginBottom: 120,
   },
   imageContainer: {
     backgroundColor: '#c5e3e1',
@@ -157,6 +166,10 @@ const styles = StyleSheet.create({
     paddingLeft: '8%',
     paddingTop: '2%',
   },
-  headerContainer: {backgroundColor: '#2196F3', width: '100%'},
+  headerContainer: {
+    backgroundColor: '#2196F3',
+    width: '100%',
+  },
 });
+
 export default AddEmployee;

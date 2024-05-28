@@ -6,23 +6,27 @@ const ViolationCard = (props: {
   name: string;
   date: string;
   time: string;
-  images: string;
+  images: {capture_time: string; image_url: string}[];
 }) => {
   return (
     <View style={styles.container}>
       <View style={styles.rowContainer}>
-        <Image
-          resizeMode="cover"
-          source={{
-            uri: `${API_URL}/EmployeeViolationImage/${encodeURIComponent(
-              props.images[0],
-            )}`,
-          }}
-          style={styles.imageStyle}
-        />
+        {props.images[0].image_url ? (
+          <Image
+            resizeMode="cover"
+            source={{
+              uri: `${API_URL}/ViolationImages/${encodeURIComponent(
+                props.images[0].image_url.replace(/\\/g, '/'),
+              )}`,
+            }}
+            style={styles.imageStyle}
+          />
+        ) : null}
         <View>
           <Text style={styles.nameTextStyle}>{props.name}</Text>
-          <Text style={styles.timeTextStyle}>{props.time}</Text>
+          <Text style={styles.timeTextStyle}>
+            {props.images[0].capture_time}
+          </Text>
           <Text style={styles.timeTextStyle}>{props.date}</Text>
         </View>
       </View>

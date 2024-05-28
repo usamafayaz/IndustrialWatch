@@ -32,7 +32,7 @@ const EmployeeProfile = props => {
             onPress={() => {
               navigation.navigate('Edit Profile', {
                 employeeDetail,
-                id: employee.employee_id,
+                employee,
               });
             }}>
             <Icon name="edit" size={23} color={'white'} />
@@ -44,9 +44,9 @@ const EmployeeProfile = props => {
         <Image
           resizeMode="cover"
           source={{
-            uri: `${API_URL}/EmployeeImage/${encodeURIComponent(
-              employeeDetail.image,
-            )}`,
+            uri: `${API_URL}/EmployeeImage/${
+              employee.employee_id
+            }/${encodeURIComponent(employeeDetail.image)}`,
           }}
           style={styles.imageStyle}
         />

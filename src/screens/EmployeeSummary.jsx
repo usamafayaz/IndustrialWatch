@@ -27,6 +27,7 @@ const EmployeeSummary = props => {
       );
       const data = await response.json();
       setEmployeeSummary(data);
+      console.log(data);
     } catch (error) {
       console.error('Error fetching employee summary:', error);
     }

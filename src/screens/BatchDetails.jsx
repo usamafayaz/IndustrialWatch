@@ -45,7 +45,7 @@ const BatchDetails = props => {
       // Construct the file path within the folder
       const filePath = `${folderPath}/${encodeURIComponent(batch_number)}.zip`;
 
-      RNFetchBlob.config({
+      const response = await RNFetchBlob.config({
         addAndroidDownloads: {
           useDownloadManager: true,
           notification: true,
@@ -55,20 +55,23 @@ const BatchDetails = props => {
           path: filePath,
         },
         fileCache: true,
-      })
-        .fetch(
-          'GET',
-          `${API_URL}/Production/GetDefectedImagesOfBatch?product_number=${encodeURIComponent(
-            product_number,
-          )}&batch_number=${encodeURIComponent(batch_number)}`,
-          {
-            'Content-Type': 'application/zip',
-          },
-        )
-        .then(res => {
-          ToastAndroid.show('Download Successful.', ToastAndroid.SHORT);
-          console.log('The file saved to ', res.path());
-        });
+      }).fetch(
+        'GET',
+        `${API_URL}/Production/GetDefectedImagesOfBatch?product_number=${encodeURIComponent(
+          product_number,
+        )}&batch_number=${encodeURIComponent(batch_number)}`,
+        {
+          'Content-Type': 'application/zip',
+        },
+      );
+
+      if (response.respInfo.status === 200) {
+        ToastAndroid.show('Download Successful.', ToastAndroid.SHORT);
+        console.log('The file saved to ', response.path());
+      } else {
+        console.error('Download failed:', response.respInfo.status);
+        ToastAndroid.show('Download Failed.', ToastAndroid.SHORT);
+      }
     } catch (error) {
       console.error('Download failed:', error);
       ToastAndroid.show('Download Failed.', ToastAndroid.SHORT);
@@ -130,9 +133,7 @@ const BatchDetails = props => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.downloadButton}
-          onPress={() => {
-            downloadImages();
-          }}>
+          onPress={downloadImages}>
           <Icon name="cloud-download" size={30} color="#FFFFFF" />
           <Text style={styles.downloadButtonText}>Download Images</Text>
         </TouchableOpacity>

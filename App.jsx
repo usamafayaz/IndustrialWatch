@@ -24,7 +24,7 @@ import EmployeeSummary from './src/screens/EmployeeSummary.jsx';
 import SupervisorDashboard from './src/screens/SupervisorDashboard';
 import DefectMonitoring from './src/screens/DefectMonitoring';
 import EmployeeMonitoring from './src/screens/EmployeeMonitoring';
-import ProductScanning from './src/screens/ProductScanning';
+import DefectsSummary from './src/screens/DefectsSummary';
 import EmployeeLogin from './src/screens/EmployeeLogin';
 import EmployeeLoginHome from './src/screens/EmployeeLoginHome';
 import EmployeeProfile from './src/screens/EmployeeProfile';
@@ -42,6 +42,7 @@ import AddBatch from './src/screens/AddBatch';
 import ChooseStock from './src/screens/ChooseStock';
 import DeactivatedSections from './src/screens/DeactivatedSections';
 import EditSupervisor from './src/screens/EditSupervisor';
+import ViolationSummary from './src/screens/ViolationSummary';
 
 // gradlew bundleRelease // for AAB
 // gradlew.bat assembleRelease // for APK
@@ -273,9 +274,16 @@ const App = () => {
           }}
         />
         <Stack.Screen
-          name="Product Scanning"
-          component={ProductScanning}
-          options={{headerShown: false}}
+          name="Violation Summary"
+          component={ViolationSummary}
+          options={{
+            header: () => <SecondaryAppBar text="" />,
+          }}
+        />
+        <Stack.Screen
+          name="Defects Summary"
+          component={DefectsSummary}
+          options={{header: () => <SecondaryAppBar text="" />}}
         />
         <Stack.Screen
           name="Employee Login"

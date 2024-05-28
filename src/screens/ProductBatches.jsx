@@ -34,6 +34,7 @@ const ProductBatches = props => {
         )}`,
       );
       const data = await response.json();
+      console.log(product_number);
       setBatchesList(data);
       setLoading(false);
     } catch (error) {

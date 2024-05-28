@@ -35,9 +35,9 @@ const EmployeeCard = ({employees}) => {
                 <Image
                   resizeMode="cover"
                   source={{
-                    uri: `${API_URL}/EmployeeImage/${encodeURIComponent(
-                      item.image,
-                    )}`,
+                    uri: `${API_URL}/EmployeeImage/${
+                      item.employee_id
+                    }/${encodeURIComponent(item.image)}`,
                   }}
                   style={styles.image}
                 />
@@ -48,7 +48,7 @@ const EmployeeCard = ({employees}) => {
                 <View style={styles.productivityContainer}>
                   <Icon name="clock" color={'#FFB800'} size={15}></Icon>
                   <Text style={styles.productivityStyle}>
-                    {item.productivity}
+                    {item.productivity.toFixed(1)}
                   </Text>
                 </View>
               </View>
