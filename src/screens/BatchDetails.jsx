@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  ToastAndroid,
+} from 'react-native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {API_URL} from '../../apiConfig';
@@ -70,11 +76,9 @@ const BatchDetails = props => {
         console.log('The file saved to ', response.path());
       } else {
         console.error('Download failed:', response.respInfo.status);
-        ToastAndroid.show('Download Failed.', ToastAndroid.SHORT);
       }
     } catch (error) {
       console.error('Download failed:', error);
-      ToastAndroid.show('Download Failed.', ToastAndroid.SHORT);
     }
   };
 

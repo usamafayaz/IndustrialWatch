@@ -52,7 +52,7 @@ const EditSection = props => {
               fine: assignedRule ? assignedRule.fine : 0,
               allowed_time: assignedRule
                 ? parseTime(assignedRule.allowed_time)
-                : {hours: 0, minutes: 0},
+                : {hours: 0, minutes: 0, seconds: 0},
               checkBox: !!assignedRule,
             };
           });
@@ -91,7 +91,7 @@ const EditSection = props => {
           fine: assignedRule ? assignedRule.fine : 0,
           allowed_time: assignedRule
             ? parseTime(assignedRule.allowed_time)
-            : {hours: 0, minutes: 0},
+            : {hours: 0, minutes: 0, seconds: 0},
           checkBox: !!assignedRule,
         };
       });
@@ -104,8 +104,11 @@ const EditSection = props => {
   };
 
   const parseTime = timeString => {
-    const [hours, minutes] = timeString.split(':').map(Number);
-    return {hours, minutes};
+    if (!timeString) {
+      return {hours: 0, minutes: 0, seconds: 0};
+    }
+    const [hours, minutes, seconds] = timeString.split(':').map(Number); // seconds = 0
+    return {hours: hours || 0, minutes: minutes || 0, seconds: seconds || 0};
   };
 
   const fetchDetail = async () => {
@@ -130,9 +133,10 @@ const EditSection = props => {
           rules: filteredList.map(rule => ({
             rule_id: rule.id,
             fine: rule.fine,
-            allowed_time: `${rule.allowed_time.hours}:${rule.allowed_time.minutes}`,
+            allowed_time: `${rule.allowed_time.hours}:${rule.allowed_time.minutes}:${rule.allowed_time.seconds}`,
           })),
         };
+        console.log(data, 'sdsadsa');
         const response = await fetch(`${API_URL}/Section/UpdateSection`, {
           method: 'PUT',
           headers: {
@@ -162,21 +166,32 @@ const EditSection = props => {
   };
 
   const handleCheckBoxChange = item => {
-    if (
-      item.fine === 0 ||
-      (item.allowed_time.hours === 0 && item.allowed_time.minutes === 0)
-    ) {
-      ToastAndroid.show('Enter Fine and Time First', ToastAndroid.LONG);
-      console.log(assignedRules);
-    } else {
-      const ruleIndex = rulesList.findIndex(rule => rule.id === item.id);
-      if (ruleIndex !== -1) {
-        const updatedRulesList = [...rulesList];
-        updatedRulesList[ruleIndex].checkBox =
-          !updatedRulesList[ruleIndex].checkBox;
-        setRulesList(updatedRulesList);
+    const ruleIndex = rulesList.findIndex(rule => rule.id === item.id);
+    if (ruleIndex !== -1) {
+      const updatedRulesList = [...rulesList];
+      if (updatedRulesList[ruleIndex].checkBox) {
+        // Uncheck the box and reset the values
+        updatedRulesList[ruleIndex].checkBox = false;
+        updatedRulesList[ruleIndex].fine = 0;
+        updatedRulesList[ruleIndex].allowed_time = {
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+        };
+      } else {
+        if (
+          item.fine === 0 ||
+          (item.allowed_time.hours === 0 &&
+            item.allowed_time.minutes === 0 &&
+            item.allowed_time.seconds === 0)
+        ) {
+          ToastAndroid.show('Enter Fine and Time First', ToastAndroid.LONG);
+        } else {
+          // Check the box
+          updatedRulesList[ruleIndex].checkBox = true;
+        }
       }
-      console.log(rulesList);
+      setRulesList(updatedRulesList);
     }
   };
 
@@ -220,15 +235,19 @@ const EditSection = props => {
                   fontSize: 16,
                   color:
                     item.allowed_time.hours !== '' &&
-                    item.allowed_time.minutes !== ''
+                    item.allowed_time.minutes !== '' &&
+                    item.allowed_time.seconds !== ''
                       ? 'black'
                       : 'grey',
                 }}>
                 {item.allowed_time.hours !== '' &&
-                item.allowed_time.minutes !== ''
+                item.allowed_time.minutes !== '' &&
+                item.allowed_time.seconds !== ''
                   ? `${item.allowed_time.hours
                       .toString()
                       .padStart(2, '0')}:${item.allowed_time.minutes
+                      .toString()
+                      .padStart(2, '0')}:${item.allowed_time.seconds
                       .toString()
                       .padStart(2, '0')}`
                   : 'Select Time'}
@@ -322,6 +341,24 @@ const EditSection = props => {
                     if (selectedRuleIndex !== null) {
                       const updatedRulesList = [...rulesList];
                       updatedRulesList[selectedRuleIndex].allowed_time.minutes =
+                        newTime;
+                      setRulesList(updatedRulesList);
+                    }
+                  }}
+                />
+              </View>
+              <View style={styles.modalRow}>
+                <Text style={styles.modalLabel}>Seconds:</Text>
+                <TextInput
+                  placeholder="Seconds"
+                  style={styles.modalTextInput}
+                  placeholderTextColor={'grey'}
+                  keyboardType="numeric"
+                  onChangeText={time => {
+                    const newTime = time === '' ? 0 : parseInt(time);
+                    if (selectedRuleIndex !== null) {
+                      const updatedRulesList = [...rulesList];
+                      updatedRulesList[selectedRuleIndex].allowed_time.seconds =
                         newTime;
                       setRulesList(updatedRulesList);
                     }

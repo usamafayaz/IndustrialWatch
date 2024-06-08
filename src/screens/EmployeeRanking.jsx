@@ -89,15 +89,17 @@ const EmployeeRanking = () => {
             <Image
               resizeMode="cover"
               source={{
-                uri: `${API_URL}/EmployeeImage/${encodeURIComponent(
-                  item.image,
-                )}`,
+                uri: `${API_URL}/EmployeeImage/${
+                  item.employee_id
+                }/${encodeURIComponent(item.image)}`,
               }}
               style={styles.image}
               borderRadius={30}
             />
             <Text style={styles.nameStyle}>{item.name}</Text>
-            <Text style={styles.productivityStyle}>{item.productivity}%</Text>
+            <Text style={styles.productivityStyle}>
+              {item.productivity.toFixed(1)}%
+            </Text>
           </TouchableOpacity>
         )}
       />

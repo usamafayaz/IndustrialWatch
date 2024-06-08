@@ -78,6 +78,10 @@ const EditSupervisor = props => {
         password: password,
         sections: selectedSections.map(item => parseInt(item)),
       };
+      if (!data.sections) {
+        ToastAndroid.show('Please fill all the fields.', ToastAndroid.SHORT);
+        return;
+      }
       const response = await fetch(`${API_URL}/Employee/UpdateSupervisor`, {
         method: 'PUT',
         headers: {

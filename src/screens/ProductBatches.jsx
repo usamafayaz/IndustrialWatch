@@ -55,6 +55,7 @@ const ProductBatches = props => {
 
       // Construct the file path within the folder
       const filePath = `${folderPath}/${encodeURIComponent(productNumber)}.zip`;
+      ToastAndroid.show('Downloading has begun', ToastAndroid.SHORT);
 
       RNFetchBlob.config({
         addAndroidDownloads: {
@@ -79,9 +80,12 @@ const ProductBatches = props => {
         .then(res => {
           ToastAndroid.show('Download Successful.', ToastAndroid.SHORT);
           console.log('The file saved to ', res.path());
+        })
+        .catch(error => {
+          console.error('Fetch error:', error); // Log fetch errors
         });
     } catch (error) {
-      console.error('Download failed:', error);
+      console.error('Download failed:', error); // Log general errors
       ToastAndroid.show('Download Failed.', ToastAndroid.SHORT);
     }
   };
