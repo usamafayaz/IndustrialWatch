@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {View, Text, StyleSheet, FlatList, ToastAndroid} from 'react-native';
 import * as Progress from 'react-native-progress';
 import CardComponent from '../components/CardComponent';
 import {useNavigation} from '@react-navigation/native';
@@ -17,9 +17,13 @@ const EmployeeDetail = props => {
     const response = await fetch(
       `${API_URL}/Employee/GetEmployeeDetail?employee_id=${props.route.params.employee.employee_id}`,
     );
-    const data = await response.json();
-    setProductivity(data.productivity);
-    setTotalFine(data.total_fine);
+    const result = await response.json();
+    if (response.ok) {
+      setProductivity(result.productivity);
+      setTotalFine(result.total_fine);
+    } else {
+      ToastAndroid.show(result.message, ToastAndroid.SHORT);
+    }
   };
   const CardList = [
     {

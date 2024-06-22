@@ -50,12 +50,12 @@ const EditSupervisor = props => {
         sup_sections: item.sections,
       }));
       console.log(formattedData[0].sup_sections);
-      setSelectedSection([
-        {
-          key: formattedData[0].sup_sections.id,
-          value: formattedData[0].sup_sections.name,
-        },
-      ]);
+      // setSelectedSection([
+      //   {
+      //     key: formattedData[0].sup_sections.id,
+      //     value: formattedData[0].sup_sections.name,
+      //   },
+      // ]);
       setUsername(formattedData[0].sup_username);
       setPassword(formattedData[0].sup_password);
     } catch (error) {

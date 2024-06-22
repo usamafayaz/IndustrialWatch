@@ -46,15 +46,17 @@ const ViolationDetails = props => {
           <SwiperFlatList index={0}>
             {employeeViolationDetail.images.map((image, index) => (
               <View style={styles.slide} key={index}>
-                <Image
-                  resizeMode="contain"
-                  source={{
-                    uri: `${API_URL}/ViolationImages/${encodeURIComponent(
-                      image.image_url.replace(/\\/g, '/'),
-                    )}`,
-                  }}
-                  style={styles.imageStyle}
-                />
+                <View style={styles.imageContainer}>
+                  <Image
+                    resizeMode="contain"
+                    source={{
+                      uri: `${API_URL}/ViolationImages/${encodeURIComponent(
+                        image.image_url.replace(/\\/g, '/'),
+                      )}`,
+                    }}
+                    style={styles.imageStyle}
+                  />
+                </View>
                 <Text style={styles.dateStyle}>{image.capture_time}</Text>
               </View>
             ))}
@@ -81,7 +83,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
   },
-  imageStyle: {width: 393, height: 300, borderRadius: 20, marginTop: 10},
   titleStlye: {
     fontWeight: 'bold',
     fontSize: 20,
@@ -94,9 +95,33 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   swiperContainer: {
-    height: 350, // Adjust the height as needed
+    height: 380,
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: '3%',
+    borderRadius: 30,
+  },
+  slide: {
+    width: 393,
+    alignItems: 'center',
+  },
+  imageContainer: {
+    width: 393,
+    height: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
+  },
+  imageStyle: {
+    width: '100%',
+    height: '100%',
+  },
+  dateStyle: {
+    fontSize: 17,
+    color: 'black',
+    textAlign: 'center',
+    marginTop: 10, // Add some space between the image and the date
   },
 });
 export default ViolationDetails;

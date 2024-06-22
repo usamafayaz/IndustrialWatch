@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, ToastAndroid} from 'react-native';
 import {Text} from 'react-native-paper';
 import * as Progress from 'react-native-progress';
 import PrimaryAppBar from '../components/PrimaryAppBar';
@@ -26,8 +26,13 @@ const EmployeeSummary = props => {
         `${API_URL}/Employee/GetEmployeeSummary?employee_id=${employee_id}&date=${formattedDate}`,
       );
       const data = await response.json();
-      setEmployeeSummary(data);
-      console.log(data);
+
+      if (!response.ok) {
+        ToastAndroid.show(`${data.message}`, ToastAndroid.SHORT);
+      } else {
+        setEmployeeSummary(data);
+        console.log(data);
+      }
     } catch (error) {
       console.error('Error fetching employee summary:', error);
     }

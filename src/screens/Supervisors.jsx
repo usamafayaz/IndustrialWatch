@@ -23,12 +23,14 @@ const Supervisors = () => {
     try {
       const response = await fetch(`${API_URL}/Employee/GetAllSupervisors`);
       const data = await response.json();
-      const formattedData = data.map(item => ({
-        id: item.employee_id,
-        name: item.employee_name,
-        sections: item.sections.join(', '),
-      }));
-      setSupervisorList(formattedData);
+      if (data.length > 0) {
+        const formattedData = data.map(item => ({
+          id: item.employee_id,
+          name: item.employee_name,
+          sections: item.sections.join(', '),
+        }));
+        setSupervisorList(formattedData);
+      }
     } catch (error) {
       ToastAndroid.show('Error fetching Supervisors', ToastAndroid.SHORT);
       console.error('Error fetching Supervisors:', error);

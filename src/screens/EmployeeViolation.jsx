@@ -48,24 +48,28 @@ const EmployeeViolation = props => {
       <PrimaryAppBar text={name} />
 
       <Text style={styles.headingStyle}>Violations</Text>
-      <FlatList
-        data={employeeViolations}
-        renderItem={({item}) => {
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Violation Details', {item, name});
-              }}>
-              <ViolationCard
-                name={item.rule_name}
-                date={formatDate(item.date)}
-                time={item.time}
-                images={item.images}
-              />
-            </TouchableOpacity>
-          );
-        }}
-      />
+      {employeeViolations.length > 0 ? (
+        <FlatList
+          data={employeeViolations}
+          renderItem={({item}) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Violation Details', {item, name});
+                }}>
+                <ViolationCard
+                  name={item.rule_name}
+                  date={formatDate(item.date)}
+                  time={item.time}
+                  images={item.images}
+                />
+              </TouchableOpacity>
+            );
+          }}
+        />
+      ) : (
+        <Text style={styles.noDataText}>No Violations</Text>
+      )}
     </View>
   );
 };
@@ -82,6 +86,13 @@ const styles = StyleSheet.create({
     color: 'black',
     marginRight: '60%',
     marginTop: '6%',
+  },
+  noDataText: {
+    color: 'black',
+    fontSize: 20,
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+    marginTop: '70%',
   },
 });
 
