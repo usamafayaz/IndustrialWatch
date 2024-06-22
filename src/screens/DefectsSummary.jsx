@@ -1,19 +1,19 @@
 import React from 'react';
 import {StyleSheet, View, Text, FlatList} from 'react-native';
+import SecondaryAppBar from '../components/SecondaryAppBar';
 
 const DefectSummary = props => {
   const {result} = props.route.params;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Detection Summary</Text>
       <View style={styles.summaryContainer}>
         <View style={styles.rowStyle}>
-          <Text style={styles.label}>Total Discs</Text>
-          <Text style={styles.value}>{result.total_discs}</Text>
+          <Text style={styles.label}>Total Items</Text>
+          <Text style={styles.value}>{result.total_items}</Text>
         </View>
         <View style={styles.rowStyle}>
-          <Text style={styles.label}>Defected Discs</Text>
+          <Text style={styles.label}>Defected Items</Text>
           <Text style={styles.value}>{result.total_defected_items}</Text>
         </View>
       </View>
@@ -21,18 +21,20 @@ const DefectSummary = props => {
       <FlatList
         data={result.defects}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => (
-          <View style={styles.itemContainer}>
-            <View style={styles.rowStyle}>
-              <Text style={styles.label}>Defect Name</Text>
-              <Text style={styles.value}>{Object.keys(item)[0]}</Text>
+        renderItem={({item}) =>
+          Object.values(item)[0] >= 0 ? (
+            <View style={styles.itemContainer}>
+              <View style={styles.rowStyle}>
+                <Text style={styles.label}>Defect Name</Text>
+                <Text style={styles.value}>{Object.keys(item)[0]}</Text>
+              </View>
+              <View style={styles.rowStyle}>
+                <Text style={styles.label}>Defect Count</Text>
+                <Text style={styles.value}>{Object.values(item)[0]}</Text>
+              </View>
             </View>
-            <View style={styles.rowStyle}>
-              <Text style={styles.label}>Defect Count</Text>
-              <Text style={styles.value}>{Object.values(item)[0]}</Text>
-            </View>
-          </View>
-        )}
+          ) : null
+        }
       />
     </View>
   );
@@ -43,13 +45,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
     padding: 20,
-  },
-  heading: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#000',
-    textAlign: 'center',
-    marginBottom: 30,
   },
   summaryContainer: {
     marginBottom: 20,

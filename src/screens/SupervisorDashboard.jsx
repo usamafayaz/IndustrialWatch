@@ -23,14 +23,14 @@ const SupervisorDashboard = props => {
       name: 'Employee Monitoring',
       image: require('../../assets/icons/employee_monitoring.png'),
       onPress: () => {
-        navigation.navigate('Employee Monitoring');
+        navigation.navigate('Employee Monitoring', {mode: 'productivity'});
       },
     },
     {
       name: 'Defect Monitoring',
       image: require('../../assets/icons/defect_monitoring.png'),
       onPress: () => {
-        navigation.navigate('Defect Monitoring');
+        navigation.navigate('Defect Monitoring Types');
       },
     },
     {
@@ -40,7 +40,15 @@ const SupervisorDashboard = props => {
         navigation.navigate('Attendance', {employee});
       },
     },
+    {
+      name: 'Mark Attendance',
+      image: require('../../assets/icons/mark_attendance.png'),
+      onPress: () => {
+        navigation.navigate('Employee Monitoring', {mode: 'attendance'});
+      },
+    },
   ];
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>

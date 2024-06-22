@@ -82,10 +82,10 @@ const ProductBatches = props => {
           console.log('The file saved to ', res.path());
         })
         .catch(error => {
-          console.error('Fetch error:', error); // Log fetch errors
+          console.error('Fetch error:', error);
         });
     } catch (error) {
-      console.error('Download failed:', error); // Log general errors
+      console.error('Download failed:', error);
       ToastAndroid.show('Download Failed.', ToastAndroid.SHORT);
     }
   };

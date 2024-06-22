@@ -22,7 +22,7 @@ import ViolationDetails from './src/screens/ViolationDetails';
 import EmployeeRanking from './src/screens/EmployeeRanking';
 import EmployeeSummary from './src/screens/EmployeeSummary.jsx';
 import SupervisorDashboard from './src/screens/SupervisorDashboard';
-import DefectMonitoring from './src/screens/DefectMonitoring';
+import BatchDefectMonitoring from './src/screens/BatchDefectMonitoring';
 import EmployeeMonitoring from './src/screens/EmployeeMonitoring';
 import DefectsSummary from './src/screens/DefectsSummary';
 import EmployeeLogin from './src/screens/EmployeeLogin';
@@ -43,6 +43,8 @@ import ChooseStock from './src/screens/ChooseStock';
 import DeactivatedSections from './src/screens/DeactivatedSections';
 import EditSupervisor from './src/screens/EditSupervisor';
 import ViolationSummary from './src/screens/ViolationSummary';
+import DefectMonitoringTypes from './src/screens/DefectMonitoringTypes';
+import MultipleAngleMonitoring from './src/screens/MultipleAngleMonitoring';
 
 // gradlew bundleRelease // for AAB
 // gradlew.bat assembleRelease // for APK
@@ -262,11 +264,6 @@ const App = () => {
           component={SupervisorDashboard}
         />
         <Stack.Screen
-          name="Defect Monitoring"
-          component={DefectMonitoring}
-          options={{header: () => <SecondaryAppBar text="Defect Monitoring" />}}
-        />
-        <Stack.Screen
           name="Employee Monitoring"
           component={EmployeeMonitoring}
           options={{
@@ -277,13 +274,34 @@ const App = () => {
           name="Violation Summary"
           component={ViolationSummary}
           options={{
-            header: () => <SecondaryAppBar text="" />,
+            header: () => <SecondaryAppBar text="Violation Summary" />,
+          }}
+        />
+        <Stack.Screen
+          name="Defect Monitoring Types"
+          component={DefectMonitoringTypes}
+          options={{
+            header: () => <SecondaryAppBar text="Defect Monitoring Types" />,
+          }}
+        />
+        <Stack.Screen
+          name="Batch Defect Monitoring"
+          component={BatchDefectMonitoring}
+          options={{
+            header: () => <SecondaryAppBar text="Batch Monitoring" />,
           }}
         />
         <Stack.Screen
           name="Defects Summary"
           component={DefectsSummary}
-          options={{header: () => <SecondaryAppBar text="" />}}
+          options={{header: () => <SecondaryAppBar text="Detection Summary" />}}
+        />
+        <Stack.Screen
+          name="Multiple Angle Monitoring"
+          component={MultipleAngleMonitoring}
+          options={{
+            header: () => <SecondaryAppBar text="Multiple Angle Monitoring" />,
+          }}
         />
         <Stack.Screen
           name="Employee Login"

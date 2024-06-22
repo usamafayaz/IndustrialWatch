@@ -10,15 +10,18 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {API_URL} from '../../apiConfig';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 const EmployeeMonitoring = () => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+  const route = useRoute();
+  const {mode} = route.params;
+
   const handleCameraPress = () => {
     const options = {
-      mediaType: 'video',
-      videoQuality: 'high',
+      mediaType: mode === 'attendance' ? 'photo' : 'video',
+      quality: mode === 'attendance' ? 1 : 0.8,
     };
 
     launchCamera(options, response => {
@@ -27,9 +30,9 @@ const EmployeeMonitoring = () => {
       } else if (response.errorCode) {
         console.error('ImagePicker Error:', response.errorMessage);
       } else if (response.assets && response.assets.length > 0) {
-        const videoUri = response.assets[0].uri;
-        if (videoUri) {
-          uploadVideo(videoUri);
+        const uri = response.assets[0].uri;
+        if (uri) {
+          uploadFile(uri);
         }
       }
     });
@@ -37,7 +40,7 @@ const EmployeeMonitoring = () => {
 
   const handleBrowsePress = () => {
     const options = {
-      mediaType: 'video',
+      mediaType: mode === 'attendance' ? 'photo' : 'video',
     };
 
     launchImageLibrary(options, response => {
@@ -46,45 +49,67 @@ const EmployeeMonitoring = () => {
       } else if (response.errorCode) {
         console.error('ImagePicker Error:', response.errorMessage);
       } else if (response.assets && response.assets.length > 0) {
-        const videoUri = response.assets[0].uri;
-        if (videoUri) {
-          uploadVideo(videoUri);
+        const uri = response.assets[0].uri;
+        if (uri) {
+          uploadFile(uri);
         }
       }
     });
   };
 
-  const uploadVideo = async uri => {
+  const uploadFile = async uri => {
     const formData = new FormData();
-    formData.append('files', {
-      uri,
-      type: 'video/mp4', // Adjust the MIME type as needed
-      name: 'video.mp4',
-    });
-    ToastAndroid.show('Uploading the Video', ToastAndroid.LONG);
+    if (mode == 'attendance') {
+      formData.append('file', {
+        uri,
+        type: 'image/jpeg',
+        name: 'image.jpg',
+      });
+    } else {
+      formData.append('files', {
+        uri,
+        type: 'video/mp4',
+        name: 'video.mp4',
+      });
+    }
+
+    const uploadUrl =
+      mode === 'attendance'
+        ? `${API_URL}/Employee/MarkAttendance`
+        : `${API_URL}/Automation/PredictEmployeeViolation`;
+
+    ToastAndroid.show('Uploading the file', ToastAndroid.LONG);
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `${API_URL}/Automation/PredictEmployeeViolation`,
-        {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+      const response = await fetch(uploadUrl, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
-      );
+      });
       const result = await response.json();
-      if (!response.ok) {
-        ToastAndroid.show('Unknown face', ToastAndroid.SHORT);
-        setLoading(false);
+      if (response.ok) {
+        if (mode === 'attendance') {
+          console.log(result.message);
+          ToastAndroid.show(result.message, ToastAndroid.LONG);
+        } else {
+          navigation.navigate('Violation Summary', {result});
+        }
       } else {
-        setLoading(false);
-        navigation.navigate('Violation Summary', {result});
+        console.log(result.message);
+
+        ToastAndroid.show(
+          result.message || 'Unknown error',
+          ToastAndroid.SHORT,
+        );
       }
     } catch (error) {
       console.error('Upload failed:', error);
+      ToastAndroid.show('Upload failed', ToastAndroid.SHORT);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -96,11 +121,15 @@ const EmployeeMonitoring = () => {
         <>
           <TouchableOpacity onPress={handleCameraPress} style={styles.button}>
             <Icon name="camera-outline" size={60} color="black" />
-            <Text style={styles.buttonText}>Record Video</Text>
+            <Text style={styles.buttonText}>
+              Record {mode === 'attendance' ? 'Photo' : 'Video'}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleBrowsePress} style={styles.button}>
             <Icon name="folder-open-outline" size={60} color="black" />
-            <Text style={styles.buttonText}>Browse Video</Text>
+            <Text style={styles.buttonText}>
+              Browse {mode === 'attendance' ? 'Photo' : 'Video'}
+            </Text>
           </TouchableOpacity>
         </>
       )}

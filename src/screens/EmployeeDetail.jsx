@@ -65,7 +65,7 @@ const EmployeeDetail = props => {
           textAlign: 'center',
         }}
         style={{marginTop: '10%'}}
-        formatText={() => `${productivity}%\nProductivity`}
+        formatText={() => `${productivity.toFixed(1)}%\nProductivity`}
       />
       <View style={styles.fineContainer}>
         <Text style={styles.fineHeading}>Total Fine</Text>

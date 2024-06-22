@@ -6,9 +6,12 @@ const ViolationSummary = props => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Violation Summary</Text>
+      <View style={styles.nameContainer}>
+        <Text style={styles.value}>Employee: </Text>
+        <Text style={styles.label}>{result.employee_name}</Text>
+      </View>
       <FlatList
-        data={result}
+        data={result.rules}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => (
           <View style={styles.itemContainer}>
@@ -33,12 +36,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     padding: 20,
   },
-  heading: {
-    fontSize: 24,
+  nameContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 30,
+    paddingHorizontal: 10,
+  },
+  label: {
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#000',
-    textAlign: 'center',
-    marginBottom: 40,
+    color: '#333',
+    marginRight: 10,
+  },
+  value: {
+    fontSize: 18,
+    color: '#555',
   },
   itemContainer: {
     backgroundColor: '#f9f9f9',
@@ -58,15 +70,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  value: {
-    fontSize: 16,
-    color: '#555',
   },
 });
 

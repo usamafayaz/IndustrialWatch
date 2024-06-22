@@ -7,7 +7,7 @@ const SelectListComponent = ({data, setSelected, placeholder, customStyle}) => {
       <SelectList
         setSelected={setSelected}
         data={data}
-        save="key" // also set save to key.
+        save="key"
         dropdownTextStyles={{color: 'black'}}
         dropdownStyles={{width: '86%', alignSelf: 'center'}}
         boxStyles={

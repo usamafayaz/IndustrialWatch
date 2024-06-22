@@ -13,7 +13,7 @@ import ButtonComponent from '../components/ButtonComponent';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import {useNavigation} from '@react-navigation/native';
 
-const DefectMonitoring = () => {
+const BatchDefectMonitoring = () => {
   const [productList, setProductList] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState('');
   const [batchesList, setBatchesList] = useState([]);
@@ -193,4 +193,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DefectMonitoring;
+export default BatchDefectMonitoring;
