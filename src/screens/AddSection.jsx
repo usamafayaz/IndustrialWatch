@@ -39,7 +39,7 @@ const AddSection = () => {
           id: item.id,
           title: item.name,
           fine: 0,
-          allowed_time: {hours: 0, minutes: 0},
+          allowed_time: {hours: 0, minutes: 0, seconds: 0},
           checkBox: false,
         })),
       );
@@ -57,7 +57,7 @@ const AddSection = () => {
           rules: filteredList.map(rule => ({
             rule_id: rule.id,
             fine: rule.fine,
-            allowed_time: `${rule.allowed_time.hours}:${rule.allowed_time.minutes}`,
+            allowed_time: `${rule.allowed_time.hours}:${rule.allowed_time.minutes}:${rule.allowed_time.seconds}`,
           })),
         };
         const response = await fetch(`${API_URL}/Section/InsertSection`, {
@@ -91,7 +91,9 @@ const AddSection = () => {
   const handleCheckBoxChange = item => {
     if (
       item.fine === 0 ||
-      (item.allowed_time.hours === 0 && item.allowed_time.minutes === 0)
+      (item.allowed_time.hours === 0 &&
+        item.allowed_time.minutes === 0 &&
+        item.allowed_time.seconds === 0)
     ) {
       ToastAndroid.show('Enter Fine and Time First', ToastAndroid.LONG);
     } else {
@@ -140,15 +142,19 @@ const AddSection = () => {
                   fontSize: 16,
                   color:
                     item.allowed_time.hours !== '' &&
-                    item.allowed_time.minutes !== ''
+                    item.allowed_time.minutes !== '' &&
+                    item.allowed_time.seconds !== ''
                       ? 'black'
                       : 'grey',
                 }}>
                 {item.allowed_time.hours !== '' &&
-                item.allowed_time.minutes !== ''
+                item.allowed_time.minutes !== '' &&
+                item.allowed_time.seconds !== ''
                   ? `${item.allowed_time.hours
                       .toString()
                       .padStart(2, '0')}:${item.allowed_time.minutes
+                      .toString()
+                      .padStart(2, '0')}:${item.allowed_time.seconds
                       .toString()
                       .padStart(2, '0')}`
                   : 'Select Time'}
@@ -230,6 +236,24 @@ const AddSection = () => {
                     if (selectedRuleIndex !== null) {
                       const updatedRulesList = [...rulesList];
                       updatedRulesList[selectedRuleIndex].allowed_time.minutes =
+                        newTime;
+                      setRulesList(updatedRulesList);
+                    }
+                  }}
+                />
+              </View>
+              <View style={styles.modalRow}>
+                <Text style={styles.modalLabel}>Second:</Text>
+                <TextInput
+                  placeholder="Second"
+                  style={styles.modalTextInput}
+                  placeholderTextColor={'grey'}
+                  keyboardType="numeric"
+                  onChangeText={time => {
+                    const newTime = time === '' ? 0 : parseInt(time);
+                    if (selectedRuleIndex !== null) {
+                      const updatedRulesList = [...rulesList];
+                      updatedRulesList[selectedRuleIndex].allowed_time.seconds =
                         newTime;
                       setRulesList(updatedRulesList);
                     }

@@ -22,7 +22,7 @@ const DefectSummary = props => {
         data={result.defects}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) =>
-          Object.values(item)[0] >= 0 ? (
+          Object.values(item)[0] > 0 ? (
             <View style={styles.itemContainer}>
               <View style={styles.rowStyle}>
                 <Text style={styles.label}>Defect Name</Text>

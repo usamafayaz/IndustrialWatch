@@ -130,7 +130,9 @@ const BatchDetails = props => {
           </View>
           <View style={styles.rowStyle}>
             <Text style={styles.hintText}>Total Yield:</Text>
-            <Text style={styles.valueText}>{batchData.batch_yield}%</Text>
+            <Text style={styles.valueText}>
+              {batchData.batch_yield.toFixed(1)}%
+            </Text>
           </View>
         </>
       )}

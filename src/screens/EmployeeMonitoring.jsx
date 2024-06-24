@@ -122,7 +122,7 @@ const EmployeeMonitoring = () => {
           <TouchableOpacity onPress={handleCameraPress} style={styles.button}>
             <Icon name="camera-outline" size={60} color="black" />
             <Text style={styles.buttonText}>
-              Record {mode === 'attendance' ? 'Photo' : 'Video'}
+              {mode === 'attendance' ? 'Capture Photo' : 'Record Video'}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleBrowsePress} style={styles.button}>
