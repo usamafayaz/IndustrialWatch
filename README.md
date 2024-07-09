@@ -37,21 +37,16 @@ The project includes a frontend developed in React Native, offering a user-frien
     cd IndustrialWatch
     ```
 
-3. Install Python dependencies:
-    ```bash
-    pip install -r requirements.txt
+3. Install React Native packages and dependencies:
+    ```npm install
     ```
 
-4. Configure environment variables:
-    - Create a `.env` file and add necessary configurations.
-
-5. For the backend server:
+4. For the backend server:
    ```bash
     git clone https://github.com/usamafayaz/IndustrialWatchBackend.git
     ```
 
-
-7. Start the React Native frontend:
+5. Start the React Native frontend:
     ```bash
     npx react-native run-android
     # or
