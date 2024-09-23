@@ -55,3 +55,8 @@ The project includes a frontend developed in React Native, offering a user-frien
 
 ## Contact
 For any inquiries, please contact [usama.fayyaz157@gmail.com].
+
+![Alt text](./images/Slide%201.png)
+![Alt text](./images/Slide%202.png)
+![Alt text](./images/Slide%203.png)
+
