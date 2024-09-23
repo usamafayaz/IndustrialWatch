@@ -6,29 +6,31 @@ import {
   FlatList,
   TouchableOpacity,
   ToastAndroid,
+  ActivityIndicator,
 } from 'react-native';
 import ViolationCard from '../components/ViolationCard';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import PrimaryAppBar from '../components/PrimaryAppBar';
 import {API_URL} from '../../apiConfig';
 
-const EmployeeViolation = props => {
+const GuestViolation = props => {
   const [employeeViolations, setEmployeeViolations] = useState([]);
   const name = props.route.params.employee.name;
+  const [loading, setLoading] = useState(false); // State to manage loading indicator
 
   useFocusEffect(
     useCallback(() => {
-      fetchEmployeeViolations();
+      fetchGuestViolations();
     }, []),
   );
   const navigation = useNavigation();
-  const fetchEmployeeViolations = async () => {
+  const fetchGuestViolations = async () => {
+    setLoading(true); // Show loading indicator when API call starts
     try {
       const response = await fetch(
-        `${API_URL}/Employee/GetAllViolations?employee_id=${props.route.params.employee.employee_id}`,
+        `${API_URL}/Employee/GetAllGuestViolations?employee_id=${props.route.params.employee.employee_id}`,
       );
       const data = await response.json();
-      console.log(data);
       setEmployeeViolations(data);
     } catch (error) {
       ToastAndroid.show(
@@ -36,6 +38,7 @@ const EmployeeViolation = props => {
         ToastAndroid.SHORT,
       );
     }
+    setLoading(false); // Hide loading indicator after API call completes
   };
 
   const formatDate = date => {
@@ -56,7 +59,11 @@ const EmployeeViolation = props => {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('Violation Details', {item, name});
+                  navigation.navigate('Violation Details', {
+                    item,
+                    name,
+                    isGuest: true,
+                  });
                 }}>
                 <ViolationCard
                   name={item.rule_name}
@@ -68,8 +75,11 @@ const EmployeeViolation = props => {
             );
           }}
         />
-      ) : (
-        <Text style={styles.noDataText}>No Violations</Text>
+      ) : null}
+      {loading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#2196F3" />
+        </View>
       )}
     </View>
   );
@@ -95,6 +105,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: '70%',
   },
+  loadingContainer: {
+    ...StyleSheet.absoluteFill,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
 });
 
-export default EmployeeViolation;
+export default GuestViolation;

@@ -18,18 +18,19 @@ const ViolationDetails = props => {
     return date.toLocaleDateString('en-US', options);
   };
 
-  const {item, name} = props.route.params;
+  const {item, name, isGuest} = props.route.params;
   useEffect(() => {
-    console.log('billie', item);
     fetchViolationDetails();
   }, []);
   const fetchViolationDetails = async () => {
     try {
       console.log(item.violation_id);
-      const response = await fetch(
-        `${API_URL}/Employee/GetViolationDetails?violation_id=${item.violation_id}`,
-      );
+      const url = isGuest
+        ? `${API_URL}/Employee/GetGuestViolationDetails?violation_id=${item.violation_id}`
+        : `${API_URL}/Employee/GetViolationDetails?violation_id=${item.violation_id}`;
+      const response = await fetch(url);
       const data = await response.json();
+      console.log('dsa', data);
       setEmployeeViolationDetail(data);
     } catch (error) {
       ToastAndroid.show(
@@ -69,7 +70,7 @@ const ViolationDetails = props => {
             {employeeViolationDetail.rule_name}
           </Text>
           <Text style={styles.dateStyle}>
-            {formatDate(employeeViolationDetail.date)}
+            {!isGuest && formatDate(employeeViolationDetail.date)}
           </Text>
         </View>
       )}

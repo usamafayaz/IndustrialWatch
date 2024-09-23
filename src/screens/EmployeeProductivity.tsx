@@ -28,6 +28,13 @@ const EmployeeProductivity = () => {
         navigation.navigate('Employees Ranking' as never);
       },
     },
+    {
+      name: 'Guests',
+      image: require('../../assets/images/employeevector.png'),
+      onPress: () => {
+        navigation.navigate('Guests' as never);
+      },
+    },
   ];
   return (
     <View style={styles.containerStyle}>

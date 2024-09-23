@@ -23,7 +23,7 @@ const SupervisorDashboard = props => {
       name: 'Employee Monitoring',
       image: require('../../assets/icons/employee_monitoring.png'),
       onPress: () => {
-        navigation.navigate('Employee Monitoring', {mode: 'productivity'});
+        navigation.navigate('Employee Monitoring', {employee});
       },
     },
     {
@@ -44,7 +44,7 @@ const SupervisorDashboard = props => {
       name: 'Mark Attendance',
       image: require('../../assets/icons/mark_attendance.png'),
       onPress: () => {
-        navigation.navigate('Employee Monitoring', {mode: 'attendance'});
+        navigation.navigate('Mark Attendance');
       },
     },
   ];

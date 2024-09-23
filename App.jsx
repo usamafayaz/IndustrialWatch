@@ -45,6 +45,10 @@ import EditSupervisor from './src/screens/EditSupervisor';
 import ViolationSummary from './src/screens/ViolationSummary';
 import DefectMonitoringTypes from './src/screens/DefectMonitoringTypes';
 import MultipleAngleMonitoring from './src/screens/MultipleAngleMonitoring';
+import MarkAttendance from './src/screens/MarkAttendance';
+import Guests from './src/screens/Guests';
+import AddGuest from './src/screens/AddGuest';
+import GuestViolation from './src/screens/GuestViolation';
 
 // gradlew bundleRelease // for AAB
 // gradlew.bat assembleRelease // for APK
@@ -259,6 +263,27 @@ const App = () => {
           })}
         />
         <Stack.Screen
+          name="Guests"
+          component={Guests}
+          options={() => ({
+            header: () => <PrimaryAppBar text={'Guests'} />,
+          })}
+        />
+        <Stack.Screen
+          name="Add Guest"
+          component={AddGuest}
+          options={() => ({
+            header: () => <PrimaryAppBar text={'Add Guest'} />,
+          })}
+        />
+        <Stack.Screen
+          name="Guest Violation"
+          component={GuestViolation}
+          options={() => ({
+            headerShown: false,
+          })}
+        />
+        <Stack.Screen
           options={{headerShown: false}}
           name="Supervisor Dashboard"
           component={SupervisorDashboard}
@@ -266,6 +291,13 @@ const App = () => {
         <Stack.Screen
           name="Employee Monitoring"
           component={EmployeeMonitoring}
+          options={{
+            header: () => <SecondaryAppBar text="" />,
+          }}
+        />
+        <Stack.Screen
+          name="Mark Attendance"
+          component={MarkAttendance}
           options={{
             header: () => <SecondaryAppBar text="" />,
           }}

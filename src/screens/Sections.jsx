@@ -25,7 +25,7 @@ const Sections = () => {
   const fetchSections = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/Section/GetAllSections?status=${1}`,
+        `${API_URL}/Section/GetAllSections?status=${1}&is_special=${true}`,
       );
       const data = await response.json();
       setSectionList(data);

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -10,39 +10,13 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {API_URL} from '../../apiConfig';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import SelectListComponent from '../components/SelectListComponent';
 
-const EmployeeMonitoring = ({route}) => {
+const MarkAttendance = () => {
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigation();
-  const [sectionsList, setSectionList] = useState([]);
-  const [selectedSection, setSelectedSection] = useState('');
-  useEffect(() => {
-    fetchSection();
-  }, []);
-  const fetchSection = async () => {
-    try {
-      const response = await fetch(
-        `${API_URL}/Section/GetSpecialSection?employee_id=${route.params.employee.employee_id}`,
-      );
-      const data = await response.json();
-      const formattedData = data.map(item => ({
-        key: item.id.toString(),
-        value: item.name,
-      }));
-      setSectionList(formattedData);
-    } catch (error) {
-      ToastAndroid.show(
-        'Failed to fetch sections. Please try again.',
-        ToastAndroid.SHORT,
-      );
-    }
-  };
+
   const handleCameraPress = () => {
     const options = {
-      mediaType: 'video',
-      quality: 1,
+      mediaType: 'photo',
     };
 
     launchCamera(options, response => {
@@ -61,7 +35,7 @@ const EmployeeMonitoring = ({route}) => {
 
   const handleBrowsePress = () => {
     const options = {
-      mediaType: 'video',
+      mediaType: 'photo',
     };
 
     launchImageLibrary(options, response => {
@@ -80,14 +54,13 @@ const EmployeeMonitoring = ({route}) => {
 
   const uploadFile = async uri => {
     const formData = new FormData();
-    formData.append('section_id', selectedSection);
-    formData.append('files', {
+    formData.append('file', {
       uri,
-      type: 'video/mp4',
-      name: 'video.mp4',
+      type: 'image/jpeg',
+      name: 'image.jpg',
     });
 
-    const uploadUrl = `${API_URL}/Automation/PredictEmployeeViolation`;
+    const uploadUrl = `${API_URL}/Employee/MarkAttendance`;
 
     ToastAndroid.show('Uploading the file', ToastAndroid.LONG);
     setLoading(true);
@@ -102,8 +75,11 @@ const EmployeeMonitoring = ({route}) => {
       });
       const result = await response.json();
       if (response.ok) {
-        navigation.navigate('Violation Summary', {result});
+        console.log(result.message);
+        ToastAndroid.show(result.message, ToastAndroid.LONG);
       } else {
+        console.log(result.message);
+
         ToastAndroid.show(
           result.message || 'Unknown error',
           ToastAndroid.SHORT,
@@ -123,30 +99,14 @@ const EmployeeMonitoring = ({route}) => {
         <ActivityIndicator size="large" color="#2196F3" />
       ) : (
         <>
-          <View style={{width: '100%', marginTop: 100}}>
-            <Text style={styles.hintText}>Section:</Text>
-            <SelectListComponent
-              setSelected={setSelectedSection}
-              data={sectionsList}
-              placeholder="Select Section"
-            />
-          </View>
-          {selectedSection !== '' ? (
-            <View style={styles.cameraContainer}>
-              <TouchableOpacity
-                onPress={handleCameraPress}
-                style={styles.button}>
-                <Icon name="camera-outline" size={60} color="black" />
-                <Text style={styles.buttonText}>Record Video</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleBrowsePress}
-                style={styles.button}>
-                <Icon name="folder-open-outline" size={60} color="black" />
-                <Text style={styles.buttonText}>Browse Video</Text>
-              </TouchableOpacity>
-            </View>
-          ) : null}
+          <TouchableOpacity onPress={handleCameraPress} style={styles.button}>
+            <Icon name="camera-outline" size={60} color="black" />
+            <Text style={styles.buttonText}>Capture Photo </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleBrowsePress} style={styles.button}>
+            <Icon name="folder-open-outline" size={60} color="black" />
+            <Text style={styles.buttonText}>Browse Photo</Text>
+          </TouchableOpacity>
         </>
       )}
     </View>
@@ -158,6 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   button: {
     alignItems: 'center',
@@ -169,15 +130,6 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontWeight: 'bold',
   },
-  cameraContainer: {
-    marginTop: 100,
-  },
-  hintText: {
-    color: 'grey',
-    fontWeight: '700',
-    fontSize: 18,
-    marginLeft: 35,
-  },
 });
 
-export default EmployeeMonitoring;
+export default MarkAttendance;

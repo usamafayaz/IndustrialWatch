@@ -12,7 +12,8 @@ const PrimaryAppBar = (props: {text: string; arrowNotRequired?: boolean}) => {
           props.text == 'Employee Productivity' ||
           props.text == 'Add Employee' ||
           props.text == 'Production' ||
-          props.text == 'Add Batch'
+          props.text == 'Add Batch' ||
+          props.text == 'Add Guest'
             ? '#2196F3'
             : '#FFFFFF',
       }}>

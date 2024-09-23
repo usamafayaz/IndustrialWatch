@@ -22,6 +22,7 @@ const AddSection = () => {
   const [inputText, setInputText] = useState('');
   const [rulesList, setRulesList] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isSpecial, setIsSpecial] = useState(false);
   const [selectedRuleIndex, setSelectedRuleIndex] = useState(null);
 
   const navigation = useNavigation();
@@ -54,6 +55,7 @@ const AddSection = () => {
         const filteredList = rulesList.filter(item => item.checkBox);
         const data = {
           name: inputText,
+          is_special: isSpecial ? 1 : 0,
           rules: filteredList.map(rule => ({
             rule_id: rule.id,
             fine: rule.fine,
@@ -183,6 +185,17 @@ const AddSection = () => {
           onChangeText={text => setInputText(text)}
           style={styles.textInputStyle}
         />
+        <View style={styles.isSpecialContainer}>
+          <CheckBox
+            disabled={false}
+            value={isSpecial}
+            onValueChange={() => {
+              setIsSpecial(!isSpecial);
+            }}
+            tintColors={{true: '#2196F3', false: 'black'}}
+          />
+          <Text style={styles.isSpecialText}>Is Special</Text>
+        </View>
         <Text style={[styles.textStyle, {fontSize: 21}]}>Rules</Text>
         <FlatList
           data={rulesList}
@@ -361,6 +374,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     marginTop: 45,
     alignSelf: 'center',
+  },
+  isSpecialContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: 16,
+  },
+  isSpecialText: {
+    fontSize: 17,
+    color: 'black',
+    marginLeft: 15,
   },
 });
 
